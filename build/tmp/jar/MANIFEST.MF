@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Specification-Title: lvluping
+Specification-Vendor: MrUtcka
+Specification-Version: 1
+Implementation-Title: lvluping
+Implementation-Version: 0.1
+Implementation-Vendor: MrUtcka
+Implementation-Timestamp: 2026-01-13T16:02:02+0700
+
