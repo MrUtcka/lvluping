@@ -1,11 +1,4 @@
 /lvl get
-/lvl set MrUtcka 1
-/lvl set Dev 1
-/lvl get
-/lvl set Dev 1
-/lvl get
-/lvl set Dev 1
-/lvl get
 /lvl set Dev 1
 /lvl get
 /lvl get Dev
@@ -48,3 +41,10 @@
 /lvl set Dev 5
 /lvl add Dev 2
 /lvl add Dev 1
+/lvl
+/lvl add Dev 2
+/lvl add Dev 9
+/star
+/lvl add 3
+/lvl add Dev 3
+/lvl

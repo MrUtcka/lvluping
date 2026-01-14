@@ -19,16 +19,24 @@ public class ModNetworking {
     private static int packetId = 0;
 
     public static void register() {
+        CHANNEL.messageBuilder(S2CSyncTalents.class, packetId++, NetworkDirection.PLAY_TO_CLIENT)
+                .encoder(S2CSyncTalents::encode)
+                .decoder(S2CSyncTalents::new)
+                .consumerMainThread(S2CSyncTalents::handle)
+                .add();
+
+        // Клиент -> Сервер (Покупка таланта)
         CHANNEL.messageBuilder(C2SPurchaseTalent.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(C2SPurchaseTalent::encode)
                 .decoder(C2SPurchaseTalent::new)
                 .consumerMainThread(C2SPurchaseTalent::handle)
                 .add();
 
-        CHANNEL.messageBuilder(S2CSyncTalents.class, packetId++, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder(S2CSyncTalents::encode)
-                .decoder(S2CSyncTalents::new)
-                .consumerMainThread(S2CSyncTalents::handle)
+        // Клиент -> Сервер (Прокачка стата)
+        CHANNEL.messageBuilder(C2SUpgradeStat.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SUpgradeStat::encode)
+                .decoder(C2SUpgradeStat::new)
+                .consumerMainThread(C2SUpgradeStat::handle)
                 .add();
     }
 }

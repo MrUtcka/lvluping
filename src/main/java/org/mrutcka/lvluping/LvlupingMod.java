@@ -14,6 +14,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.network.PacketDistributor;
 import org.mrutcka.lvluping.command.LevelCommand;
+import org.mrutcka.lvluping.command.StarCommand;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.network.ModNetworking;
 import org.mrutcka.lvluping.network.S2CSyncTalents;
@@ -58,14 +59,17 @@ public class LvlupingMod {
 
     private void onRegisterCommands(RegisterCommandsEvent event) {
         LevelCommand.register(event.getDispatcher());
+        StarCommand.register(event.getDispatcher());
     }
 
     private void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
-            ModNetworking.CHANNEL.send(
-                    new S2CSyncTalents(PlayerLevels.getLevel(player), PlayerLevels.getPlayerTalents(player.getUUID())),
-                    PacketDistributor.PLAYER.with(player)
-            );
+            ModNetworking.CHANNEL.send(new S2CSyncTalents(
+                    PlayerLevels.getLevel(player),
+                    PlayerLevels.getStars(player.getUUID()),
+                    PlayerLevels.getPlayerTalents(player.getUUID()),
+                    PlayerLevels.getStatsMap(player.getUUID()) // Добавили четвертый аргумент
+            ), PacketDistributor.PLAYER.with(player));
         }
     }
 }

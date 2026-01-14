@@ -1,50 +1,37 @@
 package org.mrutcka.lvluping.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.network.PacketDistributor;
-import org.mrutcka.lvluping.data.PlayerLevels;
-import org.mrutcka.lvluping.data.Talent;
-import java.util.Set;
+import org.mrutcka.lvluping.data.*;
 import java.util.Objects;
 
 public class C2SPurchaseTalent {
     private final String talentId;
-
     public C2SPurchaseTalent(String id) { this.talentId = id; }
     public C2SPurchaseTalent(FriendlyByteBuf buf) { this.talentId = buf.readUtf(); }
-    public void encode(FriendlyByteBuf buf) { buf.writeUtf(talentId); }
+    public void encode(FriendlyByteBuf buf) { buf.writeUtf(this.talentId); }
 
     public static void handle(C2SPurchaseTalent msg, CustomPayloadEvent.Context ctx) {
         ctx.enqueueWork(() -> {
-            ServerPlayer player = ctx.getSender();
-            if (player == null) return;
+            var player = ctx.getSender(); if (player == null) return;
+            Talent t = Talent.getById(msg.talentId); if (t == null) return;
 
-            Talent target = Talent.getById(msg.talentId);
-            if (target == null) return;
+            var owned = PlayerLevels.getPlayerTalents(player.getUUID());
+            int stars = PlayerLevels.getStars(player.getUUID());
+            long count = owned.stream().filter(id -> !id.equals("start")).count();
 
-            Set<String> ownedIds = PlayerLevels.getPlayerTalents(player.getUUID());
+            if (count < PlayerLevels.getTalentLimit(stars) && !owned.contains(t.id) && !PlayerLevels.isBranchBlocked(player.getUUID(), t)) {
+                if (t.parent == null || owned.contains(t.parent.id)) {
+                    int spent = owned.stream().map(Talent::getById).filter(Objects::nonNull).mapToInt(ta -> ta.cost).sum() +
+                            PlayerLevels.getStatsMap(player.getUUID()).values().stream().mapToInt(v -> v).sum();
 
-            int spentPoints = ownedIds.stream()
-                    .map(Talent::getById)
-                    .filter(Objects::nonNull)
-                    .mapToInt(t -> t.cost)
-                    .sum();
-
-            int availablePoints = PlayerLevels.getLevel(player) - spentPoints;
-            if (availablePoints < target.cost) return;
-
-            if (!ownedIds.contains(target.id)) {
-                boolean hasParent = (target.parent == null || ownedIds.contains(target.parent.id));
-                boolean groupOk = !Talent.isGroupBlocked(target, ownedIds);
-
-                if (hasParent && groupOk) {
-                    PlayerLevels.unlockTalent(player.getUUID(), target.id);
-                    ModNetworking.CHANNEL.send(
-                            new S2CSyncTalents(PlayerLevels.getLevel(player), PlayerLevels.getPlayerTalents(player.getUUID())),
-                            PacketDistributor.PLAYER.with(player)
-                    );
+                    if (PlayerLevels.getLevel(player) - spent >= t.cost) {
+                        PlayerLevels.unlockTalent(player.getUUID(), t.id);
+                        ModNetworking.CHANNEL.send(new S2CSyncTalents(
+                                PlayerLevels.getLevel(player), stars, owned, PlayerLevels.getStatsMap(player.getUUID())
+                        ), PacketDistributor.PLAYER.with(player));
+                    }
                 }
             }
         });

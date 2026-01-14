@@ -1,42 +1,52 @@
 package org.mrutcka.lvluping.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.network.CustomPayloadEvent;
-import net.minecraftforge.fml.DistExecutor;
 import org.mrutcka.lvluping.client.TalentScreen;
-
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class S2CSyncTalents {
-    private final int level;
+    private final int level, stars;
     private final Set<String> talents;
+    private final Map<String, Integer> stats;
 
-    public S2CSyncTalents(int level, Set<String> talents) {
-        this.level = level;
-        this.talents = talents;
+    public S2CSyncTalents(int level, int stars, Set<String> talents, Map<String, Integer> stats) {
+        this.level = level; this.stars = stars; this.talents = talents; this.stats = stats;
     }
 
     public S2CSyncTalents(FriendlyByteBuf buf) {
         this.level = buf.readInt();
-        int size = buf.readInt();
+        this.stars = buf.readInt();
+
         this.talents = new HashSet<>();
-        for (int i = 0; i < size; i++) talents.add(buf.readUtf());
+        int tSize = buf.readInt();
+        for (int i = 0; i < tSize; i++) this.talents.add(buf.readUtf());
+
+        this.stats = new HashMap<>();
+        int sSize = buf.readInt();
+        for (int i = 0; i < sSize; i++) this.stats.put(buf.readUtf(), buf.readInt());
     }
 
     public void encode(FriendlyByteBuf buf) {
         buf.writeInt(level);
+        buf.writeInt(stars);
+
         buf.writeInt(talents.size());
         for (String t : talents) buf.writeUtf(t);
+
+        buf.writeInt(stats.size());
+        for (Map.Entry<String, Integer> e : stats.entrySet()) {
+            buf.writeUtf(e.getKey());
+            buf.writeInt(e.getValue());
+        }
     }
 
     public static void handle(S2CSyncTalents msg, CustomPayloadEvent.Context ctx) {
         ctx.enqueueWork(() -> {
-            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () -> {
-                TalentScreen.clientLevel = msg.level;
-                TalentScreen.clientTalents = msg.talents;
-            });
+            TalentScreen.clientLevel = msg.level;
+            TalentScreen.clientStars = msg.stars;
+            TalentScreen.clientTalents = msg.talents;
+            TalentScreen.clientStats = msg.stats;
         });
         ctx.setPacketHandled(true);
     }

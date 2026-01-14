@@ -1,46 +1,52 @@
 package org.mrutcka.lvluping.data;
 
 import net.minecraft.resources.ResourceLocation;
-import org.mrutcka.lvluping.LvlupingMod;
-import java.util.Set;
+import java.util.Objects;
 
 public enum Talent {
-    ROOT("root", "Начало", 0, 0, 0, null, "none", "Стартовая точка", "root.png"),
+    START("start", "Истоки", "Ваше приключение начинается здесь", 0, 0, 0, null, ""),
 
-    // КЛАССЫ (Уровень 1, Группа "class")
-    WARRIOR("warrior", "Воин", -160, -80, 1, ROOT, "class", "Мастер меча", "warrior.png"),
-    MAGE("mage", "Маг", -80, -80, 1, ROOT, "class", "Мастер магии", "mage.png"),
-    ARCHER("archer", "Лучник", 0, -80, 1, ROOT, "class", "Мастер лука", "archer.png"),
-    ASSASSIN("assassin", "Убийца", 80, -80, 1, ROOT, "class", "Мастер кинжала", "assassin.png"),
-    PALADIN("paladin", "Паладин", 160, -80, 1, ROOT, "class", "Мастер света", "paladin.png"),
+    // --- ВОИН (Танк/Ближний бой) ---
+    WARRIOR_BASE("warrior_base", "Путь Воина", "Основы закалки", 1, -80, -40, START, "combat_class"),
+    SHIELD_BLOCK("shield_block", "Мастер щита", "Блокирование урона", 2, -110, -80, WARRIOR_BASE, ""),
+    HEAVY_STRIKE("heavy_strike", "Тяжелый удар", "+15% к урону мечом", 2, -60, -80, WARRIOR_BASE, ""),
+    IRON_WILL("iron_will", "Железная воля", "Иммунитет к отбрасыванию", 3, -110, -120, SHIELD_BLOCK, ""),
+    JUGGERNAUT("juggernaut", "Джаггернаут", "Ультимативная защита", 5, -85, -160, IRON_WILL, ""),
 
-    // СПЕЦИАЛИЗАЦИИ (Уровень 2)
-    BERSERK("berserk", "Берсерк", -200, -160, 2, WARRIOR, "war_spec", "Ярость битвы", "berserk.png"),
-    FIRE_MAGE("fire_mage", "Маг Огня", -100, -160, 3, MAGE, "mage_spec", "Сила пламени", "fire.png");
+    // --- ЛУЧНИК (Дальний бой/Скорость) ---
+    ARCHER_BASE("archer_base", "Путь Лучника", "Глаз сокола", 1, -30, -40, START, "combat_class"),
+    LONG_SHOT("long_shot", "Дальний выстрел", "Урон от дистанции", 2, -45, -80, ARCHER_BASE, ""),
+    QUICK_DRAW("quick_draw", "Быстрая тетива", "Скорость перезарядки лука", 2, -15, -80, ARCHER_BASE, ""),
+    EXPLOSIVE_ARROW("explosive_arrow", "Разрывные стрелы", "Урон по области", 3, -15, -120, QUICK_DRAW, ""),
+    EAGLE_EYE("eagle_eye", "Орлиный взор", "100% точность", 5, -30, -160, EXPLOSIVE_ARROW, ""),
 
-    public final String id, label, description, group;
-    public final int x, y, cost;
+    // --- МАГ (Заклинания/Мана) ---
+    MAGE_BASE("mage_base", "Путь Мага", "Тайные знания", 1, 30, -40, START, "combat_class"),
+    FIRE_ELEMENT("fire_element", "Магия Огня", "Поджог врагов", 2, 15, -80, MAGE_BASE, "mage_element"),
+    FROST_ELEMENT("frost_element", "Магия Льда", "Замедление врагов", 2, 45, -80, MAGE_BASE, "mage_element"),
+    ARCANE_POWER("arcane_power", "Тайная мощь", "Усиление всех заклинаний", 3, 45, -120, FROST_ELEMENT, ""),
+    ARCHMAGE("archmage", "Архимаг", "Бесконечная мана", 5, 30, -160, ARCANE_POWER, ""),
+
+    // --- АССАСИН (Криты/Скрытность) ---
+    ASSASSIN_BASE("assassin_base", "Путь Ассасина", "Искусство тени", 1, 80, -40, START, "combat_class"),
+    POISON_BLADE("poison_blade", "Отравленный клинок", "Периодический урон", 2, 60, -80, ASSASSIN_BASE, ""),
+    BACKSTAB("backstab", "Удар в спину", "Крит в спину x2", 2, 110, -80, ASSASSIN_BASE, ""),
+    SHADOW_STEP("shadow_step", "Шаг тени", "Шанс уклонения +20%", 3, 110, -120, BACKSTAB, ""),
+    NIGHT_STALKER("night_stalker", "Ночной охотник", "Инвиз ночью", 5, 85, -160, SHADOW_STEP, "");
+
+    public final String id, label, description, branch;
+    public final int cost, x, y;
     public final Talent parent;
     public final ResourceLocation icon;
 
-    Talent(String id, String label, int x, int y, int cost, Talent parent, String group, String description, String iconName) {
-        this.id = id; this.label = label; this.x = x; this.y = y;
-        this.cost = cost; this.parent = parent; this.group = group;
-        this.description = description;
-        this.icon = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talents/" + iconName);
+    Talent(String id, String label, String description, int cost, int x, int y, Talent parent, String branch) {
+        this.id = id; this.label = label; this.description = description;
+        this.cost = cost; this.x = x; this.y = y; this.parent = parent; this.branch = branch;
+        this.icon = ResourceLocation.fromNamespaceAndPath("lvluping", "textures/gui/talents/" + id + ".png");
     }
 
     public static Talent getById(String id) {
         for (Talent t : values()) if (t.id.equals(id)) return t;
         return null;
-    }
-
-    public static boolean isGroupBlocked(Talent target, Set<String> ownedIds) {
-        if (target.group.equals("none")) return false;
-        for (String id : ownedIds) {
-            Talent ownedT = getById(id);
-            if (ownedT != null && !ownedT.id.equals(target.id) && ownedT.group.equals(target.group)) return true;
-        }
-        return false;
     }
 }
