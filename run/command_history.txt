@@ -1,14 +1,4 @@
 /lvl get
-/lvl get MrUtcka
-/lvl get
-/lvl set 1
-/lvl get
-/lvl set 1
-/lvl get
-/lvl set 1
-/lvl get
-/lvl set 1
-/lvl get
 /lvl set MrUtcka 1
 /lvl set Dev 1
 /lvl get
@@ -26,3 +16,35 @@
 /lvl add Dev
 /lvl set Dev 2
 /lvl get Dev
+/lvl add Dev 1
+/lvl get
+/lvl get Dev
+/lvl
+/lvl add Dev 1
+/lvl add Dev 2
+/lvl get
+/lvl
+/lvl get
+/lvl add
+/lvl get
+/lvl add Dev 1
+/lvl set Dev 1
+/lvl add Dev 1
+/lvl get Dev
+/lvl set
+/lvl set Dev 2
+/lvl get Dev
+/lvl set Dev 2
+/lvl get Dev
+/lvl add Dev 1
+/lvl get Dev
+/lvl add Dev 4
+/lvl get Dev
+/lvl add Dev 1
+/lvl get
+/lvl get Dev
+/lvl add Dev 1
+/lvl set Dev 0
+/lvl set Dev 5
+/lvl add Dev 2
+/lvl add Dev 1
