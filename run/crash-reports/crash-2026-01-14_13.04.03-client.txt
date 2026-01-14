@@ -1,0 +1,242 @@
+---- Minecraft Crash Report ----
+// Surprise! Haha. Well, this is awkward.
+
+Time: 2026-01-14 13:04:03
+Description: Rendering overlay
+
+java.lang.RuntimeException: null
+	at LAYER PLUGIN/net.minecraftforge.fmlcore@1.21.1-52.1.0/net.minecraftforge.fml.DeferredWorkQueue.runTasks(DeferredWorkQueue.java:58) ~[fmlcore-1.21.1-52.1.0.jar:1.0]
+	at TRANSFORMER/net.minecraftforge.forge@52.1.0/net.minecraftforge.fml.core.ParallelTransition.lambda$finalActivityGenerator$2(ParallelTransition.java:35) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(CompletableFuture.java:646) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:162) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:136) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:121) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1141) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:795) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:228) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:85) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:69) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:77) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:97) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.run(Launcher.java:116) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.main(Launcher.java:75) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.4.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+	Suppressed: java.lang.IllegalStateException: Failed to register SimpleChannel message, Class org.mrutcka.lvluping.network.C2SPurchaseTalent already registered
+		at TRANSFORMER/net.minecraftforge.forge@52.1.0/net.minecraftforge.network.SimpleChannel$MessageBuilder.add(SimpleChannel.java:374) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/lvluping@0.1/org.mrutcka.lvluping.network.ModNetworking.register(ModNetworking.java:28) ~[main/:?]
+		at java.base/java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804) ~[?:?]
+		at LAYER PLUGIN/net.minecraftforge.fmlcore@1.21.1-52.1.0/net.minecraftforge.fml.DeferredWorkQueue.lambda$makeRunnable$1(DeferredWorkQueue.java:83) ~[fmlcore-1.21.1-52.1.0.jar:1.0]
+		at LAYER PLUGIN/net.minecraftforge.fmlcore@1.21.1-52.1.0/net.minecraftforge.fml.DeferredWorkQueue.makeRunnable(DeferredWorkQueue.java:78) ~[fmlcore-1.21.1-52.1.0.jar:1.0]
+		at LAYER PLUGIN/net.minecraftforge.fmlcore@1.21.1-52.1.0/net.minecraftforge.fml.DeferredWorkQueue.runTasks(DeferredWorkQueue.java:61) ~[fmlcore-1.21.1-52.1.0.jar:1.0]
+		at TRANSFORMER/net.minecraftforge.forge@52.1.0/net.minecraftforge.fml.core.ParallelTransition.lambda$finalActivityGenerator$2(ParallelTransition.java:35) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(CompletableFuture.java:646) ~[?:?]
+		at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:162) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:136) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.runAllTasks(BlockableEventLoop.java:121) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1141) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:795) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:228) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+		at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+		at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+		at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:85) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+		at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:69) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+		at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:77) [modlauncher-10.2.4.jar!/:?]
+		at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:97) [modlauncher-10.2.4.jar!/:?]
+		at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.run(Launcher.java:116) [modlauncher-10.2.4.jar!/:?]
+		at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.main(Launcher.java:75) [modlauncher-10.2.4.jar!/:?]
+		at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.4.jar!/:?]
+		at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+		at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+		at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+		at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+		at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+		at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+Transformer Audit:
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+    PLUGIN: runtimedistcleaner:AFTER
+  net.minecraft.client.main.Main
+    REASON: classloading
+  net.minecraft.server.packs.resources.SimpleReloadInstance
+    REASON: classloading
+  net.minecraft.util.thread.BlockableEventLoop
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.util.thread.ReentrantBlockableEventLoop
+    REASON: classloading
+  net.minecraftforge.fml.core.ParallelTransition
+    REASON: classloading
+  net.minecraftforge.network.SimpleChannel$MessageBuilder
+    REASON: classloading
+  org.mrutcka.lvluping.network.ModNetworking
+    REASON: classloading
+
+
+A detailed walkthrough of the error, its code path and all known details is as follows:
+---------------------------------------------------------------------------------------
+
+-- Head --
+Thread: Render thread
+Suspected Mods: NONE
+Stacktrace:
+	at LAYER PLUGIN/net.minecraftforge.fmlcore@1.21.1-52.1.0/net.minecraftforge.fml.DeferredWorkQueue.runTasks(DeferredWorkQueue.java:58) ~[fmlcore-1.21.1-52.1.0.jar!/:1.0]
+	at TRANSFORMER/net.minecraftforge.forge@52.1.0/net.minecraftforge.fml.core.ParallelTransition.lambda$finalActivityGenerator$2(ParallelTransition.java:35) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar%231!/:?]
+	at java.base/java.util.concurrent.CompletableFuture$UniApply.tryFire(CompletableFuture.java:646) ~[?:?]
+	at java.base/java.util.concurrent.CompletableFuture$Completion.run(CompletableFuture.java:482) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.SimpleReloadInstance.lambda$new$3(SimpleReloadInstance.java:69) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar%230!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:162) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar%230!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:23) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar%230!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:136) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar%230!/:?]
+Transformer Audit:
+  net.minecraft.server.packs.resources.SimpleReloadInstance
+    REASON: classloading
+  net.minecraft.util.thread.BlockableEventLoop
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+  net.minecraft.util.thread.ReentrantBlockableEventLoop
+    REASON: classloading
+  net.minecraftforge.fml.core.ParallelTransition
+    REASON: classloading
+-- Overlay render details --
+Details:
+	Overlay name: net.minecraftforge.client.loading.ForgeLoadingOverlay
+Stacktrace:
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:885) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1181) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:795) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:228) ~[forge-1.21.1-52.1.0_mapped_official_1.21.1.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:85) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+	at SECURE-BOOTSTRAP/net.minecraftforge.fmlloader@1.21.1-52.1.0/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.lambda$makeService$0(CommonLaunchHandler.java:69) ~[fmlloader-1.21.1-52.1.0.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:77) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:97) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.run(Launcher.java:116) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.Launcher.main(Launcher.java:75) [modlauncher-10.2.4.jar!/:?]
+	at SECURE-BOOTSTRAP/cpw.mods.modlauncher@10.2.4/cpw.mods.modlauncher.BootstrapEntry.main(BootstrapEntry.java:17) [modlauncher-10.2.4.jar!/:?]
+	at net.minecraftforge.bootstrap@2.1.7/net.minecraftforge.bootstrap.Bootstrap.moduleMain(Bootstrap.java:188) [bootstrap-2.1.8.jar!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.minecraftforge.bootstrap.Bootstrap.bootstrapMain(Bootstrap.java:133) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.Bootstrap.start(Bootstrap.java:53) [bootstrap-2.1.8.jar:2.1.8]
+	at net.minecraftforge.bootstrap.ForgeBootstrap.main(ForgeBootstrap.java:19) [bootstrap-2.1.8.jar:2.1.8]
+Transformer Audit:
+  net.minecraft.client.Minecraft
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+    PLUGIN: runtimedistcleaner:AFTER
+  net.minecraft.client.main.Main
+    REASON: classloading
+  net.minecraft.client.renderer.GameRenderer
+    REASON: classloading
+    PLUGIN: accesstransformer:BEFORE
+    PLUGIN: runtimedistcleaner:AFTER
+
+
+-- Uptime --
+Details:
+	JVM uptime: 18.407s
+	Wall uptime: 2.540s
+	High-res time: 13.645s
+	Client ticks: 19 ticks / 0.950s
+
+-- Last reload --
+Details:
+	Reload number: 1
+	Reload reason: initial
+	Finished: No
+	Packs: vanilla, mod_resources
+
+-- System Details --
+Details:
+	Minecraft Version: 1.21.1
+	Minecraft Version ID: 1.21.1
+	Operating System: Windows 10 (amd64) version 10.0
+	Java Version: 21.0.9, Eclipse Adoptium
+	Java VM Version: OpenJDK 64-Bit Server VM (mixed mode, sharing), Eclipse Adoptium
+	Memory: 69920488 bytes (66 MiB) / 408944640 bytes (390 MiB) up to 4227858432 bytes (4032 MiB)
+	CPUs: 16
+	Processor Vendor: AuthenticAMD
+	Processor Name: AMD Ryzen 7 7435H
+	Identifier: AuthenticAMD Family 25 Model 68 Stepping 1
+	Microarchitecture: Zen 3
+	Frequency (GHz): 3.09
+	Number of physical packages: 1
+	Number of physical CPUs: 8
+	Number of logical CPUs: 16
+	Graphics card #0 name: NVIDIA GeForce RTX 3050 Laptop GPU
+	Graphics card #0 vendor: NVIDIA
+	Graphics card #0 VRAM (MiB): 4096.00
+	Graphics card #0 deviceId: VideoController1
+	Graphics card #0 versionInfo: 32.0.15.9159
+	Memory slot #0 capacity (MiB): 16384.00
+	Memory slot #0 clockSpeed (GHz): 4.80
+	Memory slot #0 type: Unknown
+	Virtual memory max (MiB): 38649.61
+	Virtual memory used (MiB): 19101.72
+	Swap memory total (MiB): 22528.00
+	Swap memory used (MiB): 720.29
+	Space in storage for jna.tmpdir (MiB): <path not set>
+	Space in storage for org.lwjgl.system.SharedLibraryExtractPath (MiB): <path not set>
+	Space in storage for io.netty.native.workdir (MiB): <path not set>
+	Space in storage for java.io.tmpdir (MiB): available: 123066.74, total: 255361.98
+	Space in storage for workdir (MiB): available: 347125.69, total: 720761.00
+	JVM Flags: 1 total; -XX:HeapDumpPath=MojangTricksIntelDriversForPerformance_javaw.exe_minecraft.exe.heapdump
+	Launched Version: MOD_DEV
+	Backend library: LWJGL version 3.3.3+5
+	Backend API: NVIDIA GeForce RTX 3050 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.59, NVIDIA Corporation
+	Window size: 854x480
+	GFLW Platform: win32
+	GL Caps: Using framebuffer using OpenGL 3.2
+	GL debug messages: 
+	Is Modded: Definitely; Client brand changed to 'forge'
+	Universe: 400921fb54442d18
+	Type: Client (map_client.txt)
+	Graphics mode: fancy
+	Render Distance: 12/12 chunks
+	Resource Packs: vanilla, mod_resources
+	Current Language: en_us
+	Locale: ru_RU
+	System encoding: Cp1251
+	File encoding: UTF-8
+	CPU: 16x AMD Ryzen 7 7435H
+	ModLauncher: 10.2.4
+	ModLauncher launch target: forge_userdev_client
+	ModLauncher naming: mcp
+	ModLauncher services: 
+		/ slf4jfixer PLUGINSERVICE 
+		/ runtimedistcleaner PLUGINSERVICE 
+		/ runtime_enum_extender PLUGINSERVICE 
+		/ object_holder_definalize PLUGINSERVICE 
+		/ capability_token_subclass PLUGINSERVICE 
+		/ accesstransformer PLUGINSERVICE 
+		/ eventbus PLUGINSERVICE 
+		/ mixin PLUGINSERVICE 
+		/ fml TRANSFORMATIONSERVICE 
+		/ mixin TRANSFORMATIONSERVICE 
+	FML Language Providers: 
+		minecraft@1.0
+		lowcodefml@52
+		javafml@52.1.0
+	Mod List: 
+		                                                  |Minecraft                     |minecraft                     |1.21.1              |SIDED_SETU|Manifest: NOSIGNATURE
+		                                                  |Forge                         |forge                         |52.1.0              |SIDED_SETU|Manifest: NOSIGNATURE
+		main                                              |lvluping                      |lvluping                      |0.1                 |SIDED_SETU|Manifest: NOSIGNATURE
+	Crash Report UUID: 21ea7c9f-75da-4096-955d-4a7ac93b41f1
+	FML: 0.0
+	Forge: net.minecraftforge:52.1.0
