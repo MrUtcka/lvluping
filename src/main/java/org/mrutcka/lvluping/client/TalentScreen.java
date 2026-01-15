@@ -16,6 +16,7 @@ public class TalentScreen extends Screen {
     private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talent_tree_bg.png");
     public static int clientLevel = 0, clientStars = 2;
     public static Set<String> clientTalents = new HashSet<>();
+    public static Map<String, Integer> clientStats = new HashMap<>();
 
     private float scrollX = 0, scrollY = 0, zoom = 1.0f;
     private boolean isStatsTab = false;
@@ -29,15 +30,53 @@ public class TalentScreen extends Screen {
         gui.pose().pushPose();
         gui.pose().translate(width / 2f + scrollX, height / 2f + scrollY, 0);
         gui.pose().scale(zoom, zoom, 1.0f);
-        renderTalentsArea(gui);
+        if (isStatsTab) {
+            renderStatsArea(gui);
+        } else {
+            renderTalentsArea(gui);
+        }
         gui.pose().popPose();
+
+        gui.pose().pushPose();
+        gui.pose().translate(0, 0, 100);
 
         renderHUD(gui);
 
-        drawTab(gui, "НАВЫКИ", 10, 10, !isStatsTab);
-        renderTooltips(gui, mouseX, mouseY);
+        int tabY = 10;
+        drawTab(gui, "ТАЛАНТЫ", 10, tabY, !isStatsTab);
+        drawTab(gui, "ХАРАКТЕРИСТИКИ", 115, tabY, isStatsTab);
 
-        super.render(gui, mouseX, mouseY, partialTick);
+        gui.pose().popPose();
+
+        renderTooltips(gui, mouseX, mouseY);
+    }
+
+    private void renderStatsArea(GuiGraphics gui) {
+        int startY = -60;
+        for (AttributeStat s : AttributeStat.values()) {
+            int level = clientStats.getOrDefault(s.id, 0);
+            int x = -100;
+            int y = startY;
+
+            gui.fill(x, y, x + 200, y + 30, 0xAA000000);
+            gui.renderOutline(x, y, 200, 30, 0xFFFFFFFF);
+
+            if (s.icon != null) {
+                gui.blit(s.icon, x + 7, y + 7, 0, 0, 16, 16, 16, 16);
+            }
+
+            gui.drawString(font, s.label + " [" + level + "/" + s.maxLevel + "]", x + 30, y + 11, 0xFFFFFF);
+
+            int btnX = x + 170;
+            int btnY = y + 5;
+            boolean canUpgrade = getAvailablePoints() > 0 && level < s.maxLevel;
+
+            gui.fill(btnX, btnY, btnX + 20, btnY + 20, canUpgrade ? 0xFF00AA00 : 0xFF555555);
+            gui.renderOutline(btnX, btnY, 20, 20, 0xFFFFFFFF);
+            gui.drawString(font, "+", btnX + 7, btnY + 6, 0xFFFFFF);
+
+            startY += 35;
+        }
     }
 
     private void renderTalentsArea(GuiGraphics gui) {
@@ -75,14 +114,14 @@ public class TalentScreen extends Screen {
             RenderSystem.setShaderColor(1, 1, 1, 1);
             if (!unlocked) {
                 if (branchBlocked) {
-                    RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f);  // Красный оттенок для чужих веток
+                    RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f);
                 } else if (!parentUnlocked) {
-                    RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f); // Сильное затемнение, если родитель не куплен
+                    RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f);
                 }
             }
 
             gui.blit(t.icon, t.x - 8, t.y - 8, 0, 0, 16, 16, 16, 16);
-            RenderSystem.setShaderColor(1, 1, 1, 1); // Сброс цвета
+            RenderSystem.setShaderColor(1, 1, 1, 1);
         }
     }
 
@@ -128,8 +167,17 @@ public class TalentScreen extends Screen {
     }
 
     private int getAvailablePoints() {
-        int spentT = clientTalents.stream().map(Talent::getById).filter(Objects::nonNull).mapToInt(t -> t.cost).sum();
-        return clientLevel - spentT;
+        int spentOnTalents = clientTalents.stream()
+                .map(Talent::getById)
+                .filter(Objects::nonNull)
+                .mapToInt(t -> t.cost)
+                .sum();
+
+        int spentOnStats = clientStats.values().stream()
+                .mapToInt(Integer::intValue)
+                .sum();
+
+        return clientLevel - (spentOnTalents + spentOnStats);
     }
 
     private long getTalentCount() { return clientTalents.stream().filter(id -> !id.equals("start")).count(); }
@@ -206,15 +254,47 @@ public class TalentScreen extends Screen {
 
     @Override
     public boolean mouseClicked(double mx, double my, int btn) {
-        if (my >= 10 && my <= 32) {
-            if (mx >= 10 && mx <= 100) { isStatsTab = false; return true; }
-            if (mx >= 105 && mx <= 195) { isStatsTab = true; return true; }
+        if (my >= 10 && my <= 30) {
+            if (mx >= 10 && mx <= 110) {
+                isStatsTab = false;
+                return true;
+            }
+            if (mx >= 115 && mx <= 215) {
+                isStatsTab = true;
+                return true;
+            }
         }
+
+        if (my > height - 60) {
+            return super.mouseClicked(mx, my, btn);
+        }
+
         float rx = (float) (mx - width / 2f - scrollX) / zoom;
         float ry = (float) (my - height / 2f - scrollY) / zoom;
 
-        for (Talent t : Talent.values()) if (rx >= t.x - 12 && rx <= t.x + 12 && ry >= t.y - 12 && ry <= t.y + 12) ModNetworking.CHANNEL.send(new C2SPurchaseTalent(t.id), PacketDistributor.SERVER.noArg());
-
+        if (isStatsTab) {
+            int startY = -60;
+            for (AttributeStat s : AttributeStat.values()) {
+                int btnX = 70;
+                int btnY = startY + 5;
+                if (rx >= btnX && rx <= btnX + 20 && ry >= btnY && ry <= btnY + 20) {
+                    if (getAvailablePoints() >= 1) {
+                        ModNetworking.CHANNEL.send(new C2SUpgradeStat(s.id), PacketDistributor.SERVER.noArg());
+                    }
+                    return true;
+                }
+                startY += 35;
+            }
+        } else {
+            for (Talent t : Talent.values()) {
+                if (rx >= t.x - 12 && rx <= t.x + 12 && ry >= t.y - 12 && ry <= t.y + 12) {
+                    if (getAvailablePoints() >= t.cost) {
+                        ModNetworking.CHANNEL.send(new C2SPurchaseTalent(t.id), PacketDistributor.SERVER.noArg());
+                    }
+                    return true;
+                }
+            }
+        }
         return super.mouseClicked(mx, my, btn);
     }
 

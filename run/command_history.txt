@@ -1,26 +1,3 @@
-/lvl get Dev
-/lvl add Dev 1
-/lvl get Dev
-/lvl get
-/lvl get Dev
-/lvl add Dev
-/lvl set Dev 2
-/lvl get Dev
-/lvl add Dev 1
-/lvl get
-/lvl get Dev
-/lvl
-/lvl add Dev 1
-/lvl add Dev 2
-/lvl get
-/lvl
-/lvl get
-/lvl add
-/lvl get
-/lvl add Dev 1
-/lvl set Dev 1
-/lvl add Dev 1
-/lvl get Dev
 /lvl set
 /lvl set Dev 2
 /lvl get Dev
@@ -48,3 +25,26 @@
 /lvl add Dev 2
 /star add Dev 2
 /lvl add Dev 2
+/lvl add Dev 200
+/star add Dev 2
+/lvl add Dev 200
+/star add Dev 2
+/lvl add Dev 10
+/star add @a 2
+/lvl add Dev 100
+/gamemode survival
+/lvl add Dev 100
+/star add Dev 4
+/lvl add Dev 100
+/star add Dev 4
+/lvl add Dev 100
+/effect give Dev minecraft:instant_health infinite 5
+/effect clear
+/effect give Dev minecraft:instant_health infinite 5
+/effect clear
+/effect give Dev minecraft:instant_health infinite 5
+/effect clear
+/effect give Dev minecraft:instant_health infinite 5
+/effect clear
+/gamemode creative
+/gamemode survival

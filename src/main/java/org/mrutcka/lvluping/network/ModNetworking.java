@@ -30,5 +30,11 @@ public class ModNetworking {
                 .decoder(C2SPurchaseTalent::new)
                 .consumerMainThread(C2SPurchaseTalent::handle)
                 .add();
+
+        CHANNEL.messageBuilder(C2SUpgradeStat.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
+                .encoder(C2SUpgradeStat::encode)
+                .decoder(C2SUpgradeStat::new)
+                .consumerMainThread(C2SUpgradeStat::handle)
+                .add();
     }
 }

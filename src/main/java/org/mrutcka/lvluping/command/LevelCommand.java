@@ -68,7 +68,8 @@ public class LevelCommand {
         ModNetworking.CHANNEL.send(new S2CSyncTalents(
                 PlayerLevels.getLevel(player),
                 PlayerLevels.getStars(player.getUUID()),
-                PlayerLevels.getPlayerTalents(player.getUUID())
+                PlayerLevels.getPlayerTalents(player.getUUID()),
+                PlayerLevels.getPlayerStatsMap(player.getUUID())
         ), PacketDistributor.PLAYER.with(player));
     }
 }

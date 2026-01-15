@@ -13,7 +13,10 @@ import org.mrutcka.lvluping.LvlupingMod;
 @Mod.EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT)
 public class ClientEvents {
     public static final KeyMapping TALENT_KEY = new KeyMapping(
-            "key.lvluping.talents", GLFW.GLFW_KEY_K, "key.categories.lvluping");
+            "key.lvluping.talents",
+            GLFW.GLFW_KEY_K,
+            "key.categories.lvluping"
+    );
 
     @SubscribeEvent
     public static void onKeyRegister(RegisterKeyMappingsEvent event) {

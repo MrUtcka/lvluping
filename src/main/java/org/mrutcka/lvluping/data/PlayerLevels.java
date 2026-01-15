@@ -12,17 +12,31 @@ public class PlayerLevels {
     private static final Map<UUID, Integer> playerLevels = new HashMap<>();
     private static final Map<UUID, Integer> playerStars = new HashMap<>();
     private static final Map<UUID, Set<String>> playerTalents = new HashMap<>();
+    private static final Map<UUID, Map<String, Integer>> playerStats = new HashMap<>();
+    private static final Map<UUID, Float> playerStoredHealth = new HashMap<>();
 
     public static int getLevel(ServerPlayer p) {
         return playerLevels.getOrDefault(p.getUUID(), 0);
     }
-
+    public static int getMaxLevel(int stars) { return stars * 10; }
     public static int getStars(UUID uuid) {
         return playerStars.getOrDefault(uuid, 2);
     }
+    public static Set<String> getPlayerTalents(UUID uuid) { return playerTalents.computeIfAbsent(uuid, k -> new HashSet<>()); }
+    public static Map<String, Integer> getPlayerStatsMap(UUID uuid) { return playerStats.computeIfAbsent(uuid, k -> new HashMap<>()); }
+    public static int getStatLevel(UUID uuid, String statId) { return playerStats.computeIfAbsent(uuid, k -> new HashMap<>()).getOrDefault(statId, 0); }
+    public static void setStoredHealth(UUID uuid, float health) { playerStoredHealth.put(uuid, health); }
+    public static float getStoredHealth(UUID uuid) { return playerStoredHealth.getOrDefault(uuid, -1f); }
 
-    public static Set<String> getPlayerTalents(UUID uuid) {
-        return playerTalents.computeIfAbsent(uuid, k -> new HashSet<>());
+    public static void upgradeStat(UUID uuid, String statId) {
+        Map<String, Integer> stats = playerStats.computeIfAbsent(uuid, k -> new HashMap<>());
+        AttributeStat stat = AttributeStat.getById(statId);
+        if (stat != null) {
+            int current = stats.getOrDefault(statId, 0);
+            if (current < stat.maxLevel) {
+                stats.put(statId, current + 1);
+            }
+        }
     }
 
     public static int getTalentLimit(int stars) {
@@ -38,7 +52,9 @@ public class PlayerLevels {
     }
 
     public static void setLevel(UUID uuid, int level) {
-        playerLevels.put(uuid, Math.max(0, level));
+        int stars = getStars(uuid);
+        int maxAllowed = getMaxLevel(stars);
+        playerLevels.put(uuid, Math.clamp(level, 0, maxAllowed));
     }
 
     public static void setStars(UUID uuid, int stars) {
@@ -73,12 +89,17 @@ public class PlayerLevels {
 
         for (UUID uuid : allPlayers) {
             CompoundTag pData = new CompoundTag();
+            pData.putFloat("currentHealth", playerStoredHealth.getOrDefault(uuid, 20f));
             pData.putInt("level", playerLevels.getOrDefault(uuid, 0));
             pData.putInt("stars", playerStars.getOrDefault(uuid, 2));
 
             ListTag tList = new ListTag();
             getPlayerTalents(uuid).forEach(s -> tList.add(StringTag.valueOf(s)));
             pData.put("talents", tList);
+
+            CompoundTag sData = new CompoundTag();
+            getPlayerStatsMap(uuid).forEach(sData::putInt);
+            pData.put("attributes", sData);
 
             root.put(uuid.toString(), pData);
         }
@@ -95,11 +116,14 @@ public class PlayerLevels {
         Path path = server.getWorldPath(LevelResource.ROOT).resolve("lvluping_data.dat");
         if (!Files.exists(path)) return;
 
+        playerLevels.clear();
+        playerStars.clear();
+        playerTalents.clear();
+        playerStats.clear();
+        playerStoredHealth.clear();
+
         try {
             CompoundTag root = NbtIo.readCompressed(path, NbtAccounter.unlimitedHeap());
-            playerLevels.clear();
-            playerStars.clear();
-            playerTalents.clear();
 
             for (String key : root.getAllKeys()) {
                 UUID uuid = UUID.fromString(key);
@@ -108,9 +132,21 @@ public class PlayerLevels {
                 playerLevels.put(uuid, pData.getInt("level"));
                 playerStars.put(uuid, pData.getInt("stars"));
 
+                if (pData.contains("currentHealth")) {
+                    playerStoredHealth.put(uuid, pData.getFloat("currentHealth"));
+                }
+
                 Set<String> talents = getPlayerTalents(uuid);
                 ListTag tList = pData.getList("talents", 8);
                 for (int i = 0; i < tList.size(); i++) talents.add(tList.getString(i));
+
+                if (pData.contains("attributes")) {
+                    CompoundTag sData = pData.getCompound("attributes");
+                    Map<String, Integer> statsMap = getPlayerStatsMap(uuid);
+                    for (String sKey : sData.getAllKeys()) {
+                        statsMap.put(sKey, sData.getInt(sKey));
+                    }
+                }
             }
         } catch (IOException e) {
             e.printStackTrace();

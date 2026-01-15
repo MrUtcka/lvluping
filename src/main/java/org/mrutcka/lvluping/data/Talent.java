@@ -4,35 +4,32 @@ import net.minecraft.resources.ResourceLocation;
 import java.util.Objects;
 
 public enum Talent {
+    // 0. НАЧАЛО
     START("start", "Истоки", "Ваше приключение начинается здесь", 0, 0, 0, null, ""),
 
-    // --- ВОИН (Танк/Ближний бой) ---
-    WARRIOR_BASE("warrior_base", "Путь Воина", "Основы закалки", 1, -80, -40, START, "combat_class"),
-    SHIELD_BLOCK("shield_block", "Мастер щита", "Блокирование урона", 2, -110, -80, WARRIOR_BASE, ""),
-    HEAVY_STRIKE("heavy_strike", "Тяжелый удар", "+15% к урону мечом", 2, -60, -80, WARRIOR_BASE, ""),
-    IRON_WILL("iron_will", "Железная воля", "Иммунитет к отбрасыванию", 3, -110, -120, SHIELD_BLOCK, ""),
-    JUGGERNAUT("juggernaut", "Джаггернаут", "Ультимативная защита", 5, -85, -160, IRON_WILL, ""),
+    // --- 1. ВОИН ---
+    WARRIOR_BASE("warrior_base", "Воин", "Путь грубой силы", 1, -80, -40, START, "combat_class"),
+    WARRIOR_BLOCK("warrior_block", "Блок", "Мастерское владение щитом", 2, -110, -80, WARRIOR_BASE, "warrior_spec"),
+    WARRIOR_COMBO("warrior_combo", "Комбо", "Серия быстрых ударов", 2, -80, -80, WARRIOR_BASE, "warrior_spec"),
+    WARRIOR_STUN("warrior_stun", "Оглушение", "Шанс дезориентировать цель", 2, -50, -80, WARRIOR_BASE, "warrior_spec"),
 
-    // --- ЛУЧНИК (Дальний бой/Скорость) ---
-    ARCHER_BASE("archer_base", "Путь Лучника", "Глаз сокола", 1, -30, -40, START, "combat_class"),
-    LONG_SHOT("long_shot", "Дальний выстрел", "Урон от дистанции", 2, -45, -80, ARCHER_BASE, ""),
-    QUICK_DRAW("quick_draw", "Быстрая тетива", "Скорость перезарядки лука", 2, -15, -80, ARCHER_BASE, ""),
-    EXPLOSIVE_ARROW("explosive_arrow", "Разрывные стрелы", "Урон по области", 3, -15, -120, QUICK_DRAW, ""),
-    EAGLE_EYE("eagle_eye", "Орлиный взор", "100% точность", 5, -30, -160, EXPLOSIVE_ARROW, ""),
+    // --- 2. ЛУЧНИК ---
+    ARCHER_BASE("archer_base", "Лучник", "Мастер дальнего боя", 1, -30, -40, START, "combat_class"),
+    ARCHER_DASH("archer_dash", "Деш спиной", "Быстрый разрыв дистанции", 2, -50, -80, ARCHER_BASE, "archer_spec"),
+    ARCHER_DAGGER("archer_dagger", "Кинжал", "Защита в ближнем бою", 2, -30, -80, ARCHER_BASE, "archer_spec"),
+    ARCHER_STRONG_SHOT("archer_strong_shot", "Сильный выстрел", "Пробивающая мощь", 2, -10, -80, ARCHER_BASE, "archer_spec"),
 
-    // --- МАГ (Заклинания/Мана) ---
-    MAGE_BASE("mage_base", "Путь Мага", "Тайные знания", 1, 30, -40, START, "combat_class"),
-    FIRE_ELEMENT("fire_element", "Магия Огня", "Поджог врагов", 2, 15, -80, MAGE_BASE, "mage_element"),
-    FROST_ELEMENT("frost_element", "Магия Льда", "Замедление врагов", 2, 45, -80, MAGE_BASE, "mage_element"),
-    ARCANE_POWER("arcane_power", "Тайная мощь", "Усиление всех заклинаний", 3, 45, -120, FROST_ELEMENT, ""),
-    ARCHMAGE("archmage", "Архимаг", "Бесконечная мана", 5, 30, -160, ARCANE_POWER, ""),
+    // --- 3. МАГ ---
+    MAGE_BASE("mage_base", "Маг", "Повелитель стихий", 1, 30, -40, START, "combat_class"),
+    MAGE_BARRIER("mage_barrier", "Барьер", "Магический щит", 2, 10, -80, MAGE_BASE, "mage_spec"),
+    MAGE_BUFF_DEF("mage_buff_def", "Баф Защита", "Укрепление брони заклинанием", 2, 30, -80, MAGE_BASE, "mage_spec"),
+    MAGE_BUFF_ATK("mage_buff_atk", "Баф Атака", "Увеличение магической мощи", 2, 50, -80, MAGE_BASE, "mage_spec"),
 
-    // --- АССАСИН (Криты/Скрытность) ---
-    ASSASSIN_BASE("assassin_base", "Путь Ассасина", "Искусство тени", 1, 80, -40, START, "combat_class"),
-    POISON_BLADE("poison_blade", "Отравленный клинок", "Периодический урон", 2, 60, -80, ASSASSIN_BASE, ""),
-    BACKSTAB("backstab", "Удар в спину", "Крит в спину x2", 2, 110, -80, ASSASSIN_BASE, ""),
-    SHADOW_STEP("shadow_step", "Шаг тени", "Шанс уклонения +20%", 3, 110, -120, BACKSTAB, ""),
-    NIGHT_STALKER("night_stalker", "Ночной охотник", "Инвиз ночью", 5, 85, -160, SHADOW_STEP, "");
+    // --- 4. АССАСИН ---
+    ASSASSIN_BASE("assassin_base", "Ассасин", "Мастер скрытности", 1, 80, -40, START, "combat_class"),
+    ASSASSIN_SLIDE("assassin_slide", "Подкат", "Маневренность и скорость", 2, 50, -80, ASSASSIN_BASE, "assassin_spec"),
+    ASSASSIN_SMOKE("assassin_smoke", "Смок", "Дымовая завеса для побега", 2, 80, -80, ASSASSIN_BASE, "assassin_spec"),
+    ASSASSIN_STEALTH_CRIT("assassin_stealth_crit", "Крит с инвиза", "Смертельный удар из тени", 2, 110, -80, ASSASSIN_BASE, "assassin_spec");
 
     public final String id, label, description, branch;
     public final int cost, x, y;

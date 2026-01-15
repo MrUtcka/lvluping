@@ -4,10 +4,12 @@ import com.mojang.logging.LogUtils;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.event.entity.EntityJoinLevelEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.event.server.ServerStoppingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -16,9 +18,12 @@ import net.minecraftforge.network.PacketDistributor;
 import org.mrutcka.lvluping.command.LevelCommand;
 import org.mrutcka.lvluping.command.StarCommand;
 import org.mrutcka.lvluping.data.PlayerLevels;
+import org.mrutcka.lvluping.handler.AttributeHandler;
 import org.mrutcka.lvluping.network.ModNetworking;
 import org.mrutcka.lvluping.network.S2CSyncTalents;
 import org.slf4j.Logger;
+
+import java.util.UUID;
 
 @Mod(LvlupingMod.MODID)
 public class LvlupingMod {
@@ -62,12 +67,31 @@ public class LvlupingMod {
         StarCommand.register(event.getDispatcher());
     }
 
+    @SubscribeEvent
+    public void onPlayerClone(PlayerEvent.Clone event) {
+        if (event.isWasDeath()) {
+            UUID oldId = event.getOriginal().getUUID();
+            ServerPlayer newPlayer = (ServerPlayer) event.getEntity();
+            AttributeHandler.applyStats(newPlayer, true);
+        }
+    }
+
+    @SubscribeEvent
+    public void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerLevels.setStoredHealth(player.getUUID(), player.getHealth());
+        }
+    }
+
     private void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            AttributeHandler.applyStats(player, false);
+
             ModNetworking.CHANNEL.send(new S2CSyncTalents(
                     PlayerLevels.getLevel(player),
                     PlayerLevels.getStars(player.getUUID()),
-                    PlayerLevels.getPlayerTalents(player.getUUID())
+                    PlayerLevels.getPlayerTalents(player.getUUID()),
+                    PlayerLevels.getPlayerStatsMap(player.getUUID())
             ), PacketDistributor.PLAYER.with(player));
         }
     }
