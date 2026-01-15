@@ -23,13 +23,20 @@ public class C2SPurchaseTalent {
 
             if (count < PlayerLevels.getTalentLimit(stars) && !owned.contains(t.id) && !PlayerLevels.isBranchBlocked(player.getUUID(), t)) {
                 if (t.parent == null || owned.contains(t.parent.id)) {
-                    int spent = owned.stream().map(Talent::getById).filter(Objects::nonNull).mapToInt(ta -> ta.cost).sum() +
-                            PlayerLevels.getStatsMap(player.getUUID()).values().stream().mapToInt(v -> v).sum();
+
+                    int spent = owned.stream()
+                            .map(Talent::getById)
+                            .filter(Objects::nonNull)
+                            .mapToInt(ta -> ta.cost)
+                            .sum();
 
                     if (PlayerLevels.getLevel(player) - spent >= t.cost) {
                         PlayerLevels.unlockTalent(player.getUUID(), t.id);
+
                         ModNetworking.CHANNEL.send(new S2CSyncTalents(
-                                PlayerLevels.getLevel(player), stars, owned, PlayerLevels.getStatsMap(player.getUUID())
+                                PlayerLevels.getLevel(player),
+                                stars,
+                                owned
                         ), PacketDistributor.PLAYER.with(player));
                     }
                 }

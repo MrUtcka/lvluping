@@ -1,6 +1,3 @@
-/lvl get
-/lvl set Dev 1
-/lvl get
 /lvl get Dev
 /lvl add Dev 1
 /lvl get Dev
@@ -48,3 +45,6 @@
 /lvl add 3
 /lvl add Dev 3
 /lvl
+/lvl add Dev 2
+/star add Dev 2
+/lvl add Dev 2

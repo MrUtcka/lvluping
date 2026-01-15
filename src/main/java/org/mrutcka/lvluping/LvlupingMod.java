@@ -67,8 +67,7 @@ public class LvlupingMod {
             ModNetworking.CHANNEL.send(new S2CSyncTalents(
                     PlayerLevels.getLevel(player),
                     PlayerLevels.getStars(player.getUUID()),
-                    PlayerLevels.getPlayerTalents(player.getUUID()),
-                    PlayerLevels.getStatsMap(player.getUUID()) // Добавили четвертый аргумент
+                    PlayerLevels.getPlayerTalents(player.getUUID())
             ), PacketDistributor.PLAYER.with(player));
         }
     }

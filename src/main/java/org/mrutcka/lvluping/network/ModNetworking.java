@@ -25,18 +25,10 @@ public class ModNetworking {
                 .consumerMainThread(S2CSyncTalents::handle)
                 .add();
 
-        // Клиент -> Сервер (Покупка таланта)
         CHANNEL.messageBuilder(C2SPurchaseTalent.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
                 .encoder(C2SPurchaseTalent::encode)
                 .decoder(C2SPurchaseTalent::new)
                 .consumerMainThread(C2SPurchaseTalent::handle)
-                .add();
-
-        // Клиент -> Сервер (Прокачка стата)
-        CHANNEL.messageBuilder(C2SUpgradeStat.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SUpgradeStat::encode)
-                .decoder(C2SUpgradeStat::new)
-                .consumerMainThread(C2SUpgradeStat::handle)
                 .add();
     }
 }

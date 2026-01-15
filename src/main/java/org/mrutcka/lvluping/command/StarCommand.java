@@ -17,24 +17,19 @@ import java.util.Collection;
 public class StarCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("star")
-                // 1. Просто /star — пишет свои звезды (доступно ВСЕМ)
                 .executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     int stars = PlayerLevels.getStars(p.getUUID());
                     ctx.getSource().sendSuccess(() -> Component.literal("Ваши звезды: §e" + "★".repeat(stars)), false);
                     return 1;
                 })
-
-                // 2. /star get ...
                 .then(Commands.literal("get")
-                        // /star get — свои звезды (доступно ВСЕМ)
                         .executes(ctx -> {
                             ServerPlayer p = ctx.getSource().getPlayerOrException();
                             int stars = PlayerLevels.getStars(p.getUUID());
                             ctx.getSource().sendSuccess(() -> Component.literal("Ваши звезды: §e" + "★".repeat(stars)), false);
                             return 1;
                         })
-                        // /star get <targets> — (только АДМИНЫ)
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .requires(s -> s.hasPermission(2))
                                 .executes(ctx -> {
@@ -47,15 +42,11 @@ public class StarCommand {
                                 })
                         )
                 )
-
-                // 3. /star set <targets> <1-7> (только АДМИНЫ)
                 .then(Commands.literal("set")
                         .requires(s -> s.hasPermission(2))
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.argument("value", IntegerArgumentType.integer(1, 7))
                                         .executes(ctx -> updateStars(ctx.getSource(), EntityArgument.getPlayers(ctx, "targets"), IntegerArgumentType.getInteger(ctx, "value"), false)))))
-
-                // 4. /star add <targets> <value> (только АДМИНЫ)
                 .then(Commands.literal("add")
                         .requires(s -> s.hasPermission(2))
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -68,8 +59,7 @@ public class StarCommand {
         for (ServerPlayer player : targets) {
             int current = PlayerLevels.getStars(player.getUUID());
             PlayerLevels.setStars(player.getUUID(), Math.min(7, add ? current + value : value));
-
-            sync(player); // Отправка в GUIбновление в TAB (Добавьте это!)
+            sync(player);
         }
         PlayerLevels.save(source.getServer());
 
@@ -80,8 +70,7 @@ public class StarCommand {
         ModNetworking.CHANNEL.send(new S2CSyncTalents(
                 PlayerLevels.getLevel(player),
                 PlayerLevels.getStars(player.getUUID()),
-                PlayerLevels.getPlayerTalents(player.getUUID()),
-                PlayerLevels.getStatsMap(player.getUUID())
+                PlayerLevels.getPlayerTalents(player.getUUID())
         ), PacketDistributor.PLAYER.with(player));
     }
 }

@@ -18,22 +18,17 @@ import java.util.Collections;
 public class LevelCommand {
     public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
         dispatcher.register(Commands.literal("lvl")
-                // 1. Просто /lvl — пишет свой уровень (доступно ВСЕМ)
                 .executes(ctx -> {
                     ServerPlayer p = ctx.getSource().getPlayerOrException();
                     ctx.getSource().sendSuccess(() -> Component.literal("Ваш уровень: §b" + PlayerLevels.getLevel(p)), false);
                     return 1;
                 })
-
-                // 2. /lvl get ...
                 .then(Commands.literal("get")
-                        // /lvl get — свой уровень (доступно ВСЕМ)
                         .executes(ctx -> {
                             ServerPlayer p = ctx.getSource().getPlayerOrException();
                             ctx.getSource().sendSuccess(() -> Component.literal("Ваш уровень: §b" + PlayerLevels.getLevel(p)), false);
                             return 1;
                         })
-                        // /lvl get <targets> — (только АДМИНЫ)
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .requires(s -> s.hasPermission(2))
                                 .executes(ctx -> {
@@ -45,15 +40,11 @@ public class LevelCommand {
                                 })
                         )
                 )
-
-                // 3. /lvl set <targets> <value> (только АДМИНЫ)
                 .then(Commands.literal("set")
                         .requires(s -> s.hasPermission(2))
                         .then(Commands.argument("targets", EntityArgument.players())
                                 .then(Commands.argument("value", IntegerArgumentType.integer(0))
                                         .executes(ctx -> updateLevel(ctx.getSource(), EntityArgument.getPlayers(ctx, "targets"), IntegerArgumentType.getInteger(ctx, "value"), false)))))
-
-                // 4. /lvl add <targets> <value> (только АДМИНЫ)
                 .then(Commands.literal("add")
                         .requires(s -> s.hasPermission(2))
                         .then(Commands.argument("targets", EntityArgument.players())
@@ -77,8 +68,7 @@ public class LevelCommand {
         ModNetworking.CHANNEL.send(new S2CSyncTalents(
                 PlayerLevels.getLevel(player),
                 PlayerLevels.getStars(player.getUUID()),
-                PlayerLevels.getPlayerTalents(player.getUUID()),
-                PlayerLevels.getStatsMap(player.getUUID())
+                PlayerLevels.getPlayerTalents(player.getUUID())
         ), PacketDistributor.PLAYER.with(player));
     }
 }

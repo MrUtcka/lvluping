@@ -20,7 +20,7 @@ license = "MIT"
 # The modid of the mod
 modId = "lvluping" #mandatory
 # The version number of the mod
-version = "0.2" #mandatory
+version = "0.3" #mandatory
 # A display name for the mod
 displayName = "lvluping" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://docs.minecraftforge.net/en/latest/misc/updatechecker/
