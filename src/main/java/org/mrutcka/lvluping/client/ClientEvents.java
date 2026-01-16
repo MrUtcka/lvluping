@@ -1,5 +1,6 @@
 package org.mrutcka.lvluping.client;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -7,26 +8,34 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import org.lwjgl.glfw.GLFW;
 import org.mrutcka.lvluping.LvlupingMod;
 
-@Mod.EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT)
 public class ClientEvents {
+
     public static final KeyMapping TALENT_KEY = new KeyMapping(
             "key.lvluping.talents",
-            GLFW.GLFW_KEY_K,
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_K,
             "key.categories.lvluping"
     );
 
-    @SubscribeEvent
-    public static void onKeyRegister(RegisterKeyMappingsEvent event) {
-        event.register(TALENT_KEY);
+    @Mod.EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.MOD)
+    public static class ModBusEvents {
+        @SubscribeEvent
+        public static void onKeyRegister(RegisterKeyMappingsEvent event) {
+            event.register(TALENT_KEY);
+        }
     }
 
-    @SubscribeEvent
-    public static void onClientTick(TickEvent.ClientTickEvent event) {
-        if (TALENT_KEY.consumeClick()) {
-            Minecraft.getInstance().setScreen(new TalentScreen());
+    @Mod.EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = Mod.EventBusSubscriber.Bus.FORGE)
+    public static class ForgeBusEvents {
+        @SubscribeEvent
+        public static void onClientTick(TickEvent.ClientTickEvent event) {
+            if (event.phase == TickEvent.Phase.END) {
+                while (TALENT_KEY.consumeClick()) {
+                    Minecraft.getInstance().setScreen(new TalentScreen());
+                }
+            }
         }
     }
 }

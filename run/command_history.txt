@@ -1,7 +1,3 @@
-/lvl set
-/lvl set Dev 2
-/lvl get Dev
-/lvl set Dev 2
 /lvl get Dev
 /lvl add Dev 1
 /lvl get Dev
@@ -48,3 +44,7 @@
 /effect clear
 /gamemode creative
 /gamemode survival
+/lvl set Dev 50
+/star add Dev 20
+/lvl set Dev 50
+/gamemode creative
