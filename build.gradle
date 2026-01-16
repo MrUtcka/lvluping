@@ -126,7 +126,6 @@ dependencies {
 
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
-    implementation files('libs/neoforge-21.1.218-userdev.jar')
     // Example project dependency using a sister or child project:
     // implementation project(":myproject")
 
