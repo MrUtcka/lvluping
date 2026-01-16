@@ -4,22 +4,20 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.tick.ServerTickEvent;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.PlayerLevels;
 
-@Mod.EventBusSubscriber(modid = LvlupingMod.MODID)
+@EventBusSubscriber(modid = LvlupingMod.MODID)
 public class TabHandler {
 
     @SubscribeEvent
-    public static void onServerTick(TickEvent.ServerTickEvent event) {
-        if (event.phase == TickEvent.Phase.END && event.getServer() != null) {
-            if (event.getServer().getTickCount() % 40 == 0) {
-                for (ServerPlayer player : event.getServer().getPlayerList().getPlayers()) {
-                    updatePlayerScoreboard(player);
-                }
+    public static void onServerTick(ServerTickEvent.Post event) {
+        if (event.getServer().getTickCount() % 40 == 0) {
+            for (ServerPlayer player : event.getServer().getPlayerList().getPlayers()) {
+                updatePlayerScoreboard(player);
             }
         }
     }

@@ -1,50 +1,21 @@
-/lvl get Dev
-/lvl add Dev 1
-/lvl get Dev
-/lvl add Dev 4
-/lvl get Dev
-/lvl add Dev 1
-/lvl get
-/lvl get Dev
-/lvl add Dev 1
-/lvl set Dev 0
-/lvl set Dev 5
-/lvl add Dev 2
-/lvl add Dev 1
+/lvl add Dev 25
+/race
+/race set @a durum
+/race
+/star set Dev 10
+/star set Dev 7
 /lvl
-/lvl add Dev 2
-/lvl add Dev 9
 /star
-/lvl add 3
-/lvl add Dev 3
-/lvl
-/lvl add Dev 2
+/race
+/lvl add @a 20
+/star set @a 7
+/lvl set Dev 1000
+/
+/lvl set Dev 1000
 /star add Dev 2
-/lvl add Dev 2
-/lvl add Dev 200
-/star add Dev 2
-/lvl add Dev 200
-/star add Dev 2
-/lvl add Dev 10
-/star add @a 2
-/lvl add Dev 100
+/lvl add 40
+/lvl add @a 40
 /gamemode survival
-/lvl add Dev 100
-/star add Dev 4
-/lvl add Dev 100
-/star add Dev 4
-/lvl add Dev 100
-/effect give Dev minecraft:instant_health infinite 5
-/effect clear
-/effect give Dev minecraft:instant_health infinite 5
-/effect clear
-/effect give Dev minecraft:instant_health infinite 5
-/effect clear
-/effect give Dev minecraft:instant_health infinite 5
-/effect clear
-/gamemode creative
-/gamemode survival
-/lvl set Dev 50
-/star add Dev 20
-/lvl set Dev 50
-/gamemode creative
+/lvl add Dev 20
+/race set Dev beast
+/lvl add Dev 1

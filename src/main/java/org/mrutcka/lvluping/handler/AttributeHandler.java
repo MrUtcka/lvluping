@@ -41,12 +41,11 @@ public class AttributeHandler {
             }
         }
 
-
         var attackAttr = player.getAttribute(Attributes.ATTACK_DAMAGE);
         if (attackAttr != null) {
             attackAttr.removeModifier(DAMAGE_ID);
             if (damageLvl > 0) {
-                attackAttr.addTransientModifier(new AttributeModifier(DAMAGE_ID, damageLvl * 0.5, AttributeModifier.Operation.ADD_VALUE));
+                attackAttr.addTransientModifier(new AttributeModifier(DAMAGE_ID, (double) damageLvl * 0.5, AttributeModifier.Operation.ADD_VALUE));
             }
         }
 
@@ -54,7 +53,7 @@ public class AttributeHandler {
         if (speedAttr != null) {
             speedAttr.removeModifier(SPEED_ID);
             if (speedLvl > 0) {
-                speedAttr.addTransientModifier(new AttributeModifier(SPEED_ID, speedLvl * 0.02, AttributeModifier.Operation.ADD_MULTIPLIED_BASE));
+                speedAttr.addTransientModifier(new AttributeModifier(SPEED_ID, (double) speedLvl * 0.005, AttributeModifier.Operation.ADD_VALUE));
             }
         }
     }

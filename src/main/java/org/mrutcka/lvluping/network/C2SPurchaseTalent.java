@@ -1,29 +1,55 @@
 package org.mrutcka.lvluping.network;
 
 import net.minecraft.network.FriendlyByteBuf;
-import net.minecraftforge.event.network.CustomPayloadEvent;
-import net.minecraftforge.network.PacketDistributor;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.PacketDistributor;
+import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
+
 import java.util.Objects;
 import java.util.UUID;
 
-public class C2SPurchaseTalent {
-    private final String talentId;
-    public C2SPurchaseTalent(String id) { this.talentId = id; }
-    public C2SPurchaseTalent(FriendlyByteBuf buf) { this.talentId = buf.readUtf(); }
-    public void encode(FriendlyByteBuf buf) { buf.writeUtf(this.talentId); }
+public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload {
 
-    public static void handle(C2SPurchaseTalent msg, CustomPayloadEvent.Context ctx) {
+    public static final Type<C2SPurchaseTalent> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "purchase_talent"));
+
+    public static final StreamCodec<FriendlyByteBuf, C2SPurchaseTalent> STREAM_CODEC = CustomPacketPayload.codec(
+            C2SPurchaseTalent::write, C2SPurchaseTalent::new);
+
+    private C2SPurchaseTalent(FriendlyByteBuf buf) {
+        this(buf.readUtf());
+    }
+
+    private void write(FriendlyByteBuf buf) {
+        buf.writeUtf(talentId);
+    }
+
+    @Override
+    public Type<? extends CustomPacketPayload> type() {
+        return TYPE;
+    }
+
+    public static void handle(C2SPurchaseTalent msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            var player = ctx.getSender(); if (player == null) return;
-            Talent t = Talent.getById(msg.talentId); if (t == null) return;
+            if (!(ctx.player() instanceof ServerPlayer serverPlayer)) return;
 
-            UUID uuid = player.getUUID();
+            Talent t = Talent.getById(msg.talentId);
+            if (t == null) return;
+
+            UUID uuid = serverPlayer.getUUID();
             var owned = PlayerLevels.getPlayerTalents(uuid);
             int stars = PlayerLevels.getStars(uuid);
-            long count = owned.stream().filter(id -> !id.equals("start")).count();
 
-            if (count < PlayerLevels.getTalentLimit(stars) && !owned.contains(t.id) && !PlayerLevels.isBranchBlocked(uuid, t)) {
+            long purchasedCount = owned.stream().filter(id -> !id.equals("start")).count();
+
+            if (purchasedCount < PlayerLevels.getTalentLimit(stars)
+                    && !owned.contains(t.id)
+                    && !PlayerLevels.isBranchBlocked(uuid, t)) {
+
                 if (t.parent == null || owned.contains(t.parent.id)) {
 
                     int spentOnTalents = owned.stream()
@@ -36,19 +62,21 @@ public class C2SPurchaseTalent {
                             .mapToInt(Integer::intValue)
                             .sum();
 
-                    if (PlayerLevels.getLevel(player) - (spentOnTalents + spentOnStats) >= t.cost) {
+                    if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats) >= t.cost) {
                         PlayerLevels.unlockTalent(uuid, t.id);
 
-                        ModNetworking.CHANNEL.send(new S2CSyncTalents(
-                                PlayerLevels.getLevel(player),
+                        PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
+                                PlayerLevels.getLevel(serverPlayer),
                                 stars,
                                 PlayerLevels.getPlayerTalents(uuid),
-                                PlayerLevels.getPlayerStatsMap(uuid)
-                        ), PacketDistributor.PLAYER.with(player));
+                                PlayerLevels.getPlayerStatsMap(uuid),
+                                PlayerLevels.getRace(uuid).id
+                        ));
+
+                        PlayerLevels.save(serverPlayer.getServer());
                     }
                 }
             }
         });
-        ctx.setPacketHandled(true);
     }
 }

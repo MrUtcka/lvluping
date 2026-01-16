@@ -1,40 +1,36 @@
 package org.mrutcka.lvluping.network;
 
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.ChannelBuilder;
-import net.minecraftforge.network.NetworkDirection;
-import net.minecraftforge.network.SimpleChannel;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.mrutcka.lvluping.LvlupingMod;
 
+@EventBusSubscriber(modid = LvlupingMod.MODID)
 public class ModNetworking {
-    public static final int PROTOCOL_VERSION = 1;
 
-    public static final SimpleChannel CHANNEL = ChannelBuilder
-            .named(ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "main"))
-            .networkProtocolVersion(PROTOCOL_VERSION)
-            .clientAcceptedVersions((status, version) -> version == PROTOCOL_VERSION)
-            .serverAcceptedVersions((status, version) -> version == PROTOCOL_VERSION)
-            .simpleChannel();
+    @SubscribeEvent
+    public static void register(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(LvlupingMod.MODID)
+                .versioned("1");
 
-    private static int packetId = 0;
+        registrar.playToClient(
+                S2CSyncTalents.TYPE,
+                S2CSyncTalents.STREAM_CODEC,
+                S2CSyncTalents::handle
+        );
 
-    public static void register() {
-        CHANNEL.messageBuilder(S2CSyncTalents.class, packetId++, NetworkDirection.PLAY_TO_CLIENT)
-                .encoder(S2CSyncTalents::encode)
-                .decoder(S2CSyncTalents::new)
-                .consumerMainThread(S2CSyncTalents::handle)
-                .add();
+        registrar.playToServer(
+                C2SPurchaseTalent.TYPE,
+                C2SPurchaseTalent.STREAM_CODEC,
+                C2SPurchaseTalent::handle
+        );
 
-        CHANNEL.messageBuilder(C2SPurchaseTalent.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SPurchaseTalent::encode)
-                .decoder(C2SPurchaseTalent::new)
-                .consumerMainThread(C2SPurchaseTalent::handle)
-                .add();
-
-        CHANNEL.messageBuilder(C2SUpgradeStat.class, packetId++, NetworkDirection.PLAY_TO_SERVER)
-                .encoder(C2SUpgradeStat::encode)
-                .decoder(C2SUpgradeStat::new)
-                .consumerMainThread(C2SUpgradeStat::handle)
-                .add();
+        registrar.playToServer(
+                C2SUpgradeStat.TYPE,
+                C2SUpgradeStat.STREAM_CODEC,
+                C2SUpgradeStat::handle
+        );
     }
 }

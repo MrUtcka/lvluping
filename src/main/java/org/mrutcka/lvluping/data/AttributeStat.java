@@ -1,6 +1,7 @@
 package org.mrutcka.lvluping.data;
 
 import net.minecraft.resources.ResourceLocation;
+import org.mrutcka.lvluping.LvlupingMod;
 
 public enum AttributeStat {
     HEALTH("health", "Здоровье", "Увеличивает макс. ХП", 30),
@@ -16,7 +17,7 @@ public enum AttributeStat {
         this.label = label;
         this.description = description;
         this.maxLevel = maxLevel;
-        this.icon = ResourceLocation.fromNamespaceAndPath("lvluping", "textures/gui/attributes/" + id + ".png");
+        this.icon = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/attributes/" + id + ".png");
     }
 
     public static AttributeStat getById(String id) {

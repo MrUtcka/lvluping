@@ -1,7 +1,7 @@
 package org.mrutcka.lvluping.data;
 
 import net.minecraft.resources.ResourceLocation;
-import java.util.Objects;
+import org.mrutcka.lvluping.LvlupingMod;
 
 public enum Talent {
     // 0. НАЧАЛО
@@ -39,7 +39,7 @@ public enum Talent {
     Talent(String id, String label, String description, int cost, int x, int y, Talent parent, String branch) {
         this.id = id; this.label = label; this.description = description;
         this.cost = cost; this.x = x; this.y = y; this.parent = parent; this.branch = branch;
-        this.icon = ResourceLocation.fromNamespaceAndPath("lvluping", "textures/gui/talents/" + id + ".png");
+        this.icon = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talents/" + id + ".png");
     }
 
     public static Talent getById(String id) {

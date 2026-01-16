@@ -13,10 +13,8 @@
     </facet>
   </component>
   <component name="McpModuleSettings">
-    <option name="mappingFile" value="X:\Lariem\lvluping\build\createMcpToSrg\output.tsrg" />
-    <option name="mcpVersion" value="official_1.21.1" />
     <option name="minecraftVersion" value="1.21.1" />
-    <option name="platformVersion" value="52.1.0" />
+    <option name="platformVersion" value="21.1.218" />
     <option name="srgType" value="TSRG" />
   </component>
 </module>
