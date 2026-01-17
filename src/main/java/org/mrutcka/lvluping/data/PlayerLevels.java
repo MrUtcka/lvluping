@@ -1,9 +1,14 @@
 package org.mrutcka.lvluping.data;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import net.minecraft.nbt.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.level.storage.LevelResource;
+import org.mrutcka.lvluping.LvlupingMod;
+
 import java.io.*;
 import java.nio.file.*;
 import java.util.*;
@@ -90,6 +95,50 @@ public class PlayerLevels {
             if (ot != null && ot != t && ot.branch.equals(t.branch)) return true;
         }
         return false;
+    }
+
+    public static boolean isRaceForbidden(UUID uuid, Talent t) {
+        Race playerRace = getRace(uuid);
+        for (Race forbidden : t.forbiddenRaces) {
+            if (forbidden == playerRace) return true;
+        }
+        return false;
+    }
+
+    public static void applyStartingBonus(ServerPlayer player) {
+        UUID uuid = player.getUUID();
+        String playerName = player.getGameProfile().getName();
+
+        if (playerRaces.containsKey(uuid)) return;
+
+        Path configPath = player.getServer().getWorldPath(LevelResource.ROOT).resolve("lvluping_preset.json");
+
+        Race raceToSet = Race.HUMAN;
+        int starsToSet = 2;
+
+        if (Files.exists(configPath)) {
+            try (Reader reader = Files.newBufferedReader(configPath)) {
+                JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
+                JsonArray players = json.getAsJsonArray("players");
+
+                for (int i = 0; i < players.size(); i++) {
+                    JsonObject pObj = players.get(i).getAsJsonObject();
+                    if (pObj.get("name").getAsString().equalsIgnoreCase(playerName)) {
+                        raceToSet = Race.getById(pObj.get("race").getAsString());
+                        starsToSet = pObj.get("stars").getAsInt();
+                        break;
+                    }
+                }
+            } catch (Exception e) {
+                LvlupingMod.LOGGER.error("Ошибка чтения lvluping_preset.json: " + e.getMessage());
+            }
+        }
+
+        playerRaces.put(uuid, raceToSet != null ? raceToSet : Race.HUMAN);
+        playerStars.put(uuid, starsToSet);
+
+        LvlupingMod.LOGGER.info("Применены стартовые параметры для {}: Раса={}, Звезды={}",
+                playerName, playerRaces.get(uuid).label, starsToSet);
     }
 
     public static void save(MinecraftServer server) {

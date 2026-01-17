@@ -19,3 +19,15 @@
 /lvl add Dev 20
 /race set Dev beast
 /lvl add Dev 1
+/lvl add Dev 200
+/star add Dev 2
+/lvl add Dev 200
+/star add Dev 2
+/lvl add Dev 200
+/star add Dev 2
+/gamemode creative
+/star add Dev 2
+/lvl add Dev 200
+/race set Dev mechanid
+/lvl add Dev 20
+/race set Dev ventar

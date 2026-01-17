@@ -10,6 +10,7 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
 
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -48,10 +49,13 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
 
             if (purchasedCount < PlayerLevels.getTalentLimit(stars)
                     && !owned.contains(t.id)
-                    && !PlayerLevels.isBranchBlocked(uuid, t)) {
+                    && !PlayerLevels.isBranchBlocked(uuid, t)
+                    && !PlayerLevels.isRaceForbidden(uuid, t)) {
 
-                if (t.parent == null || owned.contains(t.parent.id)) {
+                boolean parentRequirementMet = t.parents.length == 0 ||
+                        Arrays.stream(t.parents).anyMatch(p -> owned.contains(p.id));
 
+                if (parentRequirementMet) {
                     int spentOnTalents = owned.stream()
                             .map(Talent::getById)
                             .filter(Objects::nonNull)

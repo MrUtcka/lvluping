@@ -18,6 +18,8 @@ public class DataEventHandler {
     @SubscribeEvent
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
+            PlayerLevels.applyStartingBonus(player);
+
             AttributeHandler.applyStats(player, false);
             syncPlayer(player);
         }

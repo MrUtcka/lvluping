@@ -4,41 +4,64 @@ import net.minecraft.resources.ResourceLocation;
 import org.mrutcka.lvluping.LvlupingMod;
 
 public enum Talent {
-    // 0. НАЧАЛО
-    START("start", "Истоки", "Ваше приключение начинается здесь", 0, 0, 0, null, ""),
+    // 0. КОРЕНЬ
+    START("start", "Истоки", "Начало вашего пути", 0, 0, 0, "", new Race[]{}, new Talent[]{}),
 
-    // --- 1. ВОИН ---
-    WARRIOR_BASE("warrior_base", "Воин", "Путь грубой силы", 1, 200, 0, START, "combat_class"),
-    WARRIOR_BLOCK("warrior_block", "Блок", "Мастерское владение щитом", 2, 400, -200, WARRIOR_BASE, "warrior_spec"),
-    WARRIOR_COMBO("warrior_combo", "Комбо", "Серия быстрых ударов", 2, 400, 0, WARRIOR_BASE, "warrior_spec"),
-    WARRIOR_STUN("warrior_stun", "Оглушение", "Шанс дезориентировать цель", 2, 400, 200, WARRIOR_BASE, "warrior_spec"),
+    // ======================== ВОИН (ВПРАВО) ========================
+    WARRIOR_BASE("warrior_base", "Воин", "Путь силы", 1, 300, 0, "class", new Race[]{}, new Talent[]{START}),
+    W_PARRY("w_parry", "Парирование", "Блокирует часть урона", 2, 500, -150, "warrior", new Race[]{}, new Talent[]{WARRIOR_BASE}),
+    W_COMBO("w_combo", "Комбо", "Серия быстрых атак", 2, 550, 0, "warrior", new Race[]{}, new Talent[]{WARRIOR_BASE}),
+    W_STUN("w_stun", "Оглушение", "Шанс остановить цель", 2, 500, 150, "warrior", new Race[]{}, new Talent[]{WARRIOR_BASE}),
+    W_MASTERY("w_mastery", "Мастерство Клинка", "Требуется для эволюции", 3, 750, 0, "", new Race[]{}, new Talent[]{W_PARRY, W_COMBO, W_STUN}),
+    W_EVO_PALADIN("w_evo_paladin", "Паладин", "Святая защита", 5, 950, -150, "warrior_evo", new Race[]{}, new Talent[]{W_MASTERY}),
+    W_EVO_BERSERK("w_evo_berserk", "Берсерк", "Безумная ярость", 5, 1000, 0, "warrior_evo", new Race[]{}, new Talent[]{W_MASTERY}),
+    W_EVO_WARLORD("w_evo_warlord", "Полководец", "Аура для союзников", 5, 950, 150, "warrior_evo", new Race[]{}, new Talent[]{W_MASTERY}),
 
-    // --- 2. ЛУЧНИК ---
-    ARCHER_BASE("archer_base", "Лучник", "Мастер дальнего боя", 1, -200, 0, START, "combat_class"),
-    ARCHER_DASH("archer_dash", "Деш спиной", "Быстрый разрыв дистанции", 2, -400, 0, ARCHER_BASE, "archer_spec"),
-    ARCHER_DAGGER("archer_dagger", "Кинжал", "Защита в ближнем бою", 2, -400, -200, ARCHER_BASE, "archer_spec"),
-    ARCHER_STRONG_SHOT("archer_strong_shot", "Сильный выстрел", "Пробивающая мощь", 2, -400, 200, ARCHER_BASE, "archer_spec"),
+    // ======================== ЛУЧНИК (ВЛЕВО) ========================
+    ARCHER_BASE("archer_base", "Лучник", "Меткость и ловкость", 1, -300, 0, "class", new Race[]{}, new Talent[]{START}),
+    A_DASH("a_dash", "Рывок спиной", "Быстрый отскок назад", 2, -500, -150, "archer", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_DAGGER("a_dagger", "Кинжал", "Ближний бой для стрелка", 2, -550, 0, "archer", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_POWER("a_power", "Сильный выстрел", "Пробивает броню", 2, -500, 150, "archer", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_MASTERY("a_mastery", "Мастерство Охоты", "Подготовка к эволюции", 3, -750, 0, "", new Race[]{}, new Talent[]{A_DASH, A_DAGGER, A_POWER}),
+    A_EVO_SNIPER("a_evo_sniper", "Снайпер", "Огромный урон издалека", 5, -950, -150, "archer_evo", new Race[]{}, new Talent[]{A_MASTERY}),
+    A_EVO_HUNTER("a_evo_hunter", "Зверолов", "Призыв питомца", 5, -1000, 0, "archer_evo", new Race[]{}, new Talent[]{A_MASTERY}),
+    A_EVO_CROSSBOW("a_evo_crossbow", "Арбалетчик", "Скорострельный бой", 5, -950, 150, "archer_evo", new Race[]{}, new Talent[]{A_MASTERY}),
 
-    // --- 3. МАГ ---
-    MAGE_BASE("mage_base", "Маг", "Повелитель стихий", 1, 0, -200, START, "combat_class"),
-    MAGE_BARRIER("mage_barrier", "Барьер", "Магический щит", 2, 0, -400, MAGE_BASE, "mage_spec"),
-    MAGE_BUFF_DEF("mage_buff_def", "Баф Защита", "Укрепление брони заклинанием", 2, -200, -400, MAGE_BASE, "mage_spec"),
-    MAGE_BUFF_ATK("mage_buff_atk", "Баф Атака", "Увеличение магической мощи", 2, 200, -400, MAGE_BASE, "mage_spec"),
+    // ======================== МАГ (ВВЕРХ) ========================
+    MAGE_BASE("mage_base", "Маг", "Знание тайного", 1, 0, -300, "class", new Race[]{Race.MECHANID}, new Talent[]{START}),
+    M_BARRIER("m_barrier", "Барьер", "Магический щит", 2, 0, -450, "mage", new Race[]{}, new Talent[]{MAGE_BASE}),
+    M_BUFF_DEF("m_buff_def", "Усиление Защиты", "Повышает броню магией", 2, 0, -600, "mage", new Race[]{}, new Talent[]{M_BARRIER}),
+    M_BUFF_ATK("m_buff_atk", "Усиление Атаки", "Ваши заклинания бьют сильнее", 2, 0, -750, "mage", new Race[]{}, new Talent[]{M_BUFF_DEF}),
+    M_EVO_ARCHMAGE("m_evo_archmage", "Архимаг", "Магия стихий", 5, -150, -950, "mage_evo", new Race[]{}, new Talent[]{M_BUFF_ATK}),
+    M_EVO_NECRO("m_evo_necro", "Некромант", "Власть над смертью", 5, 0, -1000, "mage_evo", new Race[]{}, new Talent[]{M_BUFF_ATK}),
+    M_EVO_CHRONO("m_evo_chrono", "Хрономант", "Управление временем", 5, 150, -950, "mage_evo", new Race[]{}, new Talent[]{M_BUFF_ATK}),
 
-    // --- 4. АССАСИН ---
-    ASSASSIN_BASE("assassin_base", "Ассасин", "Мастер скрытности", 1, 0, 200, START, "combat_class"),
-    ASSASSIN_SLIDE("assassin_slide", "Подкат", "Маневренность и скорость", 2, 0, 400, ASSASSIN_BASE, "assassin_spec"),
-    ASSASSIN_SMOKE("assassin_smoke", "Смок", "Дымовая завеса для побега", 2, 200, 400, ASSASSIN_BASE, "assassin_spec"),
-    ASSASSIN_STEALTH_CRIT("assassin_stealth_crit", "Крит с инвиза", "Смертельный удар из тени", 2, -200, 400, ASSASSIN_BASE, "assassin_spec");
+    // ======================== АССАСИН (ВНИЗ) ========================
+    ASSASSIN_BASE("assassin_base", "Ассасин", "Тень и смерть", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
+    AS_SLIDE("as_slide", "Подкат", "Сближение с целью", 2, -150, 500, "assassin", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_SMOKE("as_smoke", "Дымовая завеса", "Скрывает ваше положение", 2, 0, 550, "assassin", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_STEALTH_CRIT("as_crit", "Крит из тени", "Удар в спину из невидимости", 2, 150, 500, "assassin", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_MASTERY("as_mastery", "Мастерство Тени", "Шаг в бездну", 3, 0, 750, "", new Race[]{}, new Talent[]{AS_SLIDE, AS_SMOKE, AS_STEALTH_CRIT}),
+    AS_EVO_NINJA("as_evo_ninja", "Ниндзя", "Акробатика и кунаи", 5, -150, 950, "assassin_evo", new Race[]{}, new Talent[]{AS_MASTERY}),
+    AS_EVO_REAPER("as_evo_reaper", "Жнец", "Мастер кос", 5, 0, 1000, "assassin_evo", new Race[]{}, new Talent[]{AS_MASTERY}),
+    AS_EVO_POISONER("as_evo_poisoner", "Отравитель", "Смертельные яды", 5, 150, 950, "assassin_evo", new Race[]{}, new Talent[]{AS_MASTERY});
 
     public final String id, label, description, branch;
     public final int cost, x, y;
-    public final Talent parent;
+    public final Talent[] parents;
+    public final Race[] forbiddenRaces;
     public final ResourceLocation icon;
 
-    Talent(String id, String label, String description, int cost, int x, int y, Talent parent, String branch) {
-        this.id = id; this.label = label; this.description = description;
-        this.cost = cost; this.x = x; this.y = y; this.parent = parent; this.branch = branch;
+    Talent(String id, String label, String description, int cost, int x, int y, String branch, Race[] forbiddenRaces, Talent[] parents) {
+        this.id = id;
+        this.label = label;
+        this.description = description;
+        this.cost = cost;
+        this.x = x;
+        this.y = y;
+        this.branch = branch;
+        this.forbiddenRaces = forbiddenRaces != null ? forbiddenRaces : new Race[0];
+        this.parents = parents != null ? parents : new Talent[0];
         this.icon = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talents/" + id + ".png");
     }
 

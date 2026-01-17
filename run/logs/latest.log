@@ -1,75 +1,76 @@
-[17янв.2026 00:28:15.996] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.214, --assetIndex, 17, --assetsDir, C:\\Users\\MrUtcka\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.214, --fml.neoFormVersion, 20240808.144430]
-[17янв.2026 00:28:16.020] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.9+10-LTS
-[17янв.2026 00:28:16.023] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.9 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
-[17янв.2026 00:28:16.240] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
-[17янв.2026 00:28:16.429] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
-[17янв.2026 00:28:17.511] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
-[17янв.2026 00:28:17.794] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/MrUtcka/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
-[17янв.2026 00:28:19.092] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
-[17янв.2026 00:28:19.096] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+[17янв.2026 14:35:49.552] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.214, --assetIndex, 17, --assetsDir, C:\\Users\\MrUtcka\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.214, --fml.neoFormVersion, 20240808.144430]
+[17янв.2026 14:35:49.558] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.9+10-LTS
+[17янв.2026 14:35:49.561] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.9 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
+[17янв.2026 14:35:49.764] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[17янв.2026 14:35:49.901] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[17янв.2026 14:35:50.142] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[17янв.2026 14:35:50.291] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/MrUtcka/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
+[17янв.2026 14:35:50.607] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 3050 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.59, NVIDIA Corporation
+[17янв.2026 14:35:50.916] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 2 dependencies adding them to mods collection
+[17янв.2026 14:35:50.919] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
      Mod List:
 		Name Version (Mod Id)
 
-		lvluping 0.5 (lvluping)
+		lvluping 0.6 (lvluping)
 		Minecraft 1.21.1 (minecraft)
 		NeoForge 21.1.214 (neoforge)
-[17янв.2026 00:28:19.277] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 3050 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.59, NVIDIA Corporation
-[17янв.2026 00:28:21.337] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.214, --gameDir, ., --assetsDir, C:\Users\MrUtcka\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
-[17янв.2026 00:28:26.266] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 1498 milliseconds
-[17янв.2026 00:28:26.310] [pool-7-thread-1/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
-[17янв.2026 00:28:33.700] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[17янв.2026 00:28:33.701] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[17янв.2026 00:28:33.705] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[17янв.2026 00:28:33.706] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[17янв.2026 00:28:33.708] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[17янв.2026 00:28:33.844] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23189!/assets/.mcassetsroot' uses unexpected schema
-[17янв.2026 00:28:33.845] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23189!/data/.mcassetsroot' uses unexpected schema
-[17янв.2026 00:28:33.882] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[17янв.2026 00:28:33.892] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
-[17янв.2026 00:28:34.016] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
-[17янв.2026 00:28:34.294] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.214, for MC 1.21.1
-[17янв.2026 00:28:35.238] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [lvluping]
-[17янв.2026 00:28:35.382] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/lvluping, mod/neoforge
-[17янв.2026 00:28:35.395] [Worker-Main-1/INFO] [org.mrutcka.lvluping.LvlupingMod/]: Lvluping Mod Setup
-[17янв.2026 00:28:35.540] [Worker-Main-13/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
-[17янв.2026 00:28:35.635] [Worker-Main-3/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
-[17янв.2026 00:28:37.569] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
-[17янв.2026 00:28:37.570] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
-[17янв.2026 00:28:37.631] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Наушники (Realtek(R) Audio)
-[17янв.2026 00:28:37.632] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
-[17янв.2026 00:28:37.848] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
-[17янв.2026 00:28:37.865] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
-[17янв.2026 00:28:37.866] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[17янв.2026 00:28:37.867] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[17янв.2026 00:28:37.867] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
-[17янв.2026 00:28:37.873] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
-[17янв.2026 00:28:37.874] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[17янв.2026 00:28:37.874] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[17янв.2026 00:28:37.875] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[17янв.2026 00:28:38.179] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
-[17янв.2026 00:28:38.181] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
-[17янв.2026 00:28:38.181] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[17янв.2026 00:28:38.182] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
-[17янв.2026 00:28:38.182] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
-[17янв.2026 00:28:38.223] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
-[17янв.2026 00:28:38.313] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
-[17янв.2026 00:28:43.513] [Render thread/WARN] [net.neoforged.neoforge.common.CommonHooks/WP]: The following mods have version differences that were not resolved:
-neoforge (version 21.1.218 -> 21.1.214)
-Things may not work well.
-[17янв.2026 00:28:44.560] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1290 recipes
-[17янв.2026 00:28:44.790] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
-[17янв.2026 00:28:45.331] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
-[17янв.2026 00:28:45.332] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
-[17янв.2026 00:28:46.313] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
-[17янв.2026 00:28:46.621] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
-[17янв.2026 00:28:46.838] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
-[17янв.2026 00:28:46.847] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 525 ms
-[17янв.2026 00:28:46.952] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
-[17янв.2026 00:28:46.952] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
-[17янв.2026 00:28:47.813] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:6fe8db4e] logged in with entity id 120 at (2.300000011920929, 64.0, -32.64263601069963)
-[17янв.2026 00:28:47.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [1] joined the game
-[17янв.2026 00:28:48.129] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 2 advancements
-[17янв.2026 00:28:49.398] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/warrior_base.png
+[17янв.2026 14:35:52.217] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.214, --gameDir, ., --assetsDir, C:\Users\MrUtcka\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
+[17янв.2026 14:35:54.771] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 1017 milliseconds
+[17янв.2026 14:35:54.881] [pool-7-thread-1/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[17янв.2026 14:36:01.121] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17янв.2026 14:36:01.121] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17янв.2026 14:36:01.124] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17янв.2026 14:36:01.127] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[17янв.2026 14:36:01.127] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[17янв.2026 14:36:01.289] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23189!/assets/.mcassetsroot' uses unexpected schema
+[17янв.2026 14:36:01.289] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23189!/data/.mcassetsroot' uses unexpected schema
+[17янв.2026 14:36:01.316] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[17янв.2026 14:36:01.326] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[17янв.2026 14:36:01.438] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[17янв.2026 14:36:01.684] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.214, for MC 1.21.1
+[17янв.2026 14:36:02.617] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [lvluping]
+[17янв.2026 14:36:02.754] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/lvluping, mod/neoforge
+[17янв.2026 14:36:02.765] [Worker-Main-1/INFO] [org.mrutcka.lvluping.LvlupingMod/]: Lvluping Mod Setup
+[17янв.2026 14:36:02.881] [Worker-Main-13/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[17янв.2026 14:36:02.965] [Worker-Main-2/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[17янв.2026 14:36:05.087] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[17янв.2026 14:36:05.088] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[17янв.2026 14:36:05.144] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Наушники (Realtek(R) Audio)
+[17янв.2026 14:36:05.146] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[17янв.2026 14:36:05.281] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x4 minecraft:textures/atlas/blocks.png-atlas
+[17янв.2026 14:36:05.293] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[17янв.2026 14:36:05.293] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[17янв.2026 14:36:05.294] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[17янв.2026 14:36:05.295] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[17янв.2026 14:36:05.299] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[17янв.2026 14:36:05.300] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[17янв.2026 14:36:05.300] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[17янв.2026 14:36:05.301] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[17янв.2026 14:36:05.538] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[17янв.2026 14:36:05.540] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[17янв.2026 14:36:05.541] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[17янв.2026 14:36:05.541] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[17янв.2026 14:36:05.541] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[17янв.2026 14:36:05.571] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[17янв.2026 14:36:05.634] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[17янв.2026 14:36:09.571] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1290 recipes
+[17янв.2026 14:36:09.770] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1399 advancements
+[17янв.2026 14:36:10.272] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[17янв.2026 14:36:10.272] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[17янв.2026 14:36:11.336] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[17янв.2026 14:36:11.633] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Preparing spawn area: 0%
+[17янв.2026 14:36:11.826] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 475 ms
+[17янв.2026 14:36:11.826] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[17янв.2026 14:36:11.912] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[17янв.2026 14:36:11.913] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[17янв.2026 14:36:12.821] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:d4147b11] logged in with entity id 73 at (-31.989538618783026, 75.02442408821369, -74.67929692450916)
+[17янв.2026 14:36:12.896] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [20] joined the game
+[17янв.2026 14:36:13.191] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 38 advancements
+[17янв.2026 14:36:18.647] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[17янв.2026 14:36:18.685] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17янв.2026 14:36:18.736] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17янв.2026 14:36:18.737] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17янв.2026 14:36:22.057] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/warrior_base.png
 java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -86,8 +87,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -113,8 +114,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_base.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.401] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/warrior_block.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_block.png
+[17янв.2026 14:36:22.061] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_parry.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_parry.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -130,8 +131,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_block.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -157,8 +158,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_block.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.404] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/warrior_combo.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_combo.png
+[17янв.2026 14:36:22.065] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_combo.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_combo.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -174,8 +175,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_combo.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -201,8 +202,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_combo.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.408] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/warrior_stun.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_stun.png
+[17янв.2026 14:36:22.069] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_stun.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_stun.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -218,8 +219,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_stun.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -245,7 +246,183 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/warrior_stun.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.412] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/archer_base.png
+[17янв.2026 14:36:22.073] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_mastery.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_mastery.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.076] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_evo_paladin.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_evo_paladin.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.079] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_evo_berserk.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_evo_berserk.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.082] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/w_evo_warlord.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/w_evo_warlord.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.085] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/archer_base.png
 java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -262,8 +439,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -289,8 +466,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_base.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.415] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/archer_dash.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dash.png
+[17янв.2026 14:36:22.088] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_dash.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_dash.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -306,8 +483,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dash.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -333,8 +510,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dash.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.418] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/archer_dagger.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dagger.png
+[17янв.2026 14:36:22.091] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_dagger.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_dagger.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -350,8 +527,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dagger.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -377,8 +554,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_dagger.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.422] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/archer_strong_shot.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_strong_shot.png
+[17янв.2026 14:36:22.094] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_power.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_power.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -394,8 +571,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_strong_shot.
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -421,7 +598,183 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/archer_strong_shot.
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.424] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/mage_base.png
+[17янв.2026 14:36:22.096] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_mastery.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_mastery.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.099] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_evo_sniper.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_evo_sniper.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.101] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_evo_hunter.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_evo_hunter.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.104] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/a_evo_crossbow.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/a_evo_crossbow.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.107] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/mage_base.png
 java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -438,8 +791,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -465,8 +818,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_base.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.427] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/mage_barrier.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_barrier.png
+[17янв.2026 14:36:22.109] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_barrier.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_barrier.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -482,8 +835,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_barrier.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -509,8 +862,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_barrier.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.430] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/mage_buff_def.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_def.png
+[17янв.2026 14:36:22.112] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_buff_def.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_buff_def.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -526,8 +879,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_def.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -553,8 +906,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_def.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.432] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/mage_buff_atk.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_atk.png
+[17янв.2026 14:36:22.114] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_buff_atk.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_buff_atk.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -570,8 +923,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_atk.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -597,7 +950,139 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/mage_buff_atk.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.434] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/assassin_base.png
+[17янв.2026 14:36:22.117] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_evo_archmage.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_evo_archmage.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.120] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_evo_necro.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_evo_necro.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.123] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/m_evo_chrono.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/m_evo_chrono.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:22.127] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/assassin_base.png
 java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
@@ -614,8 +1099,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_base.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -641,8 +1126,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_base.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.436] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/assassin_slide.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_slide.png
+[17янв.2026 14:36:22.130] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_slide.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_slide.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -658,8 +1143,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_slide.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -685,8 +1170,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_slide.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.439] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/assassin_smoke.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_smoke.png
+[17янв.2026 14:36:22.133] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_smoke.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_smoke.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -702,8 +1187,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_smoke.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -729,8 +1214,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_smoke.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:49.442] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/assassin_stealth_crit.png
-java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_stealth_crit.png
+[17янв.2026 14:36:22.135] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_crit.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_crit.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -746,8 +1231,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_stealth_cr
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:118) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:43) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -773,8 +1258,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/talents/assassin_stealth_cr
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:53.817] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/attributes/health.png
-java.io.FileNotFoundException: lvluping:textures/gui/attributes/health.png
+[17янв.2026 14:36:22.138] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_mastery.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_mastery.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -790,8 +1275,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/health.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderStatsArea(TalentScreen.java:131) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:41) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -817,8 +1302,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/health.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:53.821] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/attributes/damage.png
-java.io.FileNotFoundException: lvluping:textures/gui/attributes/damage.png
+[17янв.2026 14:36:22.141] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_evo_ninja.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_evo_ninja.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -834,8 +1319,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/damage.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderStatsArea(TalentScreen.java:131) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:41) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -861,8 +1346,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/damage.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:28:53.824] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/attributes/speed.png
-java.io.FileNotFoundException: lvluping:textures/gui/attributes/speed.png
+[17янв.2026 14:36:22.144] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_evo_reaper.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_evo_reaper.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
 	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
@@ -878,8 +1363,8 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/speed.png
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.renderStatsArea(TalentScreen.java:131) ~[%23191!/:?]
-	at TRANSFORMER/lvluping@0.5/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:41) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
 	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
 	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
@@ -905,29 +1390,65 @@ java.io.FileNotFoundException: lvluping:textures/gui/attributes/speed.png
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
 	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
 	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
-[17янв.2026 00:29:05.694] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
-[17янв.2026 00:29:05.712] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[17янв.2026 00:29:05.749] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[17янв.2026 00:29:05.750] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[17янв.2026 00:29:14.297] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [★★ Dev [1]: Уровень игрока Dev изменен на 2 (Макс: 20)]
-[17янв.2026 00:29:14.302] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Уровень игрока Dev изменен на 2 (Макс: 20)
-[17янв.2026 00:29:14.711] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [★★ Dev [1]: Уровень игрока Dev изменен на 3 (Макс: 20)]
-[17янв.2026 00:29:14.712] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Уровень игрока Dev изменен на 3 (Макс: 20)
-[17янв.2026 00:29:19.565] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
-[17янв.2026 00:29:19.574] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[17янв.2026 00:29:19.597] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[17янв.2026 00:29:19.598] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[17янв.2026 00:29:20.010] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
-[17янв.2026 00:29:20.011] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [3] left the game
-[17янв.2026 00:29:20.023] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
-[17янв.2026 00:29:20.040] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[17янв.2026 00:29:20.041] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[17янв.2026 00:29:20.041] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[17янв.2026 00:29:21.140] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[17янв.2026 00:29:21.216] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[17янв.2026 00:29:21.220] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[17янв.2026 00:29:21.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
-[17янв.2026 00:29:21.229] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[17янв.2026 00:29:21.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[17янв.2026 00:29:21.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[17янв.2026 00:29:22.591] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[17янв.2026 14:36:22.146] [Render thread/WARN] [net.minecraft.client.renderer.texture.TextureManager/]: Failed to load texture: lvluping:textures/gui/talents/as_evo_poisoner.png
+java.io.FileNotFoundException: lvluping:textures/gui/talents/as_evo_poisoner.png
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.lambda$getResourceOrThrow$1(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/java.util.Optional.orElseThrow(Optional.java:403) ~[?:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.server.packs.resources.ResourceProvider.getResourceOrThrow(ResourceProvider.java:18) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture$TextureImage.load(SimpleTexture.java:83) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.getTextureImage(SimpleTexture.java:57) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.SimpleTexture.load(SimpleTexture.java:30) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.loadTexture(TextureManager.java:92) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.register(TextureManager.java:63) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.texture.TextureManager.getTexture(TextureManager.java:113) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem._setShaderTexture(RenderSystem.java:725) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/com.mojang.blaze3d.systems.RenderSystem.setShaderTexture(RenderSystem.java:718) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.innerBlit(GuiGraphics.java:965) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:923) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:865) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.GuiGraphics.blit(GuiGraphics.java:888) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.renderTalentsArea(TalentScreen.java:110) ~[%23191!/:?]
+	at TRANSFORMER/lvluping@0.6/org.mrutcka.lvluping.client.TalentScreen.render(TalentScreen.java:49) ~[%23191!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.gui.screens.Screen.renderWithTooltip(Screen.java:112) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreenInternal(ClientHooks.java:429) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/neoforge@21.1.214/net.neoforged.neoforge.client.ClientHooks.drawScreen(ClientHooks.java:423) ~[neoforge-21.1.214.jar%23190!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.renderer.GameRenderer.render(GameRenderer.java:1098) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.runTick(Minecraft.java:1201) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.Minecraft.run(Minecraft.java:813) ~[neoforge-21.1.214.jar%23189!/:?]
+	at TRANSFORMER/minecraft@1.21.1/net.minecraft.client.main.Main.main(Main.java:230) ~[neoforge-21.1.214.jar%23189!/:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:136) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:124) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.NeoForgeClientDevLaunchHandler.runService(NeoForgeClientDevLaunchHandler.java:23) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/fml_loader@4.0.42/net.neoforged.fml.loading.targets.CommonLaunchHandler.lambda$launchService$4(CommonLaunchHandler.java:118) ~[loader-4.0.42.jar%23146!/:4.0]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.run(Launcher.java:103) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.Launcher.main(Launcher.java:74) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) [modlauncher-11.0.5.jar%23128!/:?]
+	at MC-BOOTSTRAP/cpw.mods.modlauncher@11.0.5/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) [modlauncher-11.0.5.jar%23128!/:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.run(BootstrapLauncher.java:210) [bootstraplauncher-2.0.2.jar:?]
+	at cpw.mods.bootstraplauncher@2.0.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:69) [bootstraplauncher-2.0.2.jar:?]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
+	at net.neoforged.devlaunch.Main.main(Main.java:57) [DevLaunch-1.0.2.jar:?]
+[17янв.2026 14:36:29.732] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[17янв.2026 14:36:29.741] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17янв.2026 14:36:29.757] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17янв.2026 14:36:29.758] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17янв.2026 14:36:30.290] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Disconnected
+[17янв.2026 14:36:30.290] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [20] left the game
+[17янв.2026 14:36:30.300] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[17янв.2026 14:36:30.354] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[17янв.2026 14:36:30.355] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[17янв.2026 14:36:30.355] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[17янв.2026 14:36:31.282] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[17янв.2026 14:36:31.377] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[17янв.2026 14:36:31.380] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[17янв.2026 14:36:31.388] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[17янв.2026 14:36:31.389] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[17янв.2026 14:36:31.389] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[17янв.2026 14:36:31.389] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[17янв.2026 14:36:33.681] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
