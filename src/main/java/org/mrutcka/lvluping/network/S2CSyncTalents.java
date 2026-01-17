@@ -6,10 +6,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.mrutcka.lvluping.LvlupingMod;
-import org.mrutcka.lvluping.client.TalentScreen;
-import org.mrutcka.lvluping.data.Race;
-import org.mrutcka.lvluping.data.Talent;
-
 import java.util.*;
 
 public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<String, Integer> stats, String raceId) implements CustomPacketPayload {
@@ -48,11 +44,7 @@ public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<Stri
 
     public static void handle(S2CSyncTalents msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
-            TalentScreen.clientLevel = msg.level();
-            TalentScreen.clientStars = msg.stars();
-            TalentScreen.clientTalents = msg.talents();
-            TalentScreen.clientStats = msg.stats();
-            TalentScreen.clientRace = Race.getById(msg.raceId());
+            org.mrutcka.lvluping.client.ClientPacketHandler.handleSync(msg);
         });
     }
 }

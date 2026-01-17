@@ -19,7 +19,7 @@ public class ClientEvents {
             "key.categories.lvluping"
     );
 
-    @EventBusSubscriber(modid = LvlupingMod.MODID)
+    @EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
@@ -27,11 +27,11 @@ public class ClientEvents {
         }
     }
 
-    @EventBusSubscriber(modid = LvlupingMod.MODID)
+    @EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.GAME)
     public static class ForgeBusEvents {
         @SubscribeEvent
         public static void onClientTick(ClientTickEvent.Post event) {
-            if (TALENT_KEY.consumeClick()) {
+            if (TALENT_KEY.consumeClick() && Minecraft.getInstance().screen == null) {
                 Minecraft.getInstance().setScreen(new TalentScreen());
             }
         }
