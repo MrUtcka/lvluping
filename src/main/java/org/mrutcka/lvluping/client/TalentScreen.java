@@ -13,10 +13,9 @@ import com.mojang.math.Axis;
 
 import java.util.*;
 
-import static org.mrutcka.lvluping.data.PlayerLevels.getRace;
-
 public class TalentScreen extends Screen {
     private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talent_tree_bg.png");
+    private static final ResourceLocation LOCK_ICON = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/lock.png");
 
     public static int clientLevel = 0;
     public static int clientStars = 2;
@@ -65,7 +64,7 @@ public class TalentScreen extends Screen {
 
                 int color;
                 if (parentUnlocked && !branchBlocked) {
-                    color = 0xFFFFAA00;
+                    color = 0xFFFFFFAA;
                 } else {
                     color = 0xFF444444;
                 }
@@ -97,9 +96,7 @@ public class TalentScreen extends Screen {
             int bgColor = isUnlocked ? 0xFF00AA00 : (branchBlocked || raceForbidden || !hasUnlockedParent ? 0xFF222222 : 0xFF444444);
             int outlineColor = isUnlocked ? 0xFFAAFF00 : (canPurchase ? 0xFFFFFFFF : 0xFF555555);
 
-            int halfSize = 74;
-            gui.fill(t.x - halfSize, t.y - halfSize, t.x + halfSize, t.y + halfSize, bgColor);
-            gui.renderOutline(t.x - halfSize, t.y - halfSize, halfSize * 2, halfSize * 2, outlineColor);
+            drawTalentShape(gui, t, bgColor, outlineColor);
 
             if (!isUnlocked && !canPurchase) {
                 RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f);
@@ -108,7 +105,60 @@ public class TalentScreen extends Screen {
             }
 
             gui.blit(t.icon, t.x - 64, t.y - 64, 0, 0, 128, 128, 128, 128);
+
+            if (!isUnlocked) {
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+                gui.blit(LOCK_ICON, t.x - 32, t.y - 32, 0, 0, 64, 64, 64, 64);
+            }
+
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+    }
+
+    private void drawTalentShape(GuiGraphics gui, Talent t, int bgColor, int outlineColor) {
+        int x = t.x;
+        int y = t.y;
+        int halfSize = 74;
+        String id = t.id.toLowerCase();
+        String branch = t.branch.toLowerCase();
+
+        if (id.contains("archer") || branch.contains("archer") || id.startsWith("a_")) {
+            drawPolygon(gui, x, y, halfSize, 6, 90f, bgColor, outlineColor);
+        } else if (id.contains("mage") || branch.contains("mage") || id.startsWith("m_")) {
+            drawPolygon(gui, x, y, halfSize, 32, 0f, bgColor, outlineColor);
+        } else if (id.contains("assassin") || branch.contains("assassin") || id.startsWith("as_")) {
+            drawPolygon(gui, x, y, (int)(halfSize * 1.1), 4, 0f, bgColor, outlineColor);
+        } else {
+            drawPolygon(gui, x, y, (int)(halfSize * 1.414), 4, 45f, bgColor, outlineColor);
+        }
+    }
+
+    private void drawPolygon(GuiGraphics gui, int x, int y, int radius, int sides, float rotationDeg, int color, int outlineColor) {
+        com.mojang.blaze3d.vertex.Tesselator tesselator = com.mojang.blaze3d.vertex.Tesselator.getInstance();
+        com.mojang.blaze3d.vertex.BufferBuilder buffer = tesselator.begin(com.mojang.blaze3d.vertex.VertexFormat.Mode.TRIANGLE_FAN, com.mojang.blaze3d.vertex.DefaultVertexFormat.POSITION_COLOR);
+
+        float angleStep = (float) (2 * Math.PI / sides);
+        float offset = (float) Math.toRadians(rotationDeg);
+
+        buffer.addVertex(gui.pose().last().pose(), (float)x, (float)y, 0).setColor(color);
+        for (int i = 0; i <= sides; i++) {
+            float angle = i * angleStep + offset;
+            float vx = x + (float) Math.cos(angle) * radius;
+            float vy = y + (float) Math.sin(angle) * radius;
+            buffer.addVertex(gui.pose().last().pose(), vx, vy, 0).setColor(color);
+        }
+        com.mojang.blaze3d.systems.RenderSystem.enableBlend();
+        com.mojang.blaze3d.vertex.BufferUploader.drawWithShader(buffer.buildOrThrow());
+
+        for (int i = 0; i < sides; i++) {
+            float a1 = i * angleStep + offset;
+            float a2 = (i + 1) * angleStep + offset;
+            int x1 = x + (int) (Math.cos(a1) * radius);
+            int y1 = y + (int) (Math.sin(a1) * radius);
+            int x2 = x + (int) (Math.cos(a2) * radius);
+            int y2 = y + (int) (Math.sin(a2) * radius);
+
+            drawOptimizedLine(gui, x1, y1, x2, y2, outlineColor);
         }
     }
 

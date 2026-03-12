@@ -32,5 +32,17 @@ public class ModNetworking {
                 C2SUpgradeStat.STREAM_CODEC,
                 C2SUpgradeStat::handle
         );
+
+        registrar.playToServer(
+                C2SUseAbility.TYPE,
+                C2SUseAbility.STREAM_CODEC,
+                C2SUseAbility::handle
+        );
+
+        registrar.playToClient(
+                S2CSyncCooldown.TYPE,
+                S2CSyncCooldown.STREAM_CODEC,
+                S2CSyncCooldown::handle
+        );
     }
 }

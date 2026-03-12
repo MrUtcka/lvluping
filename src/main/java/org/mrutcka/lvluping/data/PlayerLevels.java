@@ -90,9 +90,23 @@ public class PlayerLevels {
     public static boolean isBranchBlocked(UUID uuid, Talent t) {
         if (t.branch.isEmpty()) return false;
         Set<String> owned = getPlayerTalents(uuid);
+
         for (String id : owned) {
             Talent ot = Talent.getById(id);
-            if (ot != null && ot != t && ot.branch.equals(t.branch)) return true;
+            if (ot != null && ot != t && ot.branch.equals(t.branch)) {
+                if (!isSameHierarchy(t, ot)) return true;
+            }
+        }
+        return false;
+    }
+
+    private static boolean isSameHierarchy(Talent a, Talent b) {
+        return isAncestor(a, b) || isAncestor(b, a);
+    }
+
+    private static boolean isAncestor(Talent potentialAncestor, Talent target) {
+        for (Talent parent : target.parents) {
+            if (parent == potentialAncestor || isAncestor(potentialAncestor, parent)) return true;
         }
         return false;
     }
