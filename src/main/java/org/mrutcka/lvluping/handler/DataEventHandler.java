@@ -1,5 +1,6 @@
 package org.mrutcka.lvluping.handler;
 
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -10,6 +11,7 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.PlayerLevels;
+import org.mrutcka.lvluping.network.S2CProvocationHint;
 import org.mrutcka.lvluping.network.S2CSyncTalents;
 
 @EventBusSubscriber(modid = LvlupingMod.MODID)
@@ -22,6 +24,7 @@ public class DataEventHandler {
 
             AttributeHandler.applyStats(player, false);
             syncPlayer(player);
+            TalentAbilityHandler.syncAllCooldowns(player);
         }
     }
 
@@ -38,6 +41,11 @@ public class DataEventHandler {
     public static void onPlayerLogout(PlayerEvent.PlayerLoggedOutEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             PlayerLevels.setStoredHealth(player.getUUID(), player.getHealth());
+            if (player.getPersistentData().getLong("lvluping_provocation_until") > 0 && player.level() instanceof ServerLevel sl) {
+                for (ServerPlayer p : sl.players()) {
+                    PacketDistributor.sendToPlayer(p, new S2CProvocationHint(false));
+                }
+            }
         }
     }
 

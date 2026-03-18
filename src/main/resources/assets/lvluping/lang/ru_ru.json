@@ -1,4 +1,10 @@
 {
   "key.lvluping.talents": "Открыть дерево талантов",
-  "key.categories.lvluping": "LVLuping MOD"
+  "key.lvluping.ability1": "Способность 1",
+  "key.lvluping.ability2": "Способность 2",
+  "key.lvluping.ability3": "Способность 3",
+  "key.lvluping.ability4": "Способность 4",
+  "key.lvluping.ability5": "Ультимативная способность",
+  "key.categories.lvluping": "LVLuping MOD",
+  "message.lvluping.hit_provoker": "Бейте провоцирующего!"
 }

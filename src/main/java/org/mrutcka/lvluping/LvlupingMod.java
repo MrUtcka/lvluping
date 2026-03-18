@@ -9,6 +9,7 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.mrutcka.lvluping.command.LevelCommand;
 import org.mrutcka.lvluping.command.RaceCommand;
 import org.mrutcka.lvluping.command.StarCommand;
+import org.mrutcka.lvluping.LvlupingItems;
 import org.slf4j.Logger;
 
 @Mod(LvlupingMod.MODID)
@@ -17,6 +18,7 @@ public class LvlupingMod {
     public static final Logger LOGGER = LogUtils.getLogger();
 
     public LvlupingMod(IEventBus modEventBus) {
+        LvlupingItems.ITEMS.register(modEventBus);
         modEventBus.addListener(this::setup);
         NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }

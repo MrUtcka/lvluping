@@ -122,9 +122,13 @@ key_key.hotbar.7:key.keyboard.7
 key_key.hotbar.8:key.keyboard.8
 key_key.hotbar.9:key.keyboard.9
 key_key.lvluping.talents:key.keyboard.k
-key_key.lvluping.ability:key.keyboard.x
-soundCategory_master:0.19288079470198677
-soundCategory_music:1.0
+key_key.lvluping.ability1:key.mouse.5
+key_key.lvluping.ability2:key.keyboard.c
+key_key.lvluping.ability3:key.mouse.4
+key_key.lvluping.ability4:key.keyboard.b
+key_key.lvluping.ability5:key.keyboard.g
+soundCategory_master:0.11920529801324503
+soundCategory_music:0.0
 soundCategory_record:1.0
 soundCategory_weather:1.0
 soundCategory_block:1.0

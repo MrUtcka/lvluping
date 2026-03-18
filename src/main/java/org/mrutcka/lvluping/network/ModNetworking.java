@@ -44,5 +44,17 @@ public class ModNetworking {
                 S2CSyncCooldown.STREAM_CODEC,
                 S2CSyncCooldown::handle
         );
+
+        registrar.playToClient(
+                S2CProvocationHint.TYPE,
+                S2CProvocationHint.STREAM_CODEC,
+                S2CProvocationHint::handle
+        );
+
+        registrar.playToClient(
+                S2CJudgementHammerEffect.TYPE,
+                S2CJudgementHammerEffect.STREAM_CODEC,
+                S2CJudgementHammerEffect::handle
+        );
     }
 }

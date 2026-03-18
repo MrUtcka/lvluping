@@ -1,50 +1,50 @@
-/
-/lvl set Dev 1000
-/star add Dev 2
-/lvl add 40
-/lvl add @a 40
-/gamemode survival
-/lvl add Dev 20
-/race set Dev beast
-/lvl add Dev 1
-/lvl add Dev 200
-/star add Dev 2
-/lvl add Dev 200
-/star add Dev 2
-/lvl add Dev 200
-/star add Dev 2
-/gamemode creative
-/star add Dev 2
-/lvl add Dev 200
-/race set Dev mechanid
-/lvl add Dev 20
-/race set Dev ventar
-/lvl add Dev 20
-/gamemode survival
-/lvl add Dev 20
-/give Dev minecraft:apple
-/lvl add Dev 20
-/give Dev minecraft:apple
-/lvl add Dev 20
-/gamemode creative
-/lvl add @a 123
-/summon minecraft:iron_golem
-/lvl add @a 123
-/gamemode survival
 /lvl add @a 123
 /star add @a 2
-/lvl add @a 123
-/star add @a 2
+/kill @e
 /lvl add @a 123
 /star add @a 2
 /summon minecraft:pig
-/summon minecraft:zombie
-/effect give Dev minecraft:regeneration 2 2
-/effect give Dev minecraft:regeneration 2 10
-/summon minecraft:zombie
-/effect give Dev minecraft:regeneration 2 10
-/gamemode creative
+/summon minecraft:iron_golem
+/lvl add @a 123
+/star add @a 2
 /lvl add @a 123
 /summon minecraft:iron_golem
 /lvl add @a 123
+/summon minecraft:zombie
+/lvl add @a 123
+/summon minecraft:zombie
+/lvl add @a 123
+/summon minecraft:zombie
+/lvl add @a 123
+/summon minecraft:pig
+/tick rate 10
+/gamemode creative
+/summon minecraft:pig
+/tick rate 5
+/tick rate 40
+/tick rate 400
+/tick rate 5
+/summon minecraft:pig
+/tick rate 5
+/tick rate 20
+/summon minecraft:pig
+/tick rate 5
+/tick rate 3
+/summon minecraft:pig
+/tick rate 20
+/summon minecraft:pig
+/summon minecraft:villager
+/tick rate 10
+/summon minecraft:villager
+/tick rate 20
+/summon minecraft:villager
+/summon minecraft:villager ~ ~ ~ {NoAI:1b}
+/lvl set @a 20
+/star add @a 5
+/summon minecraft:villager ~ ~ ~ {NoAI:1b}
+/lvl add @a 20
+/star add @a 7
+/lvl add @a 20
+/star add @a 7
+/summon minecraft:skeleton
 /gamemode survival

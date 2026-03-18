@@ -14,6 +14,15 @@ public class AbilityOverlay {
         int x = 10;
         int y = 10;
 
+        if (ProvocationHintClient.isProvocationActive()) {
+            int w = mc.getWindow().getGuiScaledWidth();
+            int h = mc.getWindow().getGuiScaledHeight();
+            String msg = net.minecraft.network.chat.Component.translatable("message.lvluping.hit_provoker").getString();
+            int tw = mc.font.width(msg);
+            guiGraphics.drawString(mc.font, msg, (w - tw) / 2, h / 2 - 30, 0xFF4444, true);
+            guiGraphics.drawString(mc.font, msg, (w - tw) / 2, h / 2 - 30, 0xFFFFFF, false);
+        }
+
         int combo = player.getPersistentData().getInt("lvluping_combo");
         int lastHit = player.getPersistentData().getInt("lvluping_last_hit");
 
@@ -23,23 +32,116 @@ public class AbilityOverlay {
         }
 
         if (TalentScreen.clientTalents.contains("as_slide")) {
-            renderAbility(guiGraphics, mc, player, "cd_slide", "Подкат", x, y);
+            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_slide", "Подкат [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_shield_strike")) {
+            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_shield", "Удар щитом [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_smoke")) {
-            renderAbility(guiGraphics, mc, player, "cd_smoke", "Смок", x, y);
+            String key = ClientEvents.ABILITY_KEY_4.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_smoke", "Смок [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_dash")) {
-            renderAbility(guiGraphics, mc, player, "cd_dash", "Отскок", x, y);
+            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_dash", "Отскок [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_seismic")) {
+            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_seismic", "Сейсмический удар [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_spin")) {
+            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_spin", "Круговой удар [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("w_parry")) {
-            renderAbility(guiGraphics, mc, player, "cd_parry", "Парирование", x, y);
+            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_parry", "Парирование [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("m_barrier")) {
-            renderAbility(guiGraphics, mc, player, "cd_buff", "Усиление", x, y);
+            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_buff", "Усиление [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_fire_lightning")) {
+            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_fire", "Фаербол/Молния [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_ice_arrow")) {
+            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_ice", "Ледяная стрела [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_teleport")) {
+            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_teleport", "Телепорт [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_summon_servant")) {
+            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_summon", "Призыв слуги [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_summon_sacrifice")) {
+            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_sacrifice", "Жертва [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("m_summon_command")) {
+            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_command", "Команда [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_iron_skin")) {
+            String key = ClientEvents.ABILITY_KEY_4.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_iron_skin", "Железная кожа [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_heavy_step")) {
+            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_heavy_step", "Тяжёлая поступь [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_unbreakable")) {
+            renderAbility(guiGraphics, mc, player, "cd_w_unbreakable", "Несокрушимый", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_armor_breaker")) {
+            renderAbility(guiGraphics, mc, player, "cd_w_armor_breaker", "Разрушитель доспехов", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_provocation")) {
+            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_provocation", "Провокация [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_ult_berserk")) {
+            String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_ult_berserk", "Берсерк [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_ult_brotherhood")) {
+            String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_ult_brotherhood", "Братство [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_ult_final_countdown")) {
+            String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_ult_final_countdown", "Судный молот [" + key + "]", x, y);
+            y += 12;
+        }
+        if (TalentScreen.clientTalents.contains("w_ult_invulnerability")) {
+            String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_ult_invulnerability", "Неуязвимость [" + key + "]", x, y);
             y += 12;
         }
     }
@@ -58,10 +160,9 @@ public class AbilityOverlay {
         if (currentTicks > 0) {
             float secondsLeft = currentTicks / 20.0f;
             String text = String.format("%s: %.1f сек", label, secondsLeft);
-
-            graphics.drawString(mc.font, text, (int)scaledX, (int)scaledY, 0xFF5555, true);
+            graphics.drawString(mc.font, text, (int) scaledX, (int) scaledY, 0xFF5555, true);
         } else {
-            graphics.drawString(mc.font, label + ": ГОТОВО", (int)scaledX, (int)scaledY, 0x55FF55, true);
+            graphics.drawString(mc.font, label + ": ГОТОВО", (int) scaledX, (int) scaledY, 0x55FF55, true);
         }
 
         graphics.pose().popPose();

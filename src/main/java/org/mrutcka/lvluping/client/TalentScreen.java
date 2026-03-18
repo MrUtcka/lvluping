@@ -58,6 +58,7 @@ public class TalentScreen extends Screen {
 
     private void renderTalentsArea(GuiGraphics gui, int availablePoints, long currentCount, int limit) {
         for (Talent t : Talent.values()) {
+            if (!isTalentVisible(t)) continue;
             for (Talent parent : t.parents) {
                 boolean parentUnlocked = clientTalents.contains(parent.id);
                 boolean branchBlocked = isBranchBlocked(t);
@@ -74,6 +75,7 @@ public class TalentScreen extends Screen {
         }
 
         for (Talent t : Talent.values()) {
+            if (!isTalentVisible(t)) continue;
             boolean isUnlocked = clientTalents.contains(t.id);
 
             boolean hasUnlockedParent = (t.parents.length == 0) ||
@@ -168,15 +170,16 @@ public class TalentScreen extends Screen {
 
         if (!isStatsTab) {
             for (Talent t : Talent.values()) {
+                if (!isTalentVisible(t)) continue;
                 if (rx >= t.x - 74 && rx <= t.x + 74 && ry >= t.y - 74 && ry <= t.y + 74) {
                     List<Component> tip = new ArrayList<>();
                     tip.add(Component.literal("§6" + t.label));
-                    tip.add(Component.literal("§7" + t.description));
-                    tip.add(Component.literal("§bЦена: " + t.cost));
-
                     if (clientTalents.contains(t.id)) {
+                        tip.add(Component.literal("§7" + t.description));
                         tip.add(Component.literal("§aИзучено"));
                     } else {
+                        tip.add(Component.literal("§7" + t.description));
+                        tip.add(Component.literal("§bЦена: " + t.cost));
                         boolean hasUnlockedParent = (t.parents.length == 0) ||
                                 Arrays.stream(t.parents).anyMatch(p -> clientTalents.contains(p.id));
 
@@ -322,6 +325,7 @@ public class TalentScreen extends Screen {
             }
         } else {
             for (Talent t : Talent.values()) {
+                if (!isTalentVisible(t)) continue;
                 if (rx >= t.x - 74 && rx <= t.x + 74 && ry >= t.y - 74 && ry <= t.y + 74) {
                     if (!clientTalents.contains(t.id)) {
                         PacketDistributor.sendToServer(new C2SPurchaseTalent(t.id));
@@ -331,6 +335,13 @@ public class TalentScreen extends Screen {
             }
         }
         return super.mouseClicked(mx, my, btn);
+    }
+
+    /** Талант виден, если он уже изучен, либо это корень, либо изучен хотя бы один родитель. */
+    private boolean isTalentVisible(Talent t) {
+        if (clientTalents.contains(t.id)) return true;
+        if (t.parents.length == 0) return true;
+        return Arrays.stream(t.parents).anyMatch(p -> clientTalents.contains(p.id));
     }
 
     @Override public boolean mouseDragged(double mx, double my, int b, double dx, double dy) { scrollX += dx; scrollY += dy; return true; }

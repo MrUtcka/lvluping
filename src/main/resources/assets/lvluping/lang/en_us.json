@@ -1,4 +1,10 @@
 {
   "key.lvluping.talents": "Open talent tree",
-  "key.categories.lvluping": "LVLuping MOD"
+  "key.lvluping.ability1": "Ability 1",
+  "key.lvluping.ability2": "Ability 2",
+  "key.lvluping.ability3": "Ability 3",
+  "key.lvluping.ability4": "Ability 4",
+  "key.lvluping.ability5": "Ultimate ability",
+  "key.categories.lvluping": "LVLuping MOD",
+  "message.lvluping.hit_provoker": "Attack the provoker!"
 }

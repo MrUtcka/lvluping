@@ -18,6 +18,7 @@ public class PlayerLevels {
     private static final Map<UUID, Integer> playerStars = new HashMap<>();
     private static final Map<UUID, Set<String>> playerTalents = new HashMap<>();
     private static final Map<UUID, Map<String, Integer>> playerStats = new HashMap<>();
+    private static final Map<UUID, Map<String, Integer>> playerCooldowns = new HashMap<>();
     private static final Map<UUID, Float> playerStoredHealth = new HashMap<>();
     private static final Map<UUID, Race> playerRaces = new HashMap<>();
 
@@ -31,14 +32,24 @@ public class PlayerLevels {
 
     public static Set<String> getPlayerTalents(UUID uuid) {
         return playerTalents.computeIfAbsent(uuid, k -> {
-            Set<String> s = new HashSet<>();
-            s.add("start");
-            return s;
+            return new HashSet<>();
         });
     }
 
     public static Map<String, Integer> getPlayerStatsMap(UUID uuid) {
         return playerStats.computeIfAbsent(uuid, k -> new HashMap<>());
+    }
+
+    public static Map<String, Integer> getPlayerCooldowns(UUID uuid) {
+        return playerCooldowns.computeIfAbsent(uuid, k -> new HashMap<>());
+    }
+
+    public static int getCooldown(UUID uuid, String key) {
+        return getPlayerCooldowns(uuid).getOrDefault(key, 0);
+    }
+
+    public static void setCooldown(UUID uuid, String key, int ticks) {
+        getPlayerCooldowns(uuid).put(key, ticks);
     }
 
     public static int getStatLevel(UUID uuid, String statId) {
@@ -160,6 +171,7 @@ public class PlayerLevels {
         CompoundTag root = new CompoundTag();
         Set<UUID> allPlayers = new HashSet<>(playerLevels.keySet());
         allPlayers.addAll(playerStars.keySet());
+        allPlayers.addAll(playerCooldowns.keySet());
 
         for (UUID uuid : allPlayers) {
             CompoundTag pData = new CompoundTag();
@@ -175,6 +187,10 @@ public class PlayerLevels {
             CompoundTag sData = new CompoundTag();
             getPlayerStatsMap(uuid).forEach(sData::putInt);
             pData.put("attributes", sData);
+
+            CompoundTag cData = new CompoundTag();
+            getPlayerCooldowns(uuid).forEach(cData::putInt);
+            pData.put("cooldowns", cData);
 
             root.put(uuid.toString(), pData);
         }
@@ -207,6 +223,11 @@ public class PlayerLevels {
                 statsMap.clear();
                 CompoundTag sData = pData.getCompound("attributes");
                 for (String sKey : sData.getAllKeys()) statsMap.put(sKey, sData.getInt(sKey));
+
+                Map<String, Integer> cooldownMap = getPlayerCooldowns(uuid);
+                cooldownMap.clear();
+                CompoundTag cData = pData.contains("cooldowns") ? pData.getCompound("cooldowns") : new CompoundTag();
+                for (String cKey : cData.getAllKeys()) cooldownMap.put(cKey, cData.getInt(cKey));
             }
         } catch (Exception e) { e.printStackTrace(); }
     }
