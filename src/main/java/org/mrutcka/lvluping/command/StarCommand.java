@@ -78,6 +78,7 @@ public class StarCommand {
                 PlayerLevels.getStars(player.getUUID()),
                 PlayerLevels.getPlayerTalents(player.getUUID()),
                 PlayerLevels.getPlayerStatsMap(player.getUUID()),
+                PlayerLevels.getPlayerAbilityLevels(player.getUUID()),
                 PlayerLevels.getRace(player.getUUID()).id
         ));
     }

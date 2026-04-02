@@ -1,50 +1,50 @@
-/lvl add @a 123
-/star add @a 2
-/kill @e
-/lvl add @a 123
-/star add @a 2
-/summon minecraft:pig
-/summon minecraft:iron_golem
-/lvl add @a 123
-/star add @a 2
-/lvl add @a 123
-/summon minecraft:iron_golem
-/lvl add @a 123
 /summon minecraft:zombie
-/lvl add @a 123
-/summon minecraft:zombie
-/lvl add @a 123
-/summon minecraft:zombie
-/lvl add @a 123
-/summon minecraft:pig
-/tick rate 10
-/gamemode creative
-/summon minecraft:pig
-/tick rate 5
-/tick rate 40
-/tick rate 400
-/tick rate 5
-/summon minecraft:pig
-/tick rate 5
-/tick rate 20
-/summon minecraft:pig
-/tick rate 5
-/tick rate 3
-/summon minecraft:pig
-/tick rate 20
-/summon minecraft:pig
-/summon minecraft:villager
-/tick rate 10
-/summon minecraft:villager
-/tick rate 20
-/summon minecraft:villager
-/summon minecraft:villager ~ ~ ~ {NoAI:1b}
-/lvl set @a 20
-/star add @a 5
-/summon minecraft:villager ~ ~ ~ {NoAI:1b}
-/lvl add @a 20
 /star add @a 7
-/lvl add @a 20
+/lvl add @a 70
 /star add @a 7
-/summon minecraft:skeleton
+/lvl add @a 70
+/give @a lvluping:hunter_trap_model
+/give @a lvluping:judgement_hammer
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/time set night
+/summon minecraft:zombie
 /gamemode survival
+/gamemode creative
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/summon minecraft:zombie
+/gamemode survival
+/gamemode creative
+/star add @a 7
+/lvl add @a 70
+/time set night
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/gamemode survival
+/summon minecraft:zombie
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/time set night
+/summon minecraft:zombie
+/gamemode creative

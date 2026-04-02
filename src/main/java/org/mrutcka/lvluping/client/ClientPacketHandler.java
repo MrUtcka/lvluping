@@ -9,6 +9,7 @@ public class ClientPacketHandler {
         TalentScreen.clientStars = msg.stars();
         TalentScreen.clientTalents = msg.talents();
         TalentScreen.clientStats = msg.stats();
+        TalentScreen.clientAbilityLevels = msg.abilityLevels();
         TalentScreen.clientRace = Race.getById(msg.raceId());
     }
 }

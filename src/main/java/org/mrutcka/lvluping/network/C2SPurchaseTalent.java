@@ -9,8 +9,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
+import org.mrutcka.lvluping.handler.AttributeHandler;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -45,20 +45,45 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
             var owned = PlayerLevels.getPlayerTalents(uuid);
             int stars = PlayerLevels.getStars(uuid);
 
-            long purchasedCount = owned.stream().filter(id -> !id.equals("start")).count();
+            boolean hasClass = owned.contains("warrior_base") || owned.contains("archer_base") || owned.contains("mage_base") || owned.contains("assassin_base");
+            boolean isClassPick = msg.talentId.equals("warrior_base") || msg.talentId.equals("archer_base") || msg.talentId.equals("mage_base") || msg.talentId.equals("assassin_base");
+
+            if (isClassPick && !hasClass) {
+                owned.add("start");
+                owned.add(t.id);
+                if (org.mrutcka.lvluping.data.AbilityUpgradeConfig.has(t.id)) {
+                    int existing = PlayerLevels.getPlayerAbilityLevels(uuid).getOrDefault(t.id, 0);
+                    if (existing <= 0) PlayerLevels.setAbilityLevel(uuid, t.id, 1);
+                }
+
+                PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
+                        PlayerLevels.getLevel(serverPlayer),
+                        stars,
+                        PlayerLevels.getPlayerTalents(uuid),
+                        PlayerLevels.getPlayerStatsMap(uuid),
+                        PlayerLevels.getPlayerAbilityLevels(uuid),
+                        PlayerLevels.getRace(uuid).id
+                ));
+                PlayerLevels.save(serverPlayer.getServer());
+                return;
+            }
+
+            if (isClassPick && hasClass) {
+                return;
+            }
+
+            long purchasedCount = owned.stream().filter(id -> !isFreeClassTalent(id)).count();
 
             if (purchasedCount < PlayerLevels.getTalentLimit(stars)
                     && !owned.contains(t.id)
                     && !PlayerLevels.isBranchBlocked(uuid, t)
                     && !PlayerLevels.isRaceForbidden(uuid, t)) {
 
-                boolean parentRequirementMet = t.parents.length == 0 ||
-                        Arrays.stream(t.parents).anyMatch(p -> owned.contains(p.id));
-
-                if (parentRequirementMet) {
+                if (t.parentsSatisfiedForPurchase(owned)) {
                     int spentOnTalents = owned.stream()
                             .map(Talent::getById)
                             .filter(Objects::nonNull)
+                            .filter(ta -> !isFreeClassTalent(ta.id))
                             .mapToInt(ta -> ta.cost)
                             .sum();
 
@@ -68,19 +93,29 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
 
                     if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats) >= t.cost) {
                         PlayerLevels.unlockTalent(uuid, t.id);
+                        if (org.mrutcka.lvluping.data.AbilityUpgradeConfig.has(t.id)) {
+                            int existing = PlayerLevels.getPlayerAbilityLevels(uuid).getOrDefault(t.id, 0);
+                            if (existing <= 0) PlayerLevels.setAbilityLevel(uuid, t.id, 1);
+                        }
 
                         PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
                                 PlayerLevels.getLevel(serverPlayer),
                                 stars,
                                 PlayerLevels.getPlayerTalents(uuid),
                                 PlayerLevels.getPlayerStatsMap(uuid),
+                                PlayerLevels.getPlayerAbilityLevels(uuid),
                                 PlayerLevels.getRace(uuid).id
                         ));
 
+                        AttributeHandler.applyStats(serverPlayer, false);
                         PlayerLevels.save(serverPlayer.getServer());
                     }
                 }
             }
         });
+    }
+
+    private static boolean isFreeClassTalent(String id) {
+        return "start".equals(id) || "warrior_base".equals(id) || "archer_base".equals(id) || "mage_base".equals(id) || "assassin_base".equals(id);
     }
 }

@@ -39,6 +39,18 @@ public class ModNetworking {
                 C2SUseAbility::handle
         );
 
+        registrar.playToServer(
+                C2SUpgradeAbility.TYPE,
+                C2SUpgradeAbility.STREAM_CODEC,
+                C2SUpgradeAbility::handle
+        );
+
+        registrar.playToServer(
+                C2SPossessionInput.TYPE,
+                C2SPossessionInput.STREAM_CODEC,
+                C2SPossessionInput::handle
+        );
+
         registrar.playToClient(
                 S2CSyncCooldown.TYPE,
                 S2CSyncCooldown.STREAM_CODEC,
@@ -55,6 +67,72 @@ public class ModNetworking {
                 S2CJudgementHammerEffect.TYPE,
                 S2CJudgementHammerEffect.STREAM_CODEC,
                 S2CJudgementHammerEffect::handle
+        );
+
+        registrar.playToClient(
+                S2CUnbreakableShieldOrbit.TYPE,
+                S2CUnbreakableShieldOrbit.STREAM_CODEC,
+                S2CUnbreakableShieldOrbit::handle
+        );
+
+        registrar.playToClient(
+                S2CHunterTrapShow.TYPE,
+                S2CHunterTrapShow.STREAM_CODEC,
+                S2CHunterTrapShow::handle
+        );
+
+        registrar.playToClient(
+                S2CHunterTrapHide.TYPE,
+                S2CHunterTrapHide.STREAM_CODEC,
+                S2CHunterTrapHide::handle
+        );
+
+        registrar.playToClient(
+                S2CMergeTreeShow.TYPE,
+                S2CMergeTreeShow.STREAM_CODEC,
+                S2CMergeTreeShow::handle
+        );
+
+        registrar.playToClient(
+                S2CMergeTreeHide.TYPE,
+                S2CMergeTreeHide.STREAM_CODEC,
+                S2CMergeTreeHide::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerThornShow.TYPE,
+                S2CRangerThornShow.STREAM_CODEC,
+                S2CRangerThornShow::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerThornHide.TYPE,
+                S2CRangerThornHide.STREAM_CODEC,
+                S2CRangerThornHide::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerLifeTotemShow.TYPE,
+                S2CRangerLifeTotemShow.STREAM_CODEC,
+                S2CRangerLifeTotemShow::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerLifeTotemHide.TYPE,
+                S2CRangerLifeTotemHide.STREAM_CODEC,
+                S2CRangerLifeTotemHide::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerRootsTargetShow.TYPE,
+                S2CRangerRootsTargetShow.STREAM_CODEC,
+                S2CRangerRootsTargetShow::handle
+        );
+
+        registrar.playToClient(
+                S2CRangerRootsTargetHide.TYPE,
+                S2CRangerRootsTargetHide.STREAM_CODEC,
+                S2CRangerRootsTargetHide::handle
         );
     }
 }

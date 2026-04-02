@@ -10,17 +10,21 @@ import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
 import org.mrutcka.lvluping.network.*;
 import com.mojang.math.Axis;
+import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 
 import java.util.*;
 
 public class TalentScreen extends Screen {
     private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talent_tree_bg.png");
     private static final ResourceLocation LOCK_ICON = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/lock.png");
+    private static final ResourceLocation UPGRADE_ICON = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/upgrade.png");
+    private static final ResourceLocation UPGRADE_ICON_FALLBACK = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/lock.png");
 
     public static int clientLevel = 0;
     public static int clientStars = 2;
     public static Set<String> clientTalents = new HashSet<>();
     public static Map<String, Integer> clientStats = new HashMap<>();
+    public static Map<String, Integer> clientAbilityLevels = new HashMap<>();
     public static Race clientRace = Race.HUMAN;
 
     private float scrollX = 0, scrollY = 0, zoom = 0.3f;
@@ -28,6 +32,20 @@ public class TalentScreen extends Screen {
 
     public TalentScreen() {
         super(Component.literal("Меню Развития"));
+    }
+
+    @Override
+    protected void init() {
+        super.init();
+        String chosen = getChosenClassBaseIdClient();
+        if (chosen != null) {
+            Talent base = Talent.getById(chosen);
+            if (base != null) {
+                float desiredY = height * 0.25f;
+                scrollX = -base.x * zoom;
+                scrollY = (desiredY - height / 2f) - base.y * zoom;
+            }
+        }
     }
 
     @Override
@@ -78,8 +96,7 @@ public class TalentScreen extends Screen {
             if (!isTalentVisible(t)) continue;
             boolean isUnlocked = clientTalents.contains(t.id);
 
-            boolean hasUnlockedParent = (t.parents.length == 0) ||
-                    Arrays.stream(t.parents).anyMatch(p -> clientTalents.contains(p.id));
+            boolean hasUnlockedParent = hasUnlockedParentForPurchase(t);
 
             boolean branchBlocked = isBranchBlocked(t);
             boolean canAfford = availablePoints >= t.cost;
@@ -111,6 +128,23 @@ public class TalentScreen extends Screen {
             if (!isUnlocked) {
                 RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
                 gui.blit(LOCK_ICON, t.x - 32, t.y - 32, 0, 0, 64, 64, 64, 64);
+            } else if (AbilityUpgradeConfig.has(t.id) && AbilityUpgradeConfig.isUpgradeable(t.id)) {
+                int lvl = clientAbilityLevels.getOrDefault(t.id, 1);
+                int max = AbilityUpgradeConfig.getMaxLevel(t.id);
+                if (lvl < max) {
+                    int cost = AbilityUpgradeConfig.getUpgradePointCost(t.id, lvl + 1);
+                    if (availablePoints >= cost) {
+                        int w = 128;
+                        int h = 128;
+                        int px = t.x - 64;
+                        int py = t.y - 64;
+                        try {
+                            gui.blit(UPGRADE_ICON, px, py, 0, 0, w, h, w, h);
+                        } catch (Exception e) {
+                            gui.blit(UPGRADE_ICON_FALLBACK, px + 4, py + 4, 0, 0, w - 8, h - 8, 64, 64);
+                        }
+                    }
+                }
             }
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -176,15 +210,30 @@ public class TalentScreen extends Screen {
                     tip.add(Component.literal("§6" + t.label));
                     if (clientTalents.contains(t.id)) {
                         tip.add(Component.literal("§7" + t.description));
+                        if (AbilityUpgradeConfig.has(t.id) && AbilityUpgradeConfig.isUpgradeable(t.id)) {
+                            int lvl = clientAbilityLevels.getOrDefault(t.id, 1);
+                            int max = AbilityUpgradeConfig.getMaxLevel(t.id);
+                            tip.add(Component.literal("§eУровень: " + lvl + "/" + max));
+                        }
                         tip.add(Component.literal("§aИзучено"));
                     } else {
                         tip.add(Component.literal("§7" + t.description));
+                        addMutualExclusionTooltip(tip, t);
                         tip.add(Component.literal("§bЦена: " + t.cost));
-                        boolean hasUnlockedParent = (t.parents.length == 0) ||
-                                Arrays.stream(t.parents).anyMatch(p -> clientTalents.contains(p.id));
+                        boolean hasUnlockedParent = hasUnlockedParentForPurchase(t);
 
                         if (!hasUnlockedParent && t.parents.length > 0) {
-                            tip.add(Component.literal("§cНужен родительский навык"));
+                            if (t.requiresAllParents()) {
+                                ArrayList<String> missing = new ArrayList<>();
+                                for (Talent p : t.parents) {
+                                    if (!clientTalents.contains(p.id)) missing.add(p.label);
+                                }
+                                if (!missing.isEmpty()) {
+                                    tip.add(Component.literal("§cНе изучено: " + String.join(", ", missing)));
+                                }
+                            } else {
+                                tip.add(Component.literal("§cНужен родительский навык"));
+                            }
                         }
                         if (isBranchBlocked(t)) tip.add(Component.literal("§8Путь заблокирован выбором другой ветки"));
                         if (currentCount >= limit) tip.add(Component.literal("§cЛимит навыков исчерпан"));
@@ -194,6 +243,20 @@ public class TalentScreen extends Screen {
                             tip.add(Component.literal("§cВаша раса (" + clientRace.label + ") не может обуздать эту силу"));
                         }
                     }
+                    gui.renderComponentTooltip(font, tip, mx, my);
+                    break;
+                }
+            }
+        } else {
+            for (AttributeStat s : AttributeStat.values()) {
+                if (rx >= s.x - 74 && rx <= s.x + 74 && ry >= s.y - 74 && ry <= s.y + 74) {
+                    int level = (clientStats.getOrDefault(s.id, 0)) + (clientRace.bonuses.getOrDefault(s.id, 0));
+                    List<Component> tip = new ArrayList<>();
+                    tip.add(Component.literal("§6" + s.label));
+                    tip.add(Component.literal("§7" + s.description));
+                    tip.add(Component.literal("§eУровень: " + level + "/" + s.maxLevel));
+                    if (getAvailablePoints() < 1) tip.add(Component.literal("§cНет очков"));
+                    if (level >= s.maxLevel) tip.add(Component.literal("§aМаксимум"));
                     gui.renderComponentTooltip(font, tip, mx, my);
                     break;
                 }
@@ -222,38 +285,30 @@ public class TalentScreen extends Screen {
     }
 
     private void renderStatsArea(GuiGraphics gui, int points) {
-        int startY = -220;
         for (AttributeStat s : AttributeStat.values()) {
             int level = (clientStats.getOrDefault(s.id, 0)) + (clientRace.bonuses.getOrDefault(s.id, 0));
-            int x = -500;
-
-            gui.fill(x, startY, x + 1000, startY + 150, 0xAA000000);
-            gui.renderOutline(x, startY, 1000, 150, 0xFFFFFFFF);
-
-            if (s.icon != null) {
-                gui.blit(s.icon, x + 15, startY + 15, 0, 0, 120, 120, 120, 120);
-            }
-
-            gui.pose().pushPose();
-            gui.pose().translate(x + 150, startY + 55, 0);
-            gui.pose().scale(2.5f, 2.5f, 2.5f);
-            gui.drawString(font, s.label + " [" + level + "/" + s.maxLevel + "]", 0, 0, 0xFFFFFF);
-            gui.pose().popPose();
-
             boolean canUpgrade = points > 0 && level < s.maxLevel;
-            int buttonX = x + 850;
-            int buttonY = startY + 15;
+            int bgColor = 0xFF222222;
+            int outlineColor = canUpgrade ? 0xFFFFFFFF : 0xFF555555;
 
-            gui.fill(buttonX, buttonY, buttonX + 120, buttonY + 120, canUpgrade ? 0xFF00AA00 : 0xFF555555);
-            gui.renderOutline(buttonX, buttonY, 120, 120, 0xFFFFFFFF);
+            drawPolygon(gui, s.x, s.y, 120, 32, 0f, bgColor, outlineColor);
+            if (!canUpgrade) {
+                RenderSystem.setShaderColor(0.5f, 0.5f, 0.5f, 1.0f);
+            } else {
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            }
+            gui.blit(s.icon, s.x - 64, s.y - 64, 0, 0, 128, 128, 128, 128);
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
 
             gui.pose().pushPose();
-            gui.pose().translate(buttonX + 35, buttonY + 20, 0);
-            gui.pose().scale(5.0f, 5.0f, 5.0f);
-            gui.drawString(font, "+", 0, 0, canUpgrade ? 0xFFFFFFFF : 0xFFAAAAAA);
+            gui.pose().translate(s.x - 62, s.y + 76, 0);
+            gui.pose().scale(1.2f, 1.2f, 1.2f);
+            gui.drawString(font, s.label + " " + level + "/" + s.maxLevel, 0, 0, 0xFFFFFF);
             gui.pose().popPose();
 
-            startY += 170;
+            if (canUpgrade) {
+                gui.blit(UPGRADE_ICON, s.x - 64, s.y - 64, 0, 0, 128, 128, 128, 128);
+            }
         }
     }
 
@@ -266,13 +321,31 @@ public class TalentScreen extends Screen {
     }
 
     private int getAvailablePoints() {
-        int spentOnTalents = clientTalents.stream().map(Talent::getById).filter(Objects::nonNull).mapToInt(t -> t.cost).sum();
+        int spentOnTalents = clientTalents.stream()
+                .map(Talent::getById)
+                .filter(Objects::nonNull)
+                .filter(t -> !isFreeClassTalent(t.id))
+                .mapToInt(t -> t.cost)
+                .sum();
         int spentOnStats = clientStats.values().stream().mapToInt(Integer::intValue).sum();
-        return clientLevel - (spentOnTalents + spentOnStats);
+        int spentOnUpgrades = 0;
+        for (var e : clientAbilityLevels.entrySet()) {
+            String id = e.getKey();
+            int lvl = e.getValue() == null ? 0 : e.getValue();
+            if (lvl <= 1) continue;
+            for (int next = 2; next <= lvl; next++) {
+                spentOnUpgrades += AbilityUpgradeConfig.getUpgradePointCost(id, next);
+            }
+        }
+        return clientLevel - (spentOnTalents + spentOnStats + spentOnUpgrades);
+    }
+
+    private static boolean isFreeClassTalent(String id) {
+        return "start".equals(id) || "warrior_base".equals(id) || "archer_base".equals(id) || "mage_base".equals(id) || "assassin_base".equals(id);
     }
 
     private long getTalentCount() {
-        return clientTalents.stream().filter(id -> !id.equals("start")).count();
+        return clientTalents.stream().filter(id -> !isFreeClassTalent(id)).count();
     }
 
     private boolean isBranchBlocked(Talent t) {
@@ -281,21 +354,18 @@ public class TalentScreen extends Screen {
             Talent owned = Talent.getById(ownedId);
             if (owned == null || owned.branch.isEmpty() || owned == t) continue;
             if (t.branch.equals(owned.branch)) {
-                if (!isSameHierarchy(t, owned)) return true;
+                if (!Talent.isSameHierarchy(t, owned)) return true;
             }
         }
         return false;
     }
 
-    private boolean isAncestor(Talent potentialAncestor, Talent target) {
-        for (Talent parent : target.parents) {
-            if (parent == potentialAncestor || isAncestor(potentialAncestor, parent)) return true;
-        }
-        return false;
-    }
-
-    private boolean isSameHierarchy(Talent a, Talent b) {
-        return isAncestor(a, b) || isAncestor(b, a);
+    private static void addMutualExclusionTooltip(List<Component> tip, Talent t) {
+        List<Talent> peers = Talent.mutuallyExclusivePeers(t);
+        if (peers.isEmpty()) return;
+        ArrayList<String> labels = new ArrayList<>(peers.size());
+        for (Talent p : peers) labels.add(p.label);
+        tip.add(Component.literal("§7Взаимоисключается с: §f" + String.join(", ", labels)));
     }
 
     private void drawTab(GuiGraphics gui, String text, int x, int y, boolean active) {
@@ -315,13 +385,12 @@ public class TalentScreen extends Screen {
         float ry = (float) (my - height / 2f - scrollY) / zoom;
 
         if (isStatsTab) {
-            int startY = -220;
             for (AttributeStat s : AttributeStat.values()) {
-                if (rx >= 350 && rx <= 470 && ry >= startY + 15 && ry <= startY + 135) {
-                    if (getAvailablePoints() >= 1) PacketDistributor.sendToServer(new C2SUpgradeStat(s.id));
+                if (rx >= s.x - 74 && rx <= s.x + 74 && ry >= s.y - 74 && ry <= s.y + 74) {
+                    int level = (clientStats.getOrDefault(s.id, 0)) + (clientRace.bonuses.getOrDefault(s.id, 0));
+                    if (getAvailablePoints() >= 1 && level < s.maxLevel) PacketDistributor.sendToServer(new C2SUpgradeStat(s.id));
                     return true;
                 }
-                startY += 170;
             }
         } else {
             for (Talent t : Talent.values()) {
@@ -329,6 +398,8 @@ public class TalentScreen extends Screen {
                 if (rx >= t.x - 74 && rx <= t.x + 74 && ry >= t.y - 74 && ry <= t.y + 74) {
                     if (!clientTalents.contains(t.id)) {
                         PacketDistributor.sendToServer(new C2SPurchaseTalent(t.id));
+                    } else if (AbilityUpgradeConfig.has(t.id)) {
+                        PacketDistributor.sendToServer(new C2SUpgradeAbility(t.id));
                     }
                     return true;
                 }
@@ -337,11 +408,41 @@ public class TalentScreen extends Screen {
         return super.mouseClicked(mx, my, btn);
     }
 
-    /** Талант виден, если он уже изучен, либо это корень, либо изучен хотя бы один родитель. */
     private boolean isTalentVisible(Talent t) {
         if (clientTalents.contains(t.id)) return true;
         if (t.parents.length == 0) return true;
-        return Arrays.stream(t.parents).anyMatch(p -> clientTalents.contains(p.id));
+        String chosen = getChosenClassBaseIdClient();
+        if (chosen == null) return false;
+        if (Arrays.stream(t.parents).anyMatch(p -> p.id.equals("start"))) return t.id.equals(chosen);
+        if (t.id.equals(chosen)) return true;
+        return isDescendantOfChosen(t, chosen);
+    }
+
+    public static String getChosenClassBaseIdClient() {
+        if (clientTalents.contains("m_cleric_base")) return "m_cleric_base";
+        if (clientTalents.contains("m_summoner_base")) return "m_summoner_base";
+        if (clientTalents.contains("m_spellcaster_base")) return "m_spellcaster_base";
+        if (clientTalents.contains("a_hunter_base")) return "a_hunter_base";
+        if (clientTalents.contains("a_ranger_base")) return "a_ranger_base";
+        if (clientTalents.contains("a_musketeer_base")) return "a_musketeer_base";
+
+        if (clientTalents.contains("warrior_base")) return "warrior_base";
+        if (clientTalents.contains("archer_base")) return "archer_base";
+        if (clientTalents.contains("mage_base")) return "mage_base";
+        if (clientTalents.contains("assassin_base")) return "assassin_base";
+        return null;
+    }
+
+    private boolean isDescendantOfChosen(Talent t, String chosenId) {
+        for (Talent p : t.parents) {
+            if (p.id.equals(chosenId)) return true;
+            if (isDescendantOfChosen(p, chosenId)) return true;
+        }
+        return false;
+    }
+
+    private boolean hasUnlockedParentForPurchase(Talent t) {
+        return t.parentsSatisfiedForPurchase(clientTalents);
     }
 
     @Override public boolean mouseDragged(double mx, double my, int b, double dx, double dy) { scrollX += dx; scrollY += dy; return true; }

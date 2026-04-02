@@ -28,7 +28,7 @@ public final class JudgementHammerClient {
 
     private static final int TOTAL_TICKS = 60;
     private static final int VISIBLE_TICKS = 20;
-    private static final int FALL_TICKS = (int) 30;
+    private static final int FALL_TICKS = 30;
     private static final double FALL_HEIGHT = 40.0;
     private static final int GROUND_TICKS = 80;
     private static final double GROUND_Y_OFFSET = 1.0;

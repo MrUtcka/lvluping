@@ -48,6 +48,7 @@ public record C2SUpgradeStat(String statId) implements CustomPacketPayload {
             int spentOnTalents = PlayerLevels.getPlayerTalents(uuid).stream()
                     .map(Talent::getById)
                     .filter(Objects::nonNull)
+                    .filter(t -> !isFreeClassTalent(t.id))
                     .mapToInt(t -> t.cost)
                     .sum();
 
@@ -55,7 +56,8 @@ public record C2SUpgradeStat(String statId) implements CustomPacketPayload {
                     .mapToInt(Integer::intValue)
                     .sum();
 
-            if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats) >= 1) {
+            int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
+            if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats + spentUpgrades) >= 1) {
                 PlayerLevels.upgradeStat(uuid, stat.id);
                 AttributeHandler.applyStats(serverPlayer, false);
 
@@ -64,9 +66,18 @@ public record C2SUpgradeStat(String statId) implements CustomPacketPayload {
                         PlayerLevels.getStars(uuid),
                         PlayerLevels.getPlayerTalents(uuid),
                         PlayerLevels.getPlayerStatsMap(uuid),
+                        PlayerLevels.getPlayerAbilityLevels(uuid),
                         PlayerLevels.getRace(uuid).id
                 ));
             }
         });
+    }
+
+    private static boolean isFreeClassTalent(String id) {
+        return "start".equals(id)
+                || "warrior_base".equals(id)
+                || "archer_base".equals(id)
+                || "mage_base".equals(id)
+                || "assassin_base".equals(id);
     }
 }

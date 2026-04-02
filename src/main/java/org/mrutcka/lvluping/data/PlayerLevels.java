@@ -21,6 +21,7 @@ public class PlayerLevels {
     private static final Map<UUID, Map<String, Integer>> playerCooldowns = new HashMap<>();
     private static final Map<UUID, Float> playerStoredHealth = new HashMap<>();
     private static final Map<UUID, Race> playerRaces = new HashMap<>();
+    private static final Map<UUID, Map<String, Integer>> playerAbilityLevels = new HashMap<>();
 
     public static int getLevel(ServerPlayer p) {
         return playerLevels.getOrDefault(p.getUUID(), 0);
@@ -44,6 +45,36 @@ public class PlayerLevels {
         return playerCooldowns.computeIfAbsent(uuid, k -> new HashMap<>());
     }
 
+    public static Map<String, Integer> getPlayerAbilityLevels(UUID uuid) {
+        return playerAbilityLevels.computeIfAbsent(uuid, k -> new HashMap<>());
+    }
+
+    public static int getAbilityLevel(UUID uuid, String abilityId, Set<String> ownedTalents) {
+        int raw = getPlayerAbilityLevels(uuid).getOrDefault(abilityId, 0);
+        if (raw > 0) return raw;
+        if (ownedTalents != null && ownedTalents.contains(abilityId) && AbilityUpgradeConfig.has(abilityId)) return 1;
+        return 0;
+    }
+
+    public static void setAbilityLevel(UUID uuid, String abilityId, int level) {
+        if (level <= 0) getPlayerAbilityLevels(uuid).remove(abilityId);
+        else getPlayerAbilityLevels(uuid).put(abilityId, level);
+    }
+
+    public static int getSpentUpgradePoints(UUID uuid) {
+        int total = 0;
+        Map<String, Integer> levels = getPlayerAbilityLevels(uuid);
+        for (var e : levels.entrySet()) {
+            String id = e.getKey();
+            int lvl = e.getValue() == null ? 0 : e.getValue();
+            if (lvl <= 1) continue;
+            for (int next = 2; next <= lvl; next++) {
+                total += AbilityUpgradeConfig.getUpgradePointCost(id, next);
+            }
+        }
+        return total;
+    }
+
     public static int getCooldown(UUID uuid, String key) {
         return getPlayerCooldowns(uuid).getOrDefault(key, 0);
     }
@@ -65,6 +96,8 @@ public class PlayerLevels {
     public static void setRace(UUID uuid, Race race) {
         playerRaces.put(uuid, race);
     }
+
+    public static void migrateAssassinEvoBuffs(Set<String> talents) { }
 
     public static void unlockTalent(UUID uuid, String id) { getPlayerTalents(uuid).add(id); }
     public static void upgradeStat(UUID uuid, String id) {
@@ -105,19 +138,8 @@ public class PlayerLevels {
         for (String id : owned) {
             Talent ot = Talent.getById(id);
             if (ot != null && ot != t && ot.branch.equals(t.branch)) {
-                if (!isSameHierarchy(t, ot)) return true;
+                if (!Talent.isSameHierarchy(t, ot)) return true;
             }
-        }
-        return false;
-    }
-
-    private static boolean isSameHierarchy(Talent a, Talent b) {
-        return isAncestor(a, b) || isAncestor(b, a);
-    }
-
-    private static boolean isAncestor(Talent potentialAncestor, Talent target) {
-        for (Talent parent : target.parents) {
-            if (parent == potentialAncestor || isAncestor(potentialAncestor, parent)) return true;
         }
         return false;
     }
@@ -172,6 +194,7 @@ public class PlayerLevels {
         Set<UUID> allPlayers = new HashSet<>(playerLevels.keySet());
         allPlayers.addAll(playerStars.keySet());
         allPlayers.addAll(playerCooldowns.keySet());
+        allPlayers.addAll(playerAbilityLevels.keySet());
 
         for (UUID uuid : allPlayers) {
             CompoundTag pData = new CompoundTag();
@@ -191,6 +214,10 @@ public class PlayerLevels {
             CompoundTag cData = new CompoundTag();
             getPlayerCooldowns(uuid).forEach(cData::putInt);
             pData.put("cooldowns", cData);
+
+            CompoundTag aData = new CompoundTag();
+            getPlayerAbilityLevels(uuid).forEach(aData::putInt);
+            pData.put("ability_upgrades", aData);
 
             root.put(uuid.toString(), pData);
         }
@@ -218,6 +245,7 @@ public class PlayerLevels {
                 talents.clear();
                 ListTag tList = pData.getList("talents", 8);
                 for (int i = 0; i < tList.size(); i++) talents.add(tList.getString(i));
+                migrateAssassinEvoBuffs(talents);
 
                 Map<String, Integer> statsMap = getPlayerStatsMap(uuid);
                 statsMap.clear();
@@ -228,6 +256,11 @@ public class PlayerLevels {
                 cooldownMap.clear();
                 CompoundTag cData = pData.contains("cooldowns") ? pData.getCompound("cooldowns") : new CompoundTag();
                 for (String cKey : cData.getAllKeys()) cooldownMap.put(cKey, cData.getInt(cKey));
+
+                Map<String, Integer> abilityMap = getPlayerAbilityLevels(uuid);
+                abilityMap.clear();
+                CompoundTag aData = pData.contains("ability_upgrades") ? pData.getCompound("ability_upgrades") : new CompoundTag();
+                for (String aKey : aData.getAllKeys()) abilityMap.put(aKey, aData.getInt(aKey));
             }
         } catch (Exception e) { e.printStackTrace(); }
     }

@@ -10,6 +10,7 @@ import net.neoforged.neoforge.event.server.ServerStartedEvent;
 import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
+import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.network.S2CProvocationHint;
 import org.mrutcka.lvluping.network.S2CSyncTalents;
@@ -55,12 +56,16 @@ public class DataEventHandler {
                 PlayerLevels.getStars(player.getUUID()),
                 PlayerLevels.getPlayerTalents(player.getUUID()),
                 PlayerLevels.getPlayerStatsMap(player.getUUID()),
+                PlayerLevels.getPlayerAbilityLevels(player.getUUID()),
                 PlayerLevels.getRace(player.getUUID()).id
         ));
     }
 
     @SubscribeEvent
-    public static void onServerStarted(ServerStartedEvent event) { PlayerLevels.load(event.getServer()); }
+    public static void onServerStarted(ServerStartedEvent event) {
+        PlayerLevels.load(event.getServer());
+        AbilityUpgradeConfig.load();
+    }
 
     @SubscribeEvent
     public static void onServerStopping(ServerStoppingEvent event) { PlayerLevels.save(event.getServer()); }
