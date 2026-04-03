@@ -33,7 +33,10 @@ public class AbilityOverlay {
 
         if (TalentScreen.clientTalents.contains("as_slide")) {
             String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_slide", "Подкат [" + key + "]", x, y);
+            int maxCh = slideMaxChargesClient();
+            int ch = player.getPersistentData().getInt("lvluping_slide_charges");
+            String chargeSuffix = maxCh > 1 ? ("  ×" + ch + "/" + maxCh) : "";
+            renderAbilityWithChargeSuffix(guiGraphics, mc, player, "cd_slide", "Подкат [" + key + "]", chargeSuffix, x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_smoke")) {
@@ -57,7 +60,7 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_rogue_blind")) {
-            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            String key = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
             renderAbility(guiGraphics, mc, player, "cd_as_rogue_blind", "Ослепление [" + key + "]", x, y);
             y += 12;
         }
@@ -72,7 +75,7 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_wanderer_tripwire")) {
-            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            String key = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
             renderAbility(guiGraphics, mc, player, "cd_as_wanderer_tripwire", "Растяжка [" + key + "]", x, y);
             y += 12;
         }
@@ -87,11 +90,11 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_assassin_adrenaline")) {
-            renderAbility(guiGraphics, mc, player, "cd_as_assassin_adrenaline", "Адреналин (пассив)", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_as_assassin_adrenaline", "Адреналин", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_assassin_rupture")) {
-            String key = ClientEvents.ABILITY_KEY_3.getTranslatedKeyMessage().getString();
+            String key = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
             renderAbility(guiGraphics, mc, player, "cd_as_assassin_rupture", "Разрыв [" + key + "]", x, y);
             y += 12;
         }
@@ -134,7 +137,7 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ranger_thunder_arrow")) {
-            renderAbility(guiGraphics, mc, player, "cd_a_ranger_thunder_arrow", "Гром. стрела (пассив)", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_a_ranger_thunder_arrow", "Гром. стрела", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ranger_thorn_bush")) {
@@ -372,7 +375,7 @@ public class AbilityOverlay {
         }
         if (TalentScreen.clientTalents.contains("as_ult_wanderer_thorn_trail")) {
             String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_as_ult_wanderer_thorn_trail", "Колючий след [" + key + "]", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_as_ult_wanderer_thorn_trail", "Колючий [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("as_ult_wanderer_ghosts")) {
@@ -434,7 +437,8 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ult_ranger_roots")) {
-            renderAbility(guiGraphics, mc, player, "cd_a_ult_ranger_roots", "Корни (след. выстрел)", x, y);
+            String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_a_ult_ranger_roots", "Корни (след. выстрел) [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ult_musketeer_barrage")) {
@@ -453,7 +457,7 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ult_musketeer_execution")) {
-            renderAbility(guiGraphics, mc, player, "cd_a_ult_musketeer_execution", "Казнь (пассив)", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_a_ult_musketeer_execution", "Казнь", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("m_ult_gate")) {
@@ -542,6 +546,35 @@ public class AbilityOverlay {
         float scaledX = x / scale;
         float scaledY = y / scale;
         graphics.drawString(mc.font, label, (int) scaledX, (int) scaledY, 0x55FF55, true);
+        graphics.pose().popPose();
+    }
+
+    private static int slideMaxChargesClient() {
+        if (TalentScreen.clientTalents != null && TalentScreen.clientTalents.contains("as_wanderer_double_dodge")) {
+            return 3;
+        }
+        return 1;
+    }
+
+    private static void renderAbilityWithChargeSuffix(GuiGraphics graphics, Minecraft mc, Player player, String nbtKey, String label, String chargeSuffix, int x, int y) {
+        int currentTicks = player.getPersistentData().getInt(nbtKey);
+
+        graphics.pose().pushPose();
+
+        float scale = 0.6f;
+        graphics.pose().scale(scale, scale, scale);
+
+        float scaledX = x / scale;
+        float scaledY = y / scale;
+
+        if (currentTicks > 0) {
+            float secondsLeft = currentTicks / 20.0f;
+            String text = String.format("%s: %.1f сек%s", label, secondsLeft, chargeSuffix);
+            graphics.drawString(mc.font, text, (int) scaledX, (int) scaledY, 0xFF5555, true);
+        } else {
+            graphics.drawString(mc.font, label + ": ГОТОВО" + chargeSuffix, (int) scaledX, (int) scaledY, 0x55FF55, true);
+        }
+
         graphics.pose().popPose();
     }
 

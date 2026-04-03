@@ -15,10 +15,19 @@ import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import java.util.*;
 
 public class TalentScreen extends Screen {
-    private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talent_tree_bg.png");
+    private static final ResourceLocation BG = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/talent_wallpaper_4096.png");
     private static final ResourceLocation LOCK_ICON = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/lock.png");
     private static final ResourceLocation UPGRADE_ICON = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/upgrade.png");
     private static final ResourceLocation UPGRADE_ICON_FALLBACK = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/lock.png");
+
+    private static final ResourceLocation FRAME_WARRIOR_GOLD = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/kvadrat.png");
+    private static final ResourceLocation FRAME_WARRIOR_SILVER = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/kvadrat_notfull.png");
+    private static final ResourceLocation FRAME_MAGE_GOLD = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/circle.png");
+    private static final ResourceLocation FRAME_MAGE_SILVER = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/circle_notfull.png");
+    private static final ResourceLocation FRAME_ARCHER_GOLD = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/6ygl.png");
+    private static final ResourceLocation FRAME_ARCHER_SILVER = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/6ygl_notfull.png");
+    private static final ResourceLocation FRAME_ASSASSIN_GOLD = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/romb.png");
+    private static final ResourceLocation FRAME_ASSASSIN_SILVER = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/romb_notfull.png");
 
     public static int clientLevel = 0;
     public static int clientStars = 2;
@@ -37,7 +46,7 @@ public class TalentScreen extends Screen {
     @Override
     protected void init() {
         super.init();
-        String chosen = getChosenClassBaseIdClient();
+        String chosen = getChosenTopClassBaseIdClient();
         if (chosen != null) {
             Talent base = Talent.getById(chosen);
             if (base != null) {
@@ -112,11 +121,6 @@ public class TalentScreen extends Screen {
 
             boolean canPurchase = !isUnlocked && hasUnlockedParent && !branchBlocked && !raceForbidden && underLimit && canAfford;
 
-            int bgColor = isUnlocked ? 0xFF00AA00 : (branchBlocked || raceForbidden || !hasUnlockedParent ? 0xFF222222 : 0xFF444444);
-            int outlineColor = isUnlocked ? 0xFFAAFF00 : (canPurchase ? 0xFFFFFFFF : 0xFF555555);
-
-            drawTalentShape(gui, t, bgColor, outlineColor);
-
             if (!isUnlocked && !canPurchase) {
                 RenderSystem.setShaderColor(0.3f, 0.3f, 0.3f, 1.0f);
             } else {
@@ -148,6 +152,76 @@ public class TalentScreen extends Screen {
             }
 
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            if (isUnlocked) {
+                RenderSystem.enableBlend();
+                drawTalentFrame(gui, t);
+            } else {
+                int outlineColor = canPurchase ? 0xFFFFFFFF : 0xFF444444;
+                drawTalentOutline(gui, t, outlineColor);
+            }
+
+            RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+        }
+    }
+
+    private void drawTalentFrame(GuiGraphics gui, Talent t) {
+        int max = 1;
+        int lvl = 1;
+        if (AbilityUpgradeConfig.has(t.id) && AbilityUpgradeConfig.isUpgradeable(t.id)) {
+            lvl = clientAbilityLevels.getOrDefault(t.id, 1);
+            max = AbilityUpgradeConfig.getMaxLevel(t.id);
+        }
+        boolean maxed = lvl >= max;
+
+        ResourceLocation frame = getFrameTexture(t, maxed ? FrameKind.GOLD : FrameKind.SILVER);
+        int w = 128, h = 128;
+        gui.blit(frame, t.x - w / 2, t.y - h / 2, 0, 0, w, h, w, h);
+    }
+
+    private enum FrameKind { GOLD, SILVER }
+
+    private ResourceLocation getFrameTexture(Talent t, FrameKind kind) {
+        String id = t.id.toLowerCase();
+        String branch = t.branch.toLowerCase();
+        boolean isArcher = id.contains("archer") || branch.contains("archer") || id.startsWith("a_");
+        boolean isMage = id.contains("mage") || branch.contains("mage") || id.startsWith("m_");
+        boolean isAssassin = id.contains("assassin") || branch.contains("assassin") || id.startsWith("as_");
+
+        if (isArcher) return kind == FrameKind.GOLD ? FRAME_ARCHER_GOLD : FRAME_ARCHER_SILVER;
+        if (isMage) return kind == FrameKind.GOLD ? FRAME_MAGE_GOLD : FRAME_MAGE_SILVER;
+        if (isAssassin) return kind == FrameKind.GOLD ? FRAME_ASSASSIN_GOLD : FRAME_ASSASSIN_SILVER;
+        return kind == FrameKind.GOLD ? FRAME_WARRIOR_GOLD : FRAME_WARRIOR_SILVER;
+    }
+
+    private void drawTalentOutline(GuiGraphics gui, Talent t, int outlineColor) {
+        int x = t.x;
+        int y = t.y;
+        int halfSize = 74;
+        String id = t.id.toLowerCase();
+        String branch = t.branch.toLowerCase();
+
+        if (id.contains("archer") || branch.contains("archer") || id.startsWith("a_")) {
+            drawPolygonOutline(gui, x, y, halfSize, 6, 90f, outlineColor);
+        } else if (id.contains("mage") || branch.contains("mage") || id.startsWith("m_")) {
+            drawPolygonOutline(gui, x, y, halfSize, 32, 0f, outlineColor);
+        } else if (id.contains("assassin") || branch.contains("assassin") || id.startsWith("as_")) {
+            drawPolygonOutline(gui, x, y, (int) (halfSize * 1.1), 4, 0f, outlineColor);
+        } else {
+            drawPolygonOutline(gui, x, y, (int) (halfSize * 1.414), 4, 45f, outlineColor);
+        }
+    }
+
+    private void drawPolygonOutline(GuiGraphics gui, int x, int y, int radius, int sides, float rotationDeg, int outlineColor) {
+        float angleStep = (float) (2 * Math.PI / sides);
+        float offset = (float) Math.toRadians(rotationDeg);
+        for (int i = 0; i < sides; i++) {
+            float a1 = i * angleStep + offset;
+            float a2 = (i + 1) * angleStep + offset;
+            int x1 = x + (int) (Math.cos(a1) * radius);
+            int y1 = y + (int) (Math.sin(a1) * radius);
+            int x2 = x + (int) (Math.cos(a2) * radius);
+            int y2 = y + (int) (Math.sin(a2) * radius);
+            drawOptimizedLine(gui, x1, y1, x2, y2, outlineColor);
         }
     }
 
@@ -265,11 +339,23 @@ public class TalentScreen extends Screen {
     }
 
     private void renderRepeatingBackground(GuiGraphics gui) {
+        gui.fill(0, 0, width, height, 0xFF000000);
+        RenderSystem.enableBlend();
         RenderSystem.setShaderTexture(0, BG);
-        int textureSize = 16;
-        int u = Math.round(-scrollX) % textureSize;
-        int v = Math.round(-scrollY) % textureSize;
-        gui.blit(BG, 0, 0, (float)u, (float)v, width, height, textureSize, textureSize);
+
+        int texW = 4096;
+        int texH = 4096;
+        float scale = Math.min(width / (float) texW, height / (float) texH);
+        int drawW = Math.max(1, Math.round(texW * scale));
+        int drawH = Math.max(1, Math.round(texH * scale));
+        int x = (width - drawW) / 2;
+        int y = (height - drawH) / 2;
+
+        gui.pose().pushPose();
+        gui.pose().translate(x, y, 0);
+        gui.pose().scale(scale, scale, 1.0f);
+        gui.blit(BG, 0, 0, 0, 0, texW, texH, texW, texH);
+        gui.pose().popPose();
     }
 
     private void drawOptimizedLine(GuiGraphics gui, int x1, int y1, int x2, int y2, int color) {
@@ -350,6 +436,12 @@ public class TalentScreen extends Screen {
 
     private boolean isBranchBlocked(Talent t) {
         if (t.branch.isEmpty() || clientTalents.contains(t.id)) return false;
+        Talent root = Talent.subclassRootFor(t);
+        if (root != null) {
+            for (Talent b : Talent.subclassBasesFor(t)) {
+                if (b != root && clientTalents.contains(b.id)) return true;
+            }
+        }
         for (String ownedId : clientTalents) {
             Talent owned = Talent.getById(ownedId);
             if (owned == null || owned.branch.isEmpty() || owned == t) continue;
@@ -411,21 +503,27 @@ public class TalentScreen extends Screen {
     private boolean isTalentVisible(Talent t) {
         if (clientTalents.contains(t.id)) return true;
         if (t.parents.length == 0) return true;
-        String chosen = getChosenClassBaseIdClient();
+        String chosen = getChosenTopClassBaseIdClient();
         if (chosen == null) return false;
         if (Arrays.stream(t.parents).anyMatch(p -> p.id.equals("start"))) return t.id.equals(chosen);
         if (t.id.equals(chosen)) return true;
-        return isDescendantOfChosen(t, chosen);
+        if (!isDescendantOfChosen(t, chosen)) return false;
+
+        Talent root = Talent.subclassRootFor(t);
+        if (root != null) {
+            Talent chosenSub = null;
+            for (Talent b : Talent.subclassBasesFor(t)) {
+                if (clientTalents.contains(b.id)) { chosenSub = b; break; }
+            }
+            if (chosenSub != null) {
+                return root == chosenSub;
+            }
+        }
+
+        return true;
     }
 
-    public static String getChosenClassBaseIdClient() {
-        if (clientTalents.contains("m_cleric_base")) return "m_cleric_base";
-        if (clientTalents.contains("m_summoner_base")) return "m_summoner_base";
-        if (clientTalents.contains("m_spellcaster_base")) return "m_spellcaster_base";
-        if (clientTalents.contains("a_hunter_base")) return "a_hunter_base";
-        if (clientTalents.contains("a_ranger_base")) return "a_ranger_base";
-        if (clientTalents.contains("a_musketeer_base")) return "a_musketeer_base";
-
+    public static String getChosenTopClassBaseIdClient() {
         if (clientTalents.contains("warrior_base")) return "warrior_base";
         if (clientTalents.contains("archer_base")) return "archer_base";
         if (clientTalents.contains("mage_base")) return "mage_base";

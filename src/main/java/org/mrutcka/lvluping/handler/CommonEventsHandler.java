@@ -25,6 +25,7 @@ import net.minecraft.world.level.block.BaseFireBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.level.ClipContext;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -223,6 +224,37 @@ public class CommonEventsHandler {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
         if (sp.level().isClientSide()) return;
         enforceLightFormAnchor(sp);
+        long gameTime = sp.level().getGameTime();
+        long climbUntil = sp.getPersistentData().getLong(TalentAbilityHandler.AS_WANDERER_WALL_CLIMB_UNTIL_KEY);
+        if (climbUntil > gameTime && hasWallForClimb(sp)) {
+            Vec3 m = sp.getDeltaMovement();
+            double up = sp.isShiftKeyDown() ? 0.12 : 0.26;
+            sp.setDeltaMovement(m.x, Math.min(0.48, m.y + up), m.z);
+            sp.fallDistance = 0f;
+            sp.hurtMarked = true;
+        }
+    }
+
+    private static boolean hasWallForClimb(ServerPlayer p) {
+        var level = p.serverLevel();
+        double px = p.getX();
+        double pz = p.getZ();
+        double[] heights = {0.25, 0.55 * p.getBbHeight(), 0.85 * p.getBbHeight()};
+        for (double dy : heights) {
+            Vec3 base = new Vec3(px, p.getY() + dy, pz);
+            for (Direction dir : Direction.Plane.HORIZONTAL) {
+                Vec3 end = base.add(dir.getStepX() * 0.55, 0, dir.getStepZ() * 0.55);
+                var hit = level.clip(new ClipContext(base, end, ClipContext.Block.COLLIDER, ClipContext.Fluid.NONE, p));
+                if (hit instanceof BlockHitResult && hit.getType() == HitResult.Type.BLOCK) {
+                    var bhr = (BlockHitResult) hit;
+                    var state = level.getBlockState(bhr.getBlockPos());
+                    if (!state.isAir() && !state.getCollisionShape(level, bhr.getBlockPos()).isEmpty()) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
     }
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
@@ -268,6 +300,10 @@ public class CommonEventsHandler {
             if (player instanceof ServerPlayer sp) {
                 Set<String> talents = PlayerLevels.getPlayerTalents(sp.getUUID());
                 long gameTime = sp.level().getGameTime();
+                long climbUntil = sp.getPersistentData().getLong(TalentAbilityHandler.AS_WANDERER_WALL_CLIMB_UNTIL_KEY);
+                if (climbUntil > 0 && climbUntil <= gameTime) {
+                    sp.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_WALL_CLIMB_UNTIL_KEY);
+                }
                 long unbreakableAbsorbUntil = sp.getPersistentData().getLong(W_UNBREAKABLE_ABSORB_UNTIL_KEY);
                 if (unbreakableAbsorbUntil > 0 && unbreakableAbsorbUntil <= gameTime) {
                     var pd = sp.getPersistentData();
@@ -732,18 +768,21 @@ public class CommonEventsHandler {
                 }
                 long barrUntil = p.getPersistentData().getLong("lvluping_as_barricade_remove_at");
                 if (barrUntil > 0 && barrUntil <= time) {
-                    int bx = p.getPersistentData().getInt("lvluping_as_barricade_x");
-                    int by = p.getPersistentData().getInt("lvluping_as_barricade_y");
-                    int bz = p.getPersistentData().getInt("lvluping_as_barricade_z");
-                    for (int h = 0; h < 2; h++) {
-                        var pos = new net.minecraft.core.BlockPos(bx, by + h, bz);
-                        if (serverLevel.getBlockState(pos).is(Blocks.OAK_PLANKS)) {
-                            serverLevel.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-                        }
-                    }
+                    int barrX = p.getPersistentData().getInt("lvluping_as_barricade_x");
+                    int barrY = p.getPersistentData().getInt("lvluping_as_barricade_y");
+                    int barrZ = p.getPersistentData().getInt("lvluping_as_barricade_z");
+                    float barrRot = p.getPersistentData().getFloat(TalentAbilityHandler.AS_WANDERER_BARRICADE_Y_ROT_KEY);
+                    TalentAbilityHandler.removeAssassinBarricadeBarriers(serverLevel, barrX, barrY, barrZ, barrRot);
                     p.getPersistentData().remove("lvluping_as_barricade_remove_at");
+                    p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_BARRICADE_Y_ROT_KEY);
+                    if (p.getPersistentData().hasUUID(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY)) {
+                        UUID vid = p.getPersistentData().getUUID(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY);
+                        TalentAbilityHandler.broadcastAssassinBarricadeHide(serverLevel, vid);
+                        p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY);
+                    }
                 }
-                if (p.getPersistentData().getLong("lvluping_as_tripwire_until") > time) {
+                long twUntil = p.getPersistentData().getLong("lvluping_as_tripwire_until");
+                if (twUntil > time) {
                     double x = p.getPersistentData().getDouble("lvluping_as_tripwire_x");
                     double y = p.getPersistentData().getDouble("lvluping_as_tripwire_y");
                     double z = p.getPersistentData().getDouble("lvluping_as_tripwire_z");
@@ -755,7 +794,19 @@ public class CommonEventsHandler {
                         e.hurt(p.damageSources().playerAttack(p), dmg);
                         e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 3, false, false));
                         p.getPersistentData().putLong("lvluping_as_tripwire_until", 0);
+                        if (p.getPersistentData().hasUUID(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY)) {
+                            UUID vid = p.getPersistentData().getUUID(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY);
+                            TalentAbilityHandler.broadcastAssassinTripwireHide(serverLevel, vid);
+                            p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY);
+                        }
                         break;
+                    }
+                } else if (twUntil > 0 && twUntil <= time) {
+                    p.getPersistentData().putLong("lvluping_as_tripwire_until", 0);
+                    if (p.getPersistentData().hasUUID(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY)) {
+                        UUID vid = p.getPersistentData().getUUID(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY);
+                        TalentAbilityHandler.broadcastAssassinTripwireHide(serverLevel, vid);
+                        p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_TRIPWIRE_VISUAL_KEY);
                     }
                 }
                 if (p.getPersistentData().getLong(TalentAbilityHandler.AS_WANDERER_THORN_TRAIL_UNTIL_KEY) > time) {
@@ -799,6 +850,14 @@ public class CommonEventsHandler {
                         }
                     }
                     serverLevel.sendParticles(ParticleTypes.HEART, x, y + 1.0, z, 3, r * 0.2, 0.2, r * 0.2, 0.01);
+                } else {
+                    long cu = p.getPersistentData().getLong(TalentAbilityHandler.AS_WANDERER_CAMP_UNTIL_KEY);
+                    if (cu > 0 && cu <= time && p.getPersistentData().hasUUID(TalentAbilityHandler.AS_WANDERER_CAMP_VISUAL_KEY)) {
+                        UUID vid = p.getPersistentData().getUUID(TalentAbilityHandler.AS_WANDERER_CAMP_VISUAL_KEY);
+                        TalentAbilityHandler.broadcastAssassinCampHide(serverLevel, vid);
+                        p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_CAMP_VISUAL_KEY);
+                        p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_CAMP_UNTIL_KEY);
+                    }
                 }
                 if (p.getPersistentData().getLong(TalentAbilityHandler.AS_WANDERER_DAGGER_RAIN_UNTIL_KEY) > time) {
                     int shots = p.getPersistentData().getInt(TalentAbilityHandler.AS_WANDERER_DAGGER_RAIN_SHOTS_KEY);
@@ -1148,6 +1207,9 @@ public class CommonEventsHandler {
     public static void onPlayerLogin(PlayerEvent.PlayerLoggedInEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             TalentAbilityHandler.syncAllCooldowns(player);
+            if (PlayerLevels.getCooldown(player.getUUID(), "cd_slide") <= 0) {
+                TalentAbilityHandler.refillSlideCharges(player);
+            }
         }
     }
 
@@ -1155,6 +1217,9 @@ public class CommonEventsHandler {
     public static void onPlayerRespawn(PlayerEvent.PlayerRespawnEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             TalentAbilityHandler.syncAllCooldowns(player);
+            if (PlayerLevels.getCooldown(player.getUUID(), "cd_slide") <= 0) {
+                TalentAbilityHandler.refillSlideCharges(player);
+            }
         }
     }
 
@@ -1162,6 +1227,9 @@ public class CommonEventsHandler {
     public static void onPlayerChangedDimension(PlayerEvent.PlayerChangedDimensionEvent event) {
         if (event.getEntity() instanceof ServerPlayer player) {
             TalentAbilityHandler.syncAllCooldowns(player);
+            if (PlayerLevels.getCooldown(player.getUUID(), "cd_slide") <= 0) {
+                TalentAbilityHandler.refillSlideCharges(player);
+            }
         }
     }
 
@@ -1190,6 +1258,9 @@ public class CommonEventsHandler {
             val -= 1;
             PlayerLevels.setCooldown(player.getUUID(), key, val);
             player.getPersistentData().putInt(key, val);
+            if (val == 0 && "cd_slide".equals(key) && player instanceof ServerPlayer sp) {
+                TalentAbilityHandler.refillSlideCharges(sp);
+            }
         } else {
             player.getPersistentData().putInt(key, 0);
         }
@@ -1216,11 +1287,6 @@ public class CommonEventsHandler {
         Set<String> talents = PlayerLevels.getPlayerTalents(attacker.getUUID());
 
         // --- A_DAGGER ---
-        if (TalentAbilityHandler.isDagger(attacker.getMainHandItem().getItem())) {
-            if (!talents.contains("a_dagger")) {
-                event.setCanceled(true);
-            }
-        }
     }
 
     @SubscribeEvent
@@ -1278,7 +1344,7 @@ public class CommonEventsHandler {
         TalentAbilityHandler.onArcherArrowSpawned(sp, arrow);
     }
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void onEntityTickPost(EntityTickEvent.Post event) {
         if (!(event.getEntity() instanceof LivingEntity living)) return;
         if (living.level().isClientSide() || !(living.level() instanceof ServerLevel sl)) return;
@@ -1337,6 +1403,7 @@ public class CommonEventsHandler {
                 living.discard();
             }
         }
+
     }
 
     private static void clearArrowNextArrowNbt(CompoundTag ad) {
@@ -1349,6 +1416,24 @@ public class CommonEventsHandler {
 
     private static boolean isRangerArrowHeadshot(AbstractArrow arrow, LivingEntity victim) {
         return arrow.getY() >= victim.getEyeY() - 0.4;
+    }
+
+    private static boolean livingHasHarmfulDebuff(LivingEntity e) {
+        for (MobEffectInstance inst : e.getActiveEffects()) {
+            if (inst == null || inst.getEffect() == null) continue;
+            if (inst.getEffect().value().getCategory() == MobEffectCategory.HARMFUL) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private static void spawnThunderAt(ServerLevel sl, Vec3 pos) {
+        var bolt = new net.minecraft.world.entity.LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, sl);
+        bolt.moveTo(pos.x, pos.y, pos.z);
+        bolt.setVisualOnly(true);
+        sl.addFreshEntity(bolt);
+        sl.playSound(null, pos.x, pos.y, pos.z, SoundEvents.TRIDENT_THUNDER, SoundSource.PLAYERS, 0.5f, 1.6f);
     }
 
     private static void handleRangerArrowImpact(ServerLevel sl, AbstractArrow arrow, ServerPlayer owner, HitResult hit) {
@@ -1373,7 +1458,12 @@ public class CommonEventsHandler {
 
         CompoundTag ad = arrow.getPersistentData();
         int eff = ad.getInt(TalentAbilityHandler.A_NEXT_ARROW_EFFECT_KEY);
-        if (eff == 2 && hit instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity victim && victim.isAlive()) {
+        if (eff == 4) {
+            spawnThunderAt(sl, pos);
+            if (hit instanceof BlockHitResult) {
+                clearArrowNextArrowNbt(ad);
+            }
+        } else if (eff == 2 && hit instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity victim && victim.isAlive()) {
             if (!victim.isAlliedTo(owner)) {
                 int slowTicks = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P1_KEY);
                 int slowAmp = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
@@ -1395,9 +1485,6 @@ public class CommonEventsHandler {
                 vpd.putUUID(TalentAbilityHandler.RANGER_ROOTS_OWNER_KEY, owner.getUUID());
                 TalentAbilityHandler.broadcastRangerRootsTargetShow(sl, victim.getId(), until);
                 sl.playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.VINE_PLACE, SoundSource.PLAYERS, 0.85f, 0.95f);
-                int rl = PlayerLevels.getAbilityLevel(owner.getUUID(), "a_ult_ranger_roots", ot);
-                int cdTicks = AbilityUpgradeConfig.getInt("a_ult_ranger_roots", "cooldown", rl, 1000);
-                TalentAbilityHandler.setCooldown(owner, "cd_a_ult_ranger_roots", cdTicks);
             }
             clearArrowNextArrowNbt(ad);
         } else if (eff == 14 && hit instanceof BlockHitResult) {
@@ -1618,11 +1705,6 @@ public class CommonEventsHandler {
                 } else if (eff == 4) {
                     float bonus = ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P1_KEY);
                     amount += Math.max(0f, bonus);
-                    var bolt = new net.minecraft.world.entity.LightningBolt(net.minecraft.world.entity.EntityType.LIGHTNING_BOLT, sl);
-                    bolt.moveTo(victim.getX(), victim.getY(), victim.getZ());
-                    bolt.setVisualOnly(true);
-                    sl.addFreshEntity(bolt);
-                    sl.playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.TRIDENT_THUNDER, SoundSource.PLAYERS, 0.5f, 1.6f);
                 } else if (eff == 5) {
                     double r = ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P1_KEY);
                     int root = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
@@ -1697,6 +1779,11 @@ public class CommonEventsHandler {
                 int fl = PlayerLevels.getAbilityLevel(owner.getUUID(), "a_musketeer_fast_hand", ot);
                 float mult = (float) AbilityUpgradeConfig.getDouble("a_musketeer_fast_hand", "ranged_damage_mult", fl, 1.05);
                 if (mult > 0.01f) event.setAmount(event.getAmount() * mult);
+            }
+            if (ot.contains("a_musketeer_trained_eye") && livingHasHarmfulDebuff(victim)) {
+                int tel = PlayerLevels.getAbilityLevel(owner.getUUID(), "a_musketeer_trained_eye", ot);
+                float mult = (float) AbilityUpgradeConfig.getDouble("a_musketeer_trained_eye", "damage_mult_vs_cc", tel, 1.15);
+                if (mult > 1.0f) event.setAmount(event.getAmount() * mult);
             }
 
             if (ot.contains("a_ult_musketeer_execution")) {
@@ -2139,6 +2226,10 @@ public class CommonEventsHandler {
             LivingEntity target = event.getEntity();
             long currentTime = attacker.level().getGameTime();
 
+            if (talents.contains("a_dagger") && TalentAbilityHandler.isDagger(attacker.getMainHandItem().getItem())) {
+                event.setNewDamage(event.getNewDamage() * 1.2f);
+            }
+
             long blessUntil = attacker.getPersistentData().getLong("lvluping_blessing_damage_until");
             if (blessUntil > currentTime) {
                 float bMult = attacker.getPersistentData().getFloat("lvluping_blessing_damage_mult");
@@ -2434,6 +2525,7 @@ public class CommonEventsHandler {
     }
 
     private static final String PURITY_REAPPLY_SKIP = "lvluping_purity_reapply_skip";
+    private static final String SHADOW_WRAP_REAPPLY_SKIP = "lvluping_shadow_wrap_reapply_skip";
 
     @SubscribeEvent
     public static void onMobEffectAdded(MobEffectEvent.Added event) {
@@ -2451,6 +2543,33 @@ public class CommonEventsHandler {
         if (living.getPersistentData().getBoolean(PURITY_REAPPLY_SKIP)) {
             living.getPersistentData().remove(PURITY_REAPPLY_SKIP);
             return;
+        }
+        if (living.getPersistentData().getBoolean(SHADOW_WRAP_REAPPLY_SKIP)) {
+            living.getPersistentData().remove(SHADOW_WRAP_REAPPLY_SKIP);
+            return;
+        }
+        if (living instanceof ServerPlayer spInv && event.getEffectInstance() != null) {
+            MobEffectInstance inst = event.getEffectInstance();
+            if (inst.getEffect().is(MobEffects.INVISIBILITY)) {
+                Set<String> talents = PlayerLevels.getPlayerTalents(spInv.getUUID());
+                if (talents.contains("as_wanderer_shadow_wrap")) {
+                    int lvl = PlayerLevels.getAbilityLevel(spInv.getUUID(), "as_wanderer_shadow_wrap", talents);
+                    int pct = AbilityUpgradeConfig.getInt("as_wanderer_shadow_wrap", "invis_duration_bonus_pct", lvl, 15);
+                    int newDur = (int) Math.round(inst.getDuration() * (1.0 + pct / 100.0));
+                    if (newDur < 1) newDur = 1;
+                    if (newDur > inst.getDuration()) {
+                        var holder = inst.getEffect();
+                        int amp = inst.getAmplifier();
+                        boolean amb = inst.isAmbient();
+                        boolean vis = inst.isVisible();
+                        boolean show = inst.showIcon();
+                        spInv.getPersistentData().putBoolean(SHADOW_WRAP_REAPPLY_SKIP, true);
+                        spInv.removeEffect(holder);
+                        spInv.addEffect(new MobEffectInstance(holder, newDur, amp, amb, vis, show));
+                    }
+                    return;
+                }
+            }
         }
         if (!(living instanceof ServerPlayer player)) return;
         Set<String> talents = PlayerLevels.getPlayerTalents(player.getUUID());

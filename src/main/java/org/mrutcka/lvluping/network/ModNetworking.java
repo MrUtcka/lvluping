@@ -134,5 +134,36 @@ public class ModNetworking {
                 S2CRangerRootsTargetHide.STREAM_CODEC,
                 S2CRangerRootsTargetHide::handle
         );
+
+        registrar.playToClient(
+                S2CAssassinBarricadeShow.TYPE,
+                S2CAssassinBarricadeShow.STREAM_CODEC,
+                S2CAssassinBarricadeShow::handle
+        );
+        registrar.playToClient(
+                S2CAssassinBarricadeHide.TYPE,
+                S2CAssassinBarricadeHide.STREAM_CODEC,
+                S2CAssassinBarricadeHide::handle
+        );
+        registrar.playToClient(
+                S2CAssassinTripwireShow.TYPE,
+                S2CAssassinTripwireShow.STREAM_CODEC,
+                S2CAssassinTripwireShow::handle
+        );
+        registrar.playToClient(
+                S2CAssassinTripwireHide.TYPE,
+                S2CAssassinTripwireHide.STREAM_CODEC,
+                S2CAssassinTripwireHide::handle
+        );
+        registrar.playToClient(
+                S2CAssassinCampShow.TYPE,
+                S2CAssassinCampShow.STREAM_CODEC,
+                S2CAssassinCampShow::handle
+        );
+        registrar.playToClient(
+                S2CAssassinCampHide.TYPE,
+                S2CAssassinCampHide.STREAM_CODEC,
+                S2CAssassinCampHide::handle
+        );
     }
 }

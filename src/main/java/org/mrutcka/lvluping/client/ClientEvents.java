@@ -58,6 +58,14 @@ public class ClientEvents {
             "key.categories.lvluping"
     );
 
+    /** Шестой слот: третья способность подкласса ассасина (ослепление / растяжка / разрыв), без пересечения с ультом (G). */
+    public static final KeyMapping ABILITY_KEY_6 = new KeyMapping(
+            "key.lvluping.ability6",
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_H,
+            "key.categories.lvluping"
+    );
+
     @EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
         @SubscribeEvent
@@ -68,6 +76,7 @@ public class ClientEvents {
             event.register(ABILITY_KEY_3);
             event.register(ABILITY_KEY_4);
             event.register(ABILITY_KEY_5);
+            event.register(ABILITY_KEY_6);
         }
     }
 
@@ -82,7 +91,7 @@ public class ClientEvents {
         @SubscribeEvent
         public static void onClientTick(ClientTickEvent.Post event) {
             if (TALENT_KEY.consumeClick() && Minecraft.getInstance().screen == null) {
-                if (TalentScreen.getChosenClassBaseIdClient() == null) Minecraft.getInstance().setScreen(new ClassSelectScreen());
+                if (TalentScreen.getChosenTopClassBaseIdClient() == null) Minecraft.getInstance().setScreen(new ClassSelectScreen());
                 else Minecraft.getInstance().setScreen(new TalentScreen());
             }
             while (ABILITY_KEY_1.consumeClick()) {
@@ -99,6 +108,9 @@ public class ClientEvents {
             }
             while (ABILITY_KEY_5.consumeClick()) {
                 PacketDistributor.sendToServer(new C2SUseAbility(4));
+            }
+            while (ABILITY_KEY_6.consumeClick()) {
+                PacketDistributor.sendToServer(new C2SUseAbility(5));
             }
 
             var player = Minecraft.getInstance().player;
@@ -230,6 +242,9 @@ public class ClientEvents {
             ThornBushClient.tick();
             LifeTotemClient.tick();
             RootsTargetClient.tick();
+            AssassinBarricadeClient.tick();
+            AssassinTripwireClient.tick();
+            AssassinCampClient.tick();
         }
 
         private static void tickCooldownDisplay(net.minecraft.world.entity.player.Player player, String key) {

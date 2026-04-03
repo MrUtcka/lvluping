@@ -29,4 +29,13 @@ public final class LvlupingItems {
     /** Модель тотема жизни (ульт рейнджера). */
     public static final Supplier<Item> RANGER_TOTEM_MODEL = ITEMS.register("ranger_totem_model",
             () -> new Item(new Item.Properties()));
+
+    public static final Supplier<Item> ASSASSIN_WALL_MODEL = ITEMS.register("assassin_wall_model",
+            () -> new Item(new Item.Properties()));
+
+    public static final Supplier<Item> ASSASSIN_TRIPWIRE_MODEL = ITEMS.register("assassin_tripwire_model",
+            () -> new Item(new Item.Properties()));
+
+    public static final Supplier<Item> ASSASSIN_CAMP_MODEL = ITEMS.register("assassin_camp_model",
+            () -> new Item(new Item.Properties()));
 }

@@ -121,20 +121,27 @@ public class PlayerLevels {
     public static int getTalentLimit(int stars) {
         return switch (stars) {
             case 1 -> 1;
-            case 2 -> 2;
-            case 3 -> 3;
-            case 4 -> 5;
-            case 5 -> 8;
-            case 6 -> 12;
-            case 7 -> 16;
+            case 2 -> 3;
+            case 3 -> 5;
+            case 4 -> 8;
+            case 5 -> 11;
+            case 6 -> 15;
+            case 7 -> 21;
             default -> 0;
         };
     }
 
     public static boolean isBranchBlocked(UUID uuid, Talent t) {
-        if (t.branch.isEmpty()) return false;
         Set<String> owned = getPlayerTalents(uuid);
 
+        Talent root = Talent.subclassRootFor(t);
+        if (root != null) {
+            for (Talent b : Talent.subclassBasesFor(t)) {
+                if (b != root && owned.contains(b.id)) return true;
+            }
+        }
+
+        if (t.branch.isEmpty()) return false;
         for (String id : owned) {
             Talent ot = Talent.getById(id);
             if (ot != null && ot != t && ot.branch.equals(t.branch)) {

@@ -30,6 +30,7 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.Mth;
 import net.neoforged.neoforge.network.PacketDistributor;
@@ -330,6 +331,13 @@ public class TalentAbilityHandler {
     public static final String A_HUNTER_TRAP_DMG_KEY = "lvluping_a_hunter_trap_dmg";
     public static final String A_HUNTER_TRAP_ROOT_KEY = "lvluping_a_hunter_trap_root";
     public static final String A_HUNTER_TRAP_VISUAL_KEY = "lvluping_a_hunter_trap_visual_id";
+    public static final String AS_WANDERER_BARRICADE_VISUAL_KEY = "lvluping_as_barricade_visual_id";
+    public static final String AS_WANDERER_BARRICADE_Y_ROT_KEY = "lvluping_as_barricade_y_rot";
+    /** Server: wall-climb from as_wanderer_climb until this game time. */
+    public static final String AS_WANDERER_WALL_CLIMB_UNTIL_KEY = "lvluping_wall_climb_until";
+    public static final String LVLUPING_SLIDE_CHARGES_KEY = "lvluping_slide_charges";
+    public static final String AS_WANDERER_TRIPWIRE_VISUAL_KEY = "lvluping_as_tripwire_visual_id";
+    public static final String AS_WANDERER_CAMP_VISUAL_KEY = "lvluping_as_camp_visual_id";
 
     public static void broadcastHunterTrapShow(ServerLevel sl, UUID vid, double x, double y, double z, float groundYRot, long untilGameTime) {
         var pkt = new S2CHunterTrapShow(vid, x, y, z, groundYRot, untilGameTime);
@@ -346,6 +354,78 @@ public class TalentAbilityHandler {
             if (sp.level() == sl) {
                 PacketDistributor.sendToPlayer(sp, pkt);
             }
+        }
+    }
+
+    public static void broadcastAssassinBarricadeShow(ServerLevel sl, UUID vid, double x, double y, double z, float groundYRot, long untilGameTime) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinBarricadeShow(vid, x, y, z, groundYRot, untilGameTime);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
+        }
+    }
+
+    public static void broadcastAssassinBarricadeHide(ServerLevel sl, UUID vid) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinBarricadeHide(vid);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
+        }
+    }
+
+    public static void placeAssassinBarricadeBarriers(ServerLevel sl, int bx, int by, int bz, float yRotDeg) {
+        double tRad = Math.toRadians(yRotDeg + 90.0);
+        double pdx = Math.cos(tRad);
+        double pdz = Math.sin(tRad);
+        for (int w = -1; w <= 1; w++) {
+            BlockPos column = BlockPos.containing(bx + 0.5 + pdx * w, by, bz + 0.5 + pdz * w);
+            for (int h = 0; h < 2; h++) {
+                BlockPos pos = column.above(h);
+                if (sl.getBlockState(pos).canBeReplaced()) {
+                    sl.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3);
+                }
+            }
+        }
+    }
+
+    public static void removeAssassinBarricadeBarriers(ServerLevel sl, int bx, int by, int bz, float yRotDeg) {
+        double tRad = Math.toRadians(yRotDeg + 90.0);
+        double pdx = Math.cos(tRad);
+        double pdz = Math.sin(tRad);
+        for (int w = -1; w <= 1; w++) {
+            BlockPos column = BlockPos.containing(bx + 0.5 + pdx * w, by, bz + 0.5 + pdz * w);
+            for (int h = 0; h < 2; h++) {
+                BlockPos pos = column.above(h);
+                if (sl.getBlockState(pos).is(Blocks.BARRIER)) {
+                    sl.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
+                }
+            }
+        }
+    }
+
+    public static void broadcastAssassinTripwireShow(ServerLevel sl, UUID vid, double x, double y, double z, float groundYRot, long untilGameTime) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinTripwireShow(vid, x, y, z, groundYRot, untilGameTime);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
+        }
+    }
+
+    public static void broadcastAssassinTripwireHide(ServerLevel sl, UUID vid) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinTripwireHide(vid);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
+        }
+    }
+
+    public static void broadcastAssassinCampShow(ServerLevel sl, UUID vid, double x, double y, double z, float groundYRot, long untilGameTime) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinCampShow(vid, x, y, z, groundYRot, untilGameTime);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
+        }
+    }
+
+    public static void broadcastAssassinCampHide(ServerLevel sl, UUID vid) {
+        var pkt = new org.mrutcka.lvluping.network.S2CAssassinCampHide(vid);
+        for (ServerPlayer sp : sl.players()) {
+            if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
         }
     }
 
@@ -440,16 +520,6 @@ public class TalentAbilityHandler {
         }
         long time = sp.level().getGameTime();
         Set<String> talents = PlayerLevels.getPlayerTalents(sp.getUUID());
-        eff = ad.getInt(A_NEXT_ARROW_EFFECT_KEY);
-        if (eff == 0 && talents.contains("a_ult_ranger_roots") && pd.getInt("cd_a_ult_ranger_roots") <= 0) {
-            int lvl = PlayerLevels.getAbilityLevel(sp.getUUID(), "a_ult_ranger_roots", talents);
-            int rootTicks = AbilityUpgradeConfig.getInt("a_ult_ranger_roots", "root_ticks", lvl, 80);
-            float dps = (float) AbilityUpgradeConfig.getDouble("a_ult_ranger_roots", "dps", lvl, 1.0);
-            ad.putInt(A_NEXT_ARROW_EFFECT_KEY, 14);
-            ad.putFloat(A_NEXT_ARROW_P1_KEY, rootTicks);
-            ad.putFloat(A_NEXT_ARROW_P2_KEY, dps);
-            ad.putLong(A_NEXT_ARROW_UNTIL_KEY, time + 400);
-        }
         eff = ad.getInt(A_NEXT_ARROW_EFFECT_KEY);
         if (eff == 0 && talents.contains("a_ranger_thunder_arrow") && pd.getInt("cd_a_ranger_thunder_arrow") <= 0) {
             int lvl = PlayerLevels.getAbilityLevel(sp.getUUID(), "a_ranger_thunder_arrow", talents);
@@ -631,6 +701,27 @@ public class TalentAbilityHandler {
         }
     }
 
+    /** Base 1 + bonus from as_wanderer_double_dodge (typically +2 → 3 total). */
+    public static int getSlideMaxCharges(ServerPlayer player, Set<String> talents) {
+        if (!talents.contains("as_wanderer_double_dodge")) return 1;
+        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_double_dodge", talents);
+        int bonus = AbilityUpgradeConfig.getInt("as_wanderer_double_dodge", "bonus_charges", lvl, 2);
+        return 1 + Math.max(0, bonus);
+    }
+
+    public static void refillSlideCharges(ServerPlayer player) {
+        Set<String> talents = PlayerLevels.getPlayerTalents(player.getUUID());
+        if (!talents.contains("as_slide")) return;
+        int v = getSlideMaxCharges(player, talents);
+        player.getPersistentData().putInt(LVLUPING_SLIDE_CHARGES_KEY, v);
+        PacketDistributor.sendToPlayer(player, new S2CSyncCooldown(LVLUPING_SLIDE_CHARGES_KEY, v));
+    }
+
+    public static void syncSlideChargesToClient(ServerPlayer player) {
+        if (!PlayerLevels.getPlayerTalents(player.getUUID()).contains("as_slide")) return;
+        PacketDistributor.sendToPlayer(player, new S2CSyncCooldown(LVLUPING_SLIDE_CHARGES_KEY, player.getPersistentData().getInt(LVLUPING_SLIDE_CHARGES_KEY)));
+    }
+
     private static double getSummonerManaCost(ServerPlayer player, Set<String> talents, double baseCost) {
         double out = baseCost;
         if (talents.contains("m_summoner_base")) {
@@ -686,6 +777,7 @@ public class TalentAbilityHandler {
             }
         }
         PacketDistributor.sendToPlayer(player, new S2CSyncCooldown("lvluping_ranger_evasion_stacks", player.getPersistentData().getInt("lvluping_ranger_evasion_stacks")));
+        syncSlideChargesToClient(player);
     }
 
     public static void handleAbilityUse(ServerPlayer player, int slot) {
@@ -719,16 +811,15 @@ public class TalentAbilityHandler {
                         int bx = (int) Math.floor(player.getX() + look.x * 2.0);
                         int by = (int) Math.floor(player.getY());
                         int bz = (int) Math.floor(player.getZ() + look.z * 2.0);
-                        for (int h = 0; h < 2; h++) {
-                            var pos = new net.minecraft.core.BlockPos(bx, by + h, bz);
-                            if (sl.getBlockState(pos).canBeReplaced()) {
-                                sl.setBlock(pos, Blocks.OAK_PLANKS.defaultBlockState(), 3);
-                            }
-                        }
                         data.putLong("lvluping_as_barricade_remove_at", sl.getGameTime() + dur);
                         data.putInt("lvluping_as_barricade_x", bx);
                         data.putInt("lvluping_as_barricade_y", by);
                         data.putInt("lvluping_as_barricade_z", bz);
+                        data.putFloat(AS_WANDERER_BARRICADE_Y_ROT_KEY, player.getYRot());
+                        placeAssassinBarricadeBarriers(sl, bx, by, bz, player.getYRot());
+                        UUID vid = UUID.randomUUID();
+                        data.putUUID(AS_WANDERER_BARRICADE_VISUAL_KEY, vid);
+                        broadcastAssassinBarricadeShow(sl, vid, bx + 0.5, by, bz + 0.5, player.getYRot(), data.getLong("lvluping_as_barricade_remove_at"));
                         sl.playSound(null, bx, by, bz, SoundEvents.WOOD_PLACE, SoundSource.PLAYERS, 0.9f, 1.0f);
                         setCooldown(player, "cd_as_wanderer_barricade", cd);
                     }
@@ -1026,13 +1117,14 @@ public class TalentAbilityHandler {
                         LivingEntity t = getTargetInFront(player, 4.0, 35.0);
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_rogue_trip", talents);
                         int stun = AbilityUpgradeConfig.getInt("as_rogue_trip", "stun_ticks", lvl, 40);
+                        int slowAmp = AbilityUpgradeConfig.getInt("as_rogue_trip", "slow_amp", lvl, 2);
                         float mult = (float) AbilityUpgradeConfig.getDouble("as_rogue_trip", "damage_mult", lvl, 1.1);
                         int cd = AbilityUpgradeConfig.getInt("as_rogue_trip", "cooldown", lvl, 200);
                         if (t != null && t != player) {
                             float dmg = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * mult;
                             t.hurt(player.damageSources().playerAttack(player), dmg);
-                            t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, stun, 7, false, false));
-                            t.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, stun, 0, false, false));
+                            t.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, stun, 0, false, false));
+                            t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, stun, Math.max(0, slowAmp), false, false));
                             sl.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0f, 0.8f);
                             setCooldown(player, "cd_as_rogue_trip", cd);
                         } else {
@@ -1046,8 +1138,7 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_climb", talents);
                         int dur = AbilityUpgradeConfig.getInt("as_wanderer_climb", "duration_ticks", lvl, 60);
                         int cd = AbilityUpgradeConfig.getInt("as_wanderer_climb", "cooldown", lvl, 180);
-                        player.addEffect(new MobEffectInstance(MobEffects.JUMP, dur, 2, false, false));
-                        player.addEffect(new MobEffectInstance(MobEffects.SLOW_FALLING, dur, 0, false, false));
+                        data.putLong(AS_WANDERER_WALL_CLIMB_UNTIL_KEY, sl.getGameTime() + dur);
                         setCooldown(player, "cd_as_wanderer_climb", cd);
                         sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.SPIDER_STEP, SoundSource.PLAYERS, 0.9f, 1.0f);
                     }
@@ -1329,73 +1420,22 @@ public class TalentAbilityHandler {
                 }
             }
             case 2 -> {
-                if (talents.contains("as_rogue_blind") && data.getInt("cd_as_rogue_blind") <= 0) {
-                    if (player.level() instanceof ServerLevel sl) {
-                        LivingEntity t = getTargetInFront(player, 6.0, 35.0);
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_rogue_blind", talents);
-                        int blind = AbilityUpgradeConfig.getInt("as_rogue_blind", "blind_ticks", lvl, 80);
-                        int weak = AbilityUpgradeConfig.getInt("as_rogue_blind", "weak_ticks", lvl, 80);
-                        int slow = AbilityUpgradeConfig.getInt("as_rogue_blind", "slow_ticks", lvl, 80);
-                        int cd = AbilityUpgradeConfig.getInt("as_rogue_blind", "cooldown", lvl, 180);
-                        if (t != null && t != player) {
-                            t.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, blind, 0, false, false));
-                            t.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, weak, 1, false, false));
-                            t.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, slow, 1, false, false));
-                            sl.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.8f, 1.0f);
-                            setCooldown(player, "cd_as_rogue_blind", cd);
-                        } else {
-                            setCooldown(player, "cd_as_rogue_blind", ABILITY_FAIL_COOLDOWN);
-                        }
-                    }
-                    return;
-                }
                 if (talents.contains("as_slide") && data.getInt("cd_slide") <= 0) {
+                    int maxCh = getSlideMaxCharges(player, talents);
+                    int ch = data.getInt(LVLUPING_SLIDE_CHARGES_KEY);
+                    if (ch <= 0) ch = maxCh;
+                    if (ch <= 0) return;
+                    ch--;
+                    data.putInt(LVLUPING_SLIDE_CHARGES_KEY, ch);
+                    PacketDistributor.sendToPlayer(player, new S2CSyncCooldown(LVLUPING_SLIDE_CHARGES_KEY, ch));
                     Vec3 look = player.getLookAngle();
                     player.setDeltaMovement(look.x * SLIDE_DELTA_MULT_XZ, 0, look.z * SLIDE_DELTA_MULT_XZ);
                     player.hurtMarked = true;
-                    setCooldown(player, "cd_slide", SLIDE_COOLDOWN);
+                    if (ch <= 0) {
+                        setCooldown(player, "cd_slide", SLIDE_COOLDOWN);
+                    }
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0f, 1.5f);
-                    return;
-                }
-                if (talents.contains("as_wanderer_tripwire") && data.getInt("cd_as_wanderer_tripwire") <= 0) {
-                    if (player.level() instanceof ServerLevel sl) {
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_tripwire", talents);
-                        double r = AbilityUpgradeConfig.getDouble("as_wanderer_tripwire", "radius", lvl, 2.0);
-                        float dmg = (float) AbilityUpgradeConfig.getDouble("as_wanderer_tripwire", "damage", lvl, 3.0);
-                        int cd = AbilityUpgradeConfig.getInt("as_wanderer_tripwire", "cooldown", lvl, 200);
-                        data.putLong("lvluping_as_tripwire_until", sl.getGameTime() + 200);
-                        data.putDouble("lvluping_as_tripwire_x", player.getX());
-                        data.putDouble("lvluping_as_tripwire_y", player.getY());
-                        data.putDouble("lvluping_as_tripwire_z", player.getZ());
-                        data.putDouble("lvluping_as_tripwire_r", r);
-                        data.putFloat("lvluping_as_tripwire_dmg", dmg);
-                        setCooldown(player, "cd_as_wanderer_tripwire", cd);
-                        sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIPWIRE_ATTACH, SoundSource.PLAYERS, 0.8f, 1.0f);
-                    }
-                    return;
-                }
-                if (talents.contains("as_assassin_rupture") && data.getInt("cd_as_assassin_rupture") <= 0) {
-                    if (player.level() instanceof ServerLevel sl) {
-                        LivingEntity t = getTargetInFront(player, 6.0, 35.0);
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_assassin_rupture", talents);
-                        float mult = (float) AbilityUpgradeConfig.getDouble("as_assassin_rupture", "bleed_tick_damage_mult", lvl, 1.5);
-                        int cd = AbilityUpgradeConfig.getInt("as_assassin_rupture", "cooldown", lvl, 180);
-                        if (t != null && t != player) {
-                            long until = t.getPersistentData().getLong("lvluping_as_bleed_until");
-                            float dps = t.getPersistentData().getFloat("lvluping_as_bleed_dps");
-                            if (until > sl.getGameTime() && dps > 0f) {
-                                float secs = (until - sl.getGameTime()) / 20f;
-                                t.hurt(player.damageSources().playerAttack(player), Math.max(0f, dps * secs * mult));
-                                t.getPersistentData().remove("lvluping_as_bleed_until");
-                                t.getPersistentData().remove("lvluping_as_bleed_dps");
-                                sl.sendParticles(ParticleTypes.DAMAGE_INDICATOR, t.getX(), t.getY() + 1.0, t.getZ(), 16, 0.3, 0.3, 0.3, 0.1);
-                            }
-                            setCooldown(player, "cd_as_assassin_rupture", cd);
-                        } else {
-                            setCooldown(player, "cd_as_assassin_rupture", ABILITY_FAIL_COOLDOWN);
-                        }
-                    }
                     return;
                 }
                 if (talents.contains("a_musketeer_aimed_shot") && data.getInt("cd_a_musketeer_aimed_shot") <= 0) {
@@ -1627,10 +1667,6 @@ public class TalentAbilityHandler {
                 if (talents.contains("as_smoke") && data.getInt("cd_smoke") <= 0) {
                     ServerLevel level = player.serverLevel();
                     int invisTicks = SMOKE_EFFECT_DURATION_TICKS;
-                    if (talents.contains("as_wanderer_shadow_wrap")) {
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_shadow_wrap", talents);
-                        invisTicks += AbilityUpgradeConfig.getInt("as_wanderer_shadow_wrap", "invis_bonus_ticks", lvl, 20);
-                    }
                     player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, invisTicks, 0, false, false));
                     level.playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 1.0f, 1.0f);
@@ -1896,6 +1932,9 @@ public class TalentAbilityHandler {
                         data.putDouble(AS_WANDERER_CAMP_Z_KEY, player.getZ());
                         data.putDouble(AS_WANDERER_CAMP_R_KEY, r);
                         data.putFloat(AS_WANDERER_CAMP_HPS_KEY, hps);
+                        UUID vid = UUID.randomUUID();
+                        data.putUUID(AS_WANDERER_CAMP_VISUAL_KEY, vid);
+                        broadcastAssassinCampShow(sl, vid, player.getX(), player.getY(), player.getZ(), player.getYRot(), data.getLong(AS_WANDERER_CAMP_UNTIL_KEY));
                         setCooldown(player, "cd_as_ult_wanderer_camp", cd);
                     }
                     return;
@@ -2136,6 +2175,22 @@ public class TalentAbilityHandler {
                         sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIDENT_THUNDER, SoundSource.PLAYERS, 0.6f, 0.8f);
                         sl.sendParticles(ParticleTypes.ELECTRIC_SPARK, player.getX(), player.getY() + 1.0, player.getZ(), 20, 0.5, 0.6, 0.5, 0.06);
                         setCooldown(player, "cd_a_ult_ranger_wrath", cd);
+                    }
+                    return;
+                }
+                if (talents.contains("a_ult_ranger_roots") && data.getInt("cd_a_ult_ranger_roots") <= 0) {
+                    if (player.level() instanceof ServerLevel sl) {
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "a_ult_ranger_roots", talents);
+                        int rootTicks = AbilityUpgradeConfig.getInt("a_ult_ranger_roots", "root_ticks", lvl, 80);
+                        float dps = (float) AbilityUpgradeConfig.getDouble("a_ult_ranger_roots", "dps", lvl, 1.0);
+                        int cd = AbilityUpgradeConfig.getInt("a_ult_ranger_roots", "cooldown", lvl, 1000);
+                        data.putInt(A_NEXT_ARROW_EFFECT_KEY, 14);
+                        data.putFloat(A_NEXT_ARROW_P1_KEY, rootTicks);
+                        data.putFloat(A_NEXT_ARROW_P2_KEY, dps);
+                        data.putLong(A_NEXT_ARROW_UNTIL_KEY, sl.getGameTime() + 400);
+                        sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.VINE_PLACE, SoundSource.PLAYERS, 0.85f, 1.1f);
+                        sl.sendParticles(ParticleTypes.HAPPY_VILLAGER, player.getX(), player.getY() + 1.0, player.getZ(), 14, 0.4, 0.35, 0.4, 0.03);
+                        setCooldown(player, "cd_a_ult_ranger_roots", cd);
                     }
                     return;
                 }
@@ -3031,6 +3086,67 @@ public class TalentAbilityHandler {
                             serverLevel.sendParticles(ParticleTypes.ENCHANT, player.getX() + rx * 0.92, player.getY() + 0.1, player.getZ() + rz * 0.92, 1, 0.02, 0.01, 0.02, 0.001);
                         }
                         setCooldown(player, "cd_w_ult_invulnerability", cd);
+                    }
+                    return;
+                }
+            }
+            case 5 -> {
+                if (talents.contains("as_rogue_blind") && data.getInt("cd_as_rogue_blind") <= 0) {
+                    if (player.level() instanceof ServerLevel sl) {
+                        LivingEntity t = getTargetInFront(player, 6.0, 35.0);
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_rogue_blind", talents);
+                        int blind = AbilityUpgradeConfig.getInt("as_rogue_blind", "blind_ticks", lvl, 80);
+                        int cd = AbilityUpgradeConfig.getInt("as_rogue_blind", "cooldown", lvl, 180);
+                        if (t != null && t != player) {
+                            t.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, blind, 0, false, false));
+                            sl.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.8f, 1.0f);
+                            setCooldown(player, "cd_as_rogue_blind", cd);
+                        } else {
+                            setCooldown(player, "cd_as_rogue_blind", ABILITY_FAIL_COOLDOWN);
+                        }
+                    }
+                    return;
+                }
+                if (talents.contains("as_wanderer_tripwire") && data.getInt("cd_as_wanderer_tripwire") <= 0) {
+                    if (player.level() instanceof ServerLevel sl) {
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_tripwire", talents);
+                        double r = AbilityUpgradeConfig.getDouble("as_wanderer_tripwire", "radius", lvl, 2.0);
+                        float dmg = (float) AbilityUpgradeConfig.getDouble("as_wanderer_tripwire", "damage", lvl, 3.0);
+                        int cd = AbilityUpgradeConfig.getInt("as_wanderer_tripwire", "cooldown", lvl, 200);
+                        data.putLong("lvluping_as_tripwire_until", sl.getGameTime() + 200);
+                        data.putDouble("lvluping_as_tripwire_x", player.getX());
+                        data.putDouble("lvluping_as_tripwire_y", player.getY());
+                        data.putDouble("lvluping_as_tripwire_z", player.getZ());
+                        data.putDouble("lvluping_as_tripwire_r", r);
+                        data.putFloat("lvluping_as_tripwire_dmg", dmg);
+                        UUID vid = UUID.randomUUID();
+                        data.putUUID(AS_WANDERER_TRIPWIRE_VISUAL_KEY, vid);
+                        broadcastAssassinTripwireShow(sl, vid, player.getX(), player.getY(), player.getZ(), player.getYRot(), data.getLong("lvluping_as_tripwire_until"));
+                        setCooldown(player, "cd_as_wanderer_tripwire", cd);
+                        sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TRIPWIRE_ATTACH, SoundSource.PLAYERS, 0.8f, 1.0f);
+                    }
+                    return;
+                }
+                if (talents.contains("as_assassin_rupture") && data.getInt("cd_as_assassin_rupture") <= 0) {
+                    if (player.level() instanceof ServerLevel sl) {
+                        LivingEntity t = getTargetInFront(player, 6.0, 35.0);
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_assassin_rupture", talents);
+                        float mult = (float) AbilityUpgradeConfig.getDouble("as_assassin_rupture", "bleed_tick_damage_mult", lvl, 1.5);
+                        int cd = AbilityUpgradeConfig.getInt("as_assassin_rupture", "cooldown", lvl, 180);
+                        if (t != null && t != player) {
+                            long until = t.getPersistentData().getLong("lvluping_as_bleed_until");
+                            float dps = t.getPersistentData().getFloat("lvluping_as_bleed_dps");
+                            if (until > sl.getGameTime() && dps > 0f) {
+                                float secs = (until - sl.getGameTime()) / 20f;
+                                t.hurt(player.damageSources().playerAttack(player), Math.max(0f, dps * secs * mult));
+                                t.getPersistentData().remove("lvluping_as_bleed_until");
+                                t.getPersistentData().remove("lvluping_as_bleed_dps");
+                                sl.sendParticles(ParticleTypes.DAMAGE_INDICATOR, t.getX(), t.getY() + 1.0, t.getZ(), 16, 0.3, 0.3, 0.3, 0.1);
+                            }
+                            setCooldown(player, "cd_as_assassin_rupture", cd);
+                        } else {
+                            setCooldown(player, "cd_as_assassin_rupture", ABILITY_FAIL_COOLDOWN);
+                        }
                     }
                     return;
                 }

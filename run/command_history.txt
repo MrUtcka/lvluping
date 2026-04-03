@@ -1,50 +1,50 @@
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/star add @a 7
+/lvl add @a 70
 /summon minecraft:zombie
 /star add @a 7
 /lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/give @a lvluping:hunter_trap_model
-/give @a lvluping:judgement_hammer
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/time set night
-/summon minecraft:zombie
+/gamemode survival
+/gamemode creative
 /gamemode survival
 /gamemode creative
 /star add @a 7
 /lvl add @a 70
+/effect give @a minecraft:slowness infinite
 /star add @a 7
 /lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/summon minecraft:zombie
 /gamemode survival
 /gamemode creative
 /star add @a 7
 /lvl add @a 70
-/time set night
+/summon minecraft:iron_golem
+/star add @a 7
+/lvl add @a 70
+/summon minecraft:iron_golem
 /star add @a 7
 /lvl add @a 70
 /star add @a 7
 /lvl add @a 70
+/star add @a 7
+/lvl add @a 70
+/summon minecraft:iron_golem
 /star add @a 7
 /lvl add @a 70
 /gamemode survival
-/summon minecraft:zombie
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/time set night
-/summon minecraft:zombie
+/tp ~ ~10 ~
 /gamemode creative
+/summon minecraft:iron_golem
+/
+/summon minecraft:iron_golem
+/star add @a 7
+/lvl add @a 70

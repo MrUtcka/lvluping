@@ -38,90 +38,90 @@ public enum Talent {
 
     //BARBARIAN
     W_BARBARIAN_BASE("w_barbarian_base", "Варвар", "Открывает путь Варвара.", 2, 1200, -600, "warrior_subclass", new Race[]{}, new Talent[]{W_EVO}),
-    W_BARBARIAN_BATTLE_CRY("w_barbarian_battle_cry", "Боевой клич", "Усиливает себя и ослабляет врагов рядом.", 2, 1200, -900, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
-    W_BARBARIAN_BLOODLETTING("w_barbarian_bloodletting", "Кровопускание", "Следующий удар накладывает кровотечение.", 2, 1500, -900, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_BATTLE_CRY}),
-    W_SEISMIC("w_seismic", "Сейсмический удар", "Удар по земле создаёт волну перед воином.", 2, 1050, -900, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
-    W_BLOODLUST("w_bloodlust", "Кровь за кровь", "Каждая пятая успешная атака восстанавливает здоровье от нанесённого урона.", 2, 1200, -1200, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
-    W_BARBARIAN_RAGE("w_barbarian_rage", "Ярость", "Чем меньше здоровья, тем выше наносимый урон.", 2, 1500, -1200, "barbarian", new Race[]{}, new Talent[]{W_BLOODLUST}),
-    W_BARBARIAN_KILL_FRENZY("w_barbarian_kill_frenzy", "Боевое безумие", "После убийства повышает скорость атаки на короткое время.", 2, 1050, -1200, "barbarian", new Race[]{}, new Talent[]{W_BLOODLUST}),
-    W_BARBARIAN_FRENZY("w_barbarian_frenzy", "Запредельная ярость", "Временно повышает урон и скорость атаки, но увеличивает входящий урон.", 2, 1800, -1200, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODLETTING}),
-    W_BARBARIAN_BLOODTHIRST("w_barbarian_bloodthirst", "Кровожадность", "При убийстве восстанавливает здоровье.", 2, 1350, -1500, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_KILL_FRENZY}),
-    W_BARBARIAN_THICK_SKIN("w_barbarian_thick_skin", "Толстая кожа", "Пассивно снижает входящий урон.", 2, 1800, -1500, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_RAGE}),
-    W_BARBARIAN_INDESTRUCTIBLE_BODY("w_barbarian_indestructible_body", "Непробиваемое тело", "Меньше лечения, но ниже входящий урон.", 3, 2100, -1500, "barbarian", new Race[]{}, new Talent[]{W_BARBARIAN_THICK_SKIN}),
-    W_ULT_BERSERK("w_ult_berserk", "Берсерк", "Ярость усиливает бойца и поддерживает натиск.", 5, 1200, -1800, "barbarian_ult", new Race[]{}, new Talent[]{W_BLOODLUST, W_SEISMIC}),
-    W_ULT_BARBARIAN_FEAST("w_ult_barbarian_feast", "Пиршество", "Наносит серию ударов, исцеляя себя.", 5, 1500, -1800, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODLETTING, W_BARBARIAN_FRENZY}),
-    W_ULT_BARBARIAN_TASTE_BLOOD("w_ult_barbarian_taste_blood", "Вкус крови", "На время превращает урон в мощное самовосстановление.", 5, 1800, -1800, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_FRENZY, W_BARBARIAN_INDESTRUCTIBLE_BODY}),
+    W_BARBARIAN_BATTLE_CRY("w_barbarian_battle_cry", "Боевой клич", "Усиливает себя и ослабляет врагов рядом.", 2, 1200, -900, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
+    W_BARBARIAN_BLOODLETTING("w_barbarian_bloodletting", "Кровопускание", "Следующий удар накладывает кровотечение.", 2, 1500, -900, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
+    W_SEISMIC("w_seismic", "Сейсмический удар", "Удар по земле создаёт волну перед воином.", 2, 1500, -600, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
+    W_BLOODLUST("w_bloodlust", "Кровь за кровь", "Каждая пятая успешная атака восстанавливает здоровье от нанесённого урона.", 2, 1800, -600, "barbarian2", new Race[]{}, new Talent[]{W_SEISMIC}),
+    W_BARBARIAN_RAGE("w_barbarian_rage", "Ярость", "Чем меньше здоровья, тем выше наносимый урон.", 2, 1800, -1200, "barbarian2", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODLETTING, W_BARBARIAN_BATTLE_CRY, W_SEISMIC}),
+    W_BARBARIAN_KILL_FRENZY("w_barbarian_kill_frenzy", "Боевое безумие", "После убийства повышает скорость атаки на короткое время.", 2, 1200, -1200, "barbarian2", new Race[]{}, new Talent[]{W_BARBARIAN_BATTLE_CRY}),
+    W_BARBARIAN_FRENZY("w_barbarian_frenzy", "Запредельная ярость", "Временно повышает урон и скорость атаки, но увеличивает входящий урон.", 2, 2100, -1500, "barbarian3", new Race[]{}, new Talent[]{W_BARBARIAN_RAGE}),
+    W_BARBARIAN_BLOODTHIRST("w_barbarian_bloodthirst", "Кровожадность", "При убийстве восстанавливает здоровье.", 2, 1600, -1500, "barbarian3", new Race[]{}, new Talent[]{W_BARBARIAN_KILL_FRENZY, W_BARBARIAN_RAGE}),
+    W_BARBARIAN_THICK_SKIN("w_barbarian_thick_skin", "Толстая кожа", "Пассивно снижает входящий урон.", 2, 2100, -1000, "barbarian3", new Race[]{}, new Talent[]{W_BARBARIAN_RAGE, W_BLOODLUST}),
+    W_BARBARIAN_INDESTRUCTIBLE_BODY("w_barbarian_indestructible_body", "Непробиваемое тело", "Меньше лечения, но ниже входящий урон.", 3, 2400, -600, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_THICK_SKIN}),
+    W_ULT_BERSERK("w_ult_berserk", "Берсерк", "Ярость усиливает бойца и поддерживает натиск.", 5, 2400, -1500, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_FRENZY}),
+    W_ULT_BARBARIAN_FEAST("w_ult_barbarian_feast", "Пиршество", "Наносит серию ударов, исцеляя себя.", 5, 2100, -1800, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_FRENZY}),
+    W_ULT_BARBARIAN_TASTE_BLOOD("w_ult_barbarian_taste_blood", "Вкус крови", "На время превращает урон в мощное самовосстановление.", 5, 1200, -1800, "barbarian_ult", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODTHIRST}),
 
     //SWORDMASTER
     W_SWORDMASTER_BASE("w_swordmaster_base", "Мастер меча", "Открывает путь Мастера Меча.", 2, 0, -600, "warrior_subclass", new Race[]{}, new Talent[]{W_EVO}),
-    W_SPIN("w_spin", "Рассекающий удар", "Активный круговой удар по врагам рядом.", 2, 0, -900, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
-    W_SWORDMASTER_CONCENTRATION("w_swordmaster_concentration", "Концентрация", "Кратковременно увеличивает урон ударов.", 2, -300, -900, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
-    W_ARMOR_BREAKER("w_armor_breaker", "Разрез брони", "Пассивный мощный удар, который пробивает защиту цели.", 3, 300, -900, "swordmaster", new Race[]{}, new Talent[]{W_SPIN}),
-    W_SWORDMASTER_STEEL_BODY("w_swordmaster_steel_body", "Стальное тело", "Временно снижает входящий урон вдвое.", 2, -600, -1200, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION}),
-    W_SWORDMASTER_SHARP_BLADE("w_swordmaster_sharp_blade", "Острое лезвие", "Шанс нанести удвоенный урон.", 2, 0, -1200, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION}),
-    W_SWORDMASTER_HARDENED_MASTERY("w_swordmaster_hardened_mastery", "Закалённое мастерство", "Пассивно увеличивает скорость атаки.", 2, -600, -1500, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_STEEL_BODY}),
-    W_SWORDMASTER_HAND_DEXTERITY("w_swordmaster_hand_dexterity", "Ловкость рук", "Пассивно ускоряет атаки.", 2, 0, -1500, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_SHARP_BLADE}),
-    W_SWORDMASTER_BALANCE("w_swordmaster_balance", "Баланс", "Без щита даёт дополнительную скорость атаки.", 2, 300, -1500, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_HAND_DEXTERITY}),
-    W_SWORDMASTER_AGILITY("w_swordmaster_agility", "Повышенная ловкость", "Пассивно увеличивает скорость передвижения.", 2, 600, -1500, "swordmaster", new Race[]{}, new Talent[]{W_SWORDMASTER_BALANCE}),
-    W_ULT_SWORDMASTER_OMNISLASH("w_ult_swordmaster_omnislash", "Омни-слэш", "Проводит серию быстрых ударов по цели.", 5, 0, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_ARMOR_BREAKER}),
+    W_SPIN("w_spin", "Рассекающий удар", "Активный круговой удар по врагам рядом.", 2, 300, -900, "swordmaster1", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
+    W_SWORDMASTER_CONCENTRATION("w_swordmaster_concentration", "Концентрация", "Кратковременно увеличивает урон ударов.", 2, -300, -900, "swordmaster1", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
+    W_ARMOR_BREAKER("w_armor_breaker", "Разрез брони", "Пассивный мощный удар, который пробивает защиту цели.", 3, 300, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SPIN}),
+    W_SWORDMASTER_STEEL_BODY("w_swordmaster_steel_body", "Стальное тело", "Временно снижает входящий урон вдвое.", 2, -300, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION}),
+    W_SWORDMASTER_SHARP_BLADE("w_swordmaster_sharp_blade", "Острое лезвие", "Шанс нанести удвоенный урон.", 2, 0, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION, W_SPIN}),
+    W_SWORDMASTER_HARDENED_MASTERY("w_swordmaster_hardened_mastery", "Закалённое мастерство", "Пассивно ускоряет атаки.", 2, -600, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_SWORDMASTER_STEEL_BODY}),
+    W_SWORDMASTER_HAND_DEXTERITY("w_swordmaster_hand_dexterity", "Ловкость рук", "Пассивно ускоряет атаки.", 2, -300, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_SWORDMASTER_SHARP_BLADE}),
+    W_SWORDMASTER_BALANCE("w_swordmaster_balance", "Баланс", "Без щита даёт дополнительную скорость атаки.", 2, 300, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_ARMOR_BREAKER}),
+    W_SWORDMASTER_AGILITY("w_swordmaster_agility", "Повышенная ловкость", "Увеличивает скорость передвижения.", 2, 600, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_ARMOR_BREAKER}),
+    W_ULT_SWORDMASTER_OMNISLASH("w_ult_swordmaster_omnislash", "Омни-слэш", "Проводит серию быстрых ударов по цели.", 5, -300, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_HAND_DEXTERITY}),
     W_ULT_SWORDMASTER_BLADE_WALL("w_ult_swordmaster_blade_wall", "Клинковая стена", "На время сбивает все летящие в вас снаряды.", 5, -600, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_HARDENED_MASTERY}),
-    W_ULT_SWORDMASTER_HURRICANE("w_ult_swordmaster_hurricane", "Ураган", "Резко ускоряет атаки и темп боя на короткое время.", 5, 300, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_BALANCE, W_ARMOR_BREAKER}),
-    W_ULT_SWORDMASTER_PERFECT_CUT("w_ult_swordmaster_perfect_cut", "Идеальный разрез", "Следующий удар наносит дополнительный урон от максимального здоровья цели.", 5, 600, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_ARMOR_BREAKER, W_SWORDMASTER_AGILITY}),
+    W_ULT_SWORDMASTER_HURRICANE("w_ult_swordmaster_hurricane", "Ураган", "Резко ускоряет атаки и темп боя на короткое время.", 5, 300, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_BALANCE}),
+    W_ULT_SWORDMASTER_PERFECT_CUT("w_ult_swordmaster_perfect_cut", "Идеальный разрез", "Следующий удар наносит дополнительный урон от максимального здоровья цели.", 5, 600, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_AGILITY}),
 
     // ======================== ЛУЧНИК ========================
     ARCHER_BASE("archer_base", "Лучник", "Меткость и ловкость", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
-    A_DASH("a_dash", "Рывок спиной", "Быстрый отскок назад", 2, -300, -300, "archer1", new Race[]{}, new Talent[]{ARCHER_BASE}),
-    A_DAGGER("a_dagger", "Кинжал", "Ближний бой для стрелка", 2, 0, -450, "archer2", new Race[]{}, new Talent[]{ARCHER_BASE}),
-    A_POWER("a_power", "Сильный выстрел", "Пробивает броню", 2, 300, -300, "archer3", new Race[]{}, new Talent[]{ARCHER_BASE}),
-    A_EVO("a_evo", "Эволюция", "Вы на пути к совершеству", 1, 0, -650, "archer", new Race[]{}, new Talent[]{A_DASH, A_DAGGER, A_POWER}),
+    A_DASH("a_dash", "Рывок спиной", "Быстрый отскок назад", 2, -300, -100, "archer1", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_DAGGER("a_dagger", "Кинжал", "Пассивно: урон кинжалом выше на 20%.", 2, 0, -200, "archer2", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_POWER("a_power", "Сильный выстрел", "Пробивает броню", 2, 300, -100, "archer3", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_EVO("a_evo", "Эволюция", "Вы на пути к совершеству", 1, 0, -400, "archer", new Race[]{}, new Talent[]{A_DASH, A_DAGGER, A_POWER}),
 
     //HUNTER
-    A_HUNTER_BASE("a_hunter_base", "Охотник", "Открывает путь Охотника.", 2, -1200, -900, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
-    A_HUNTER_TRAP("a_hunter_trap", "Капкан", "Ставит капкан. Враг, наступивший в него, получает урон и не может двигаться.", 2, -1200, -1200, "hunter", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
-    A_HUNTER_CALL_NATURE("a_hunter_call_nature", "Зов природы", "Призывает временного волка.", 2, -1500, -1200, "hunter", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
-    A_HUNTER_POISON_ARROW("a_hunter_poison_arrow", "Отравленная стрела", "Следующий выстрел отравляет цель.", 2, -900, -1200, "hunter", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
-    A_HUNTER_NET("a_hunter_net", "Ловчая сеть", "Обездвиживает цель и всех рядом.", 2, -1100, -1500, "hunter", new Race[]{}, new Talent[]{A_HUNTER_TRAP, A_HUNTER_POISON_ARROW}),
-    A_HUNTER_WOUNDING_SHOT("a_hunter_wounding_shot", "Ранящий выстрел", "Пассивно: выстрелы накладывают кровотечение.", 2, -1400, -1500, "hunter", new Race[]{}, new Talent[]{A_HUNTER_CALL_NATURE}),
-    A_HUNTER_ESCAPE("a_hunter_escape", "Бегство", "При получении урона даёт ускорение; есть время восстановления.", 2, -1200, -1800, "hunter", new Race[]{}, new Talent[]{A_HUNTER_TRAP}),
-    A_HUNTER_LIGHT_HAND("a_hunter_light_hand", "Лёгкая рука", "Есть шанс не тратить стрелы.", 2, -900, -1800, "hunter", new Race[]{}, new Talent[]{A_HUNTER_POISON_ARROW}),
-    A_HUNTER_STEADY_NERVES("a_hunter_steady_nerves", "Крепкие нервы", "При прицеливании получает сопротивление урону.", 2, -1500, -1800, "hunter", new Race[]{}, new Talent[]{A_HUNTER_CALL_NATURE}),
-    A_HUNTER_ANATOMY("a_hunter_anatomy", "Знание анатомии", "Выстрелы наносят больше урона.", 3, -1200, -2100, "hunter", new Race[]{}, new Talent[]{A_HUNTER_ESCAPE, A_HUNTER_LIGHT_HAND, A_HUNTER_STEADY_NERVES, A_HUNTER_WOUNDING_SHOT}),
-    A_ULT_HUNTER_ULT_SHOT("a_ult_hunter_ult_shot", "Ультимативный выстрел", "Следующий выстрел наносит огромный урон.", 5, -1500, -2400, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_ANATOMY}),
-    A_ULT_HUNTER_PACK("a_ult_hunter_pack", "Стая", "Призывает 3 волков, которые атакуют цель.", 5, -1200, -2400, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_ANATOMY}),
-    A_ULT_HUNTER_SNIPER("a_ult_hunter_sniper", "Снайперский выстрел", "Требует стоять на месте для прицеливания, затем наносит огромный урон.", 5, -900, -2400, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_ANATOMY}),
-    A_ULT_HUNTER_TRACK("a_ult_hunter_track", "Выследить жертву", "Помечает цель и усиливает урон по ней, позволяет видеть сквозь стены.", 5, -1200, -2700, "hunter_ult", new Race[]{}, new Talent[]{A_ULT_HUNTER_ULT_SHOT, A_ULT_HUNTER_PACK, A_ULT_HUNTER_SNIPER}),
+    A_HUNTER_BASE("a_hunter_base", "Охотник", "Открывает путь Охотника.", 2, -1000, -600, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
+    A_HUNTER_TRAP("a_hunter_trap", "Капкан", "Ставит капкан.", 2, -1300, -900, "hunter_sup1", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
+    A_HUNTER_CALL_NATURE("a_hunter_call_nature", "Зов природы", "Призывает волка.", 2, -1000, -900, "hunter1", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
+    A_HUNTER_POISON_ARROW("a_hunter_poison_arrow", "Отравленная стрела", "Следующий выстрел отравляет цель.", 2, -1300, -600, "hunter1", new Race[]{}, new Talent[]{A_HUNTER_BASE}),
+    A_HUNTER_NET("a_hunter_net", "Ловчая сеть", "Обездвиживает цель и всех рядом.", 2, -1600, -600, "hunter2", new Race[]{}, new Talent[]{A_HUNTER_POISON_ARROW}),
+    A_HUNTER_WOUNDING_SHOT("a_hunter_wounding_shot", "Ранящий выстрел", "Выстрелы накладывают кровотечение.", 2, -1000, -1200, "hunter2", new Race[]{}, new Talent[]{A_HUNTER_CALL_NATURE}),
+    A_HUNTER_ESCAPE("a_hunter_escape", "Бегство", "При получении урона даёт ускорение.", 2, -1500, -900, "hunter_sup3", new Race[]{}, new Talent[]{A_HUNTER_TRAP}),
+    A_HUNTER_LIGHT_HAND("a_hunter_light_hand", "Лёгкая рука", "Есть шанс не тратить стрелы.", 2, -1800, -900, "hunter3", new Race[]{}, new Talent[]{A_HUNTER_NET}),
+    A_HUNTER_STEADY_NERVES("a_hunter_steady_nerves", "Крепкие нервы", "Прицеливание дает сопротивление урону.", 2, -1300, -1100, "hunter_sup3", new Race[]{}, new Talent[]{A_HUNTER_TRAP}),
+    A_HUNTER_ANATOMY("a_hunter_anatomy", "Знание анатомии", "Выстрелы наносят больше урона.", 3, -1300, -1500, "hunter3", new Race[]{}, new Talent[]{A_HUNTER_WOUNDING_SHOT}),
+    A_ULT_HUNTER_ULT_SHOT("a_ult_hunter_ult_shot", "Ультимативный выстрел", "Следующий выстрел наносит огромный урон.", 5, -2000, -600, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_LIGHT_HAND}),
+    A_ULT_HUNTER_PACK("a_ult_hunter_pack", "Стая", "Призывает стаю волков, которые атакуют цель.", 5, -1600, -1700, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_ANATOMY}),
+    A_ULT_HUNTER_SNIPER("a_ult_hunter_sniper", "Снайперский выстрел", "Стоя на месте наносит огромный урон.", 5, -2000, -1200, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_LIGHT_HAND}),
+    A_ULT_HUNTER_TRACK("a_ult_hunter_track", "Выследить жертву", "Помечает цель и усиливает урон по ней, позволяет видеть сквозь стены.", 5, -1000, -1700, "hunter_ult", new Race[]{}, new Talent[]{A_HUNTER_ANATOMY}),
 
     //RANGER
-    A_RANGER_BASE("a_ranger_base", "Рейнджер", "Открывает путь Рейнджера.", 2, 0, -900, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
-    A_RANGER_ENTANGLE_ARROW("a_ranger_entangle_arrow", "Опутывающая стрела", "Следующий выстрел сильно замедляет.", 2, 0, -1200, "ranger", new Race[]{}, new Talent[]{A_RANGER_BASE}),
-    A_RANGER_EVASION("a_ranger_evasion", "Ускользание", "При получении урона есть шанс получить стак телепорта.", 2, -300, -1200, "ranger", new Race[]{}, new Talent[]{A_RANGER_BASE}),
-    A_RANGER_THUNDER_ARROW("a_ranger_thunder_arrow", "Громовая стрела", "Следующий выстрел вызывает молнию и доп. урон.", 2, 300, -1200, "ranger", new Race[]{}, new Talent[]{A_RANGER_BASE}),
-    A_RANGER_THORN_BUSH("a_ranger_thorn_bush", "Колючий куст", "Создаёт область шипов, замедляющую и ранящую врагов.", 2, 100, -1500, "ranger", new Race[]{}, new Talent[]{A_RANGER_ENTANGLE_ARROW, A_RANGER_THUNDER_ARROW}),
-    A_RANGER_QUICK_STEP("a_ranger_quick_step", "Быстрый шаг", "Пассивно: если долго не получаете урон, получаете ускорение и усиленный первый удар.", 2, -200, -1500, "ranger", new Race[]{}, new Talent[]{A_RANGER_EVASION}),
-    A_RANGER_AGILITY("a_ranger_agility", "Проворство", "Не получает урон от падения.", 2, 0, -1800, "ranger", new Race[]{}, new Talent[]{A_RANGER_ENTANGLE_ARROW}),
-    A_RANGER_STURDY_BOW("a_ranger_sturdy_bow", "Крепкий лук", "Лук ломается медленнее.", 2, 300, -1800, "ranger", new Race[]{}, new Talent[]{A_RANGER_THUNDER_ARROW}),
-    A_RANGER_NIMBLE_FINGERS("a_ranger_nimble_fingers", "Ловкие пальцы", "Шанс выстрелить две стрелы.", 2, -300, -1800, "ranger", new Race[]{}, new Talent[]{A_RANGER_EVASION}),
-    A_RANGER_BOW_MASTERY("a_ranger_bow_mastery", "Мастер лука", "Повышенный урон стрелой в голову.", 3, 0, -2100, "ranger", new Race[]{}, new Talent[]{A_RANGER_AGILITY, A_RANGER_STURDY_BOW, A_RANGER_NIMBLE_FINGERS, A_RANGER_QUICK_STEP}),
-    A_ULT_RANGER_WRATH("a_ult_ranger_wrath", "Гнев природы", "Стрела вызывает грозовую бурю в зоне поражения.", 5, -300, -2400, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
-    A_ULT_RANGER_LIFE_TOTEM("a_ult_ranger_life_totem", "Тотем жизни", "Ставит тотем, который лечит союзников рядом.", 5, 0, -2400, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_THORN_BUSH}),
-    A_ULT_RANGER_MERGE("a_ult_ranger_merge", "Слияние", "Превращается в дерево: не получает урон и стоит на месте, лечится.", 5, 300, -2400, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
-    A_ULT_RANGER_ROOTS("a_ult_ranger_roots", "Корни", "Выращивает корни из-под врага, обездвиживая его.", 5, 0, -2700, "ranger_ult", new Race[]{}, new Talent[]{A_ULT_RANGER_WRATH, A_ULT_RANGER_LIFE_TOTEM, A_ULT_RANGER_MERGE}),
+    A_RANGER_BASE("a_ranger_base", "Рейнджер", "Открывает путь Рейнджера.", 2, 0, -600, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
+    A_RANGER_ENTANGLE_ARROW("a_ranger_entangle_arrow", "Опутывающая стрела", "Следующий выстрел сильно замедляет.", 2, 300, -700, "ranger_sup1", new Race[]{}, new Talent[]{A_RANGER_BASE}),
+    A_RANGER_EVASION("a_ranger_evasion", "Ускользание", "При получении урона есть шанс получить заряд телепорта.", 2, -300, -700, "ranger_sup2", new Race[]{}, new Talent[]{A_RANGER_BASE}),
+    A_RANGER_THUNDER_ARROW("a_ranger_thunder_arrow", "Громовая стрела", "Следующий выстрел вызывает молнию и доп. урон.", 2, 0, -900, "ranger1", new Race[]{}, new Talent[]{A_RANGER_BASE}),
+    A_RANGER_THORN_BUSH("a_ranger_thorn_bush", "Колючий куст", "Создаёт область шипов, замедляющую и ранящую врагов.", 2, 300, -900, "ranger_sup1", new Race[]{}, new Talent[]{A_RANGER_BASE}),
+    A_RANGER_QUICK_STEP("a_ranger_quick_step", "Быстрый шаг", "Если долго не получаете урон, получаете ускорение и усиленный первый удар.", 2, -300, -900, "ranger_sup2", new Race[]{}, new Talent[]{A_RANGER_BASE}),
+    A_RANGER_AGILITY("a_ranger_agility", "Проворство", "Не получает урон от падения.", 2, 0, -1100, "ranger_sup3", new Race[]{}, new Talent[]{A_RANGER_THUNDER_ARROW}),
+    A_RANGER_STURDY_BOW("a_ranger_sturdy_bow", "Крепкий лук", "Лук ломается медленнее.", 2, 300, -1100, "ranger_sup3", new Race[]{}, new Talent[]{A_RANGER_THUNDER_ARROW}),
+    A_RANGER_NIMBLE_FINGERS("a_ranger_nimble_fingers", "Ловкие пальцы", "Шанс выстрелить две стрелы.", 2, -300, -1100, "ranger_sup3", new Race[]{}, new Talent[]{A_RANGER_THUNDER_ARROW}),
+    A_RANGER_BOW_MASTERY("a_ranger_bow_mastery", "Мастер лука", "Повышенный урон стрелой в голову.", 3, 0, -1300, "ranger2", new Race[]{}, new Talent[]{A_RANGER_STURDY_BOW, A_RANGER_AGILITY, A_RANGER_NIMBLE_FINGERS}),
+    A_ULT_RANGER_WRATH("a_ult_ranger_wrath", "Гнев природы", "Стрела вызывает грозовую бурю в зоне поражения.", 5, -500, -1500, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
+    A_ULT_RANGER_LIFE_TOTEM("a_ult_ranger_life_totem", "Тотем жизни", "Ставит тотем, который лечит союзников рядом.", 5, -250, -1500, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
+    A_ULT_RANGER_MERGE("a_ult_ranger_merge", "Слияние", "Превращается в дерево: не получает урон и стоит на месте, лечится.", 5, 250, -1500, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
+    A_ULT_RANGER_ROOTS("a_ult_ranger_roots", "Корни", "Следующий выстрел обездвиживает цель корнями.", 5, 500, -1500, "ranger_ult", new Race[]{}, new Talent[]{A_RANGER_BOW_MASTERY}),
 
     //MUSKETEER
-    A_MUSKETEER_BASE("a_musketeer_base", "Мушкетёр", "Открывает путь Мушкетёра.", 2, 1200, -900, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
-    A_MUSKETEER_QUICK_RELOAD("a_musketeer_quick_reload", "Мгновенный выстрел", "Моментально выпускает снаряд в направлении взгляда.", 2, 1200, -1200, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
-    A_MUSKETEER_INCENDIARY("a_musketeer_incendiary", "Зажигательная пуля", "Следующий выстрел поджигает цель.", 2, 1500, -1200, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
-    A_MUSKETEER_AIMED_SHOT("a_musketeer_aimed_shot", "Прицельный выстрел", "Следующий выстрел наносит больше урона.", 2, 900, -1200, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
-    A_MUSKETEER_HOLSTER("a_musketeer_holster", "Кобура", "Делает двойной выстрел.", 2, 1200, -1500, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_QUICK_RELOAD}),
-    A_MUSKETEER_SMOKE("a_musketeer_smoke", "Дымовая завеса", "Пассивно: при низком здоровье создаёт дым и помогает выжить.", 2, 1500, -1500, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_INCENDIARY}),
-    A_MUSKETEER_TRAINED_EYE("a_musketeer_trained_eye", "Натренированный глаз", "Цели с контролем получают больше урона от выстрелов.", 2, 900, -1800, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_AIMED_SHOT}),
-    A_MUSKETEER_FAST_HAND("a_musketeer_fast_hand", "Быстрая рука", "Пассивно увеличивает урон выстрелов.", 2, 1200, -1800, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_QUICK_RELOAD}),
-    A_MUSKETEER_STABILITY("a_musketeer_stability", "Устойчивость", "Иммунитет к оглушению и замедлению.", 2, 1500, -1800, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_INCENDIARY}),
-    A_MUSKETEER_PIERCING_BUCKSHOT("a_musketeer_piercing_buckshot", "Проникающая картечь", "Выстрел проходит сквозь врагов, нанося урон каждому.", 3, 1200, -2100, "musketeer", new Race[]{}, new Talent[]{A_MUSKETEER_TRAINED_EYE, A_MUSKETEER_FAST_HAND, A_MUSKETEER_STABILITY, A_MUSKETEER_SMOKE}),
-    A_ULT_MUSKETEER_BARRAGE("a_ult_musketeer_barrage", "Пулемётная очередь", "В течение времени делает серию быстрых выстрелов.", 5, 900, -2400, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
-    A_ULT_MUSKETEER_GRENADE("a_ult_musketeer_grenade", "Гранатомёт", "Следующий выстрел взрывается при попадании.", 5, 1200, -2400, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
-    A_ULT_MUSKETEER_CONCUSSION("a_ult_musketeer_concussion", "Контузия", "Следующий выстрел накладывает слабость и обездвиживает.", 5, 1500, -2400, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
-    A_ULT_MUSKETEER_EXECUTION("a_ult_musketeer_execution", "Казнь", "Пассивно: добивает цели с низким здоровьем.", 5, 1200, -2700, "musketeer_ult", new Race[]{}, new Talent[]{A_ULT_MUSKETEER_BARRAGE, A_ULT_MUSKETEER_GRENADE, A_ULT_MUSKETEER_CONCUSSION}),
+    A_MUSKETEER_BASE("a_musketeer_base", "Мушкетёр", "Открывает путь Мушкетёра.", 2, 1000, -600, "archer_subclass", new Race[]{}, new Talent[]{A_EVO}),
+    A_MUSKETEER_QUICK_RELOAD("a_musketeer_quick_reload", "Мгновенный выстрел", "Моментально выпускает снаряд.", 2, 1000, -900, "musketeer1", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
+    A_MUSKETEER_INCENDIARY("a_musketeer_incendiary", "Зажигательная пуля", "Следующий выстрел поджигает цель.", 2, 1200, -800, "musketeer1", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
+    A_MUSKETEER_AIMED_SHOT("a_musketeer_aimed_shot", "Прицельный выстрел", "Следующий выстрел наносит больше урона.", 2, 1300, -600, "musketeer1", new Race[]{}, new Talent[]{A_MUSKETEER_BASE}),
+    A_MUSKETEER_HOLSTER("a_musketeer_holster", "Кобура", "Делает двойной выстрел.", 2, 1500, -1000, "musketeer2", new Race[]{}, new Talent[]{A_MUSKETEER_AIMED_SHOT, A_MUSKETEER_INCENDIARY, A_MUSKETEER_QUICK_RELOAD}),
+    A_MUSKETEER_SMOKE("a_musketeer_smoke", "Дымовая завеса", "При низком здоровье создаёт дым и помогает выжить.", 2, 1300, -1200, "musketeer_sup1", new Race[]{}, new Talent[]{A_MUSKETEER_HOLSTER}),
+    A_MUSKETEER_TRAINED_EYE("a_musketeer_trained_eye", "Натренированный глаз", "Цели с дебаффами получают больше урона.", 2, 1800, -1000, "musketeer3", new Race[]{}, new Talent[]{A_MUSKETEER_HOLSTER}),
+    A_MUSKETEER_FAST_HAND("a_musketeer_fast_hand", "Быстрая рука", "Увеличивает урон выстрелов.", 2, 1500, -1300, "musketeer3", new Race[]{}, new Talent[]{A_MUSKETEER_HOLSTER}),
+    A_MUSKETEER_STABILITY("a_musketeer_stability", "Устойчивость", "Иммунитет к оглушению и замедлению.", 2, 1600, -800, "musketeer_sup1", new Race[]{}, new Talent[]{A_MUSKETEER_HOLSTER}),
+    A_MUSKETEER_PIERCING_BUCKSHOT("a_musketeer_piercing_buckshot", "Проникающая картечь", "Выстрел проходит сквозь врагов, нанося урон каждому.", 3, 1800, -1300, "musketeer3", new Race[]{}, new Talent[]{A_MUSKETEER_HOLSTER}),
+    A_ULT_MUSKETEER_BARRAGE("a_ult_musketeer_barrage", "Пулемётная очередь", "В течение времени делает серию быстрых выстрелов.", 5, 1500, -1500, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_FAST_HAND}),
+    A_ULT_MUSKETEER_GRENADE("a_ult_musketeer_grenade", "Гранатомёт", "Следующий выстрел взрывается при попадании.", 5, 2000, -1300, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
+    A_ULT_MUSKETEER_CONCUSSION("a_ult_musketeer_concussion", "Контузия", "Следующий выстрел накладывает слабость и обездвиживает.", 5, 2000, -1000, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_TRAINED_EYE}),
+    A_ULT_MUSKETEER_EXECUTION("a_ult_musketeer_execution", "Казнь", "Добивает цели с низким здоровьем.", 5, 1800, -1500, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
 
     // ======================== МАГ ========================
     MAGE_BASE("mage_base", "Маг", "Знание тайного", 1, 0, -300, "class", new Race[]{Race.MECHANID}, new Talent[]{START}),
@@ -140,15 +140,15 @@ public enum Talent {
     M_SUMMON_DISCIPLINE("m_summon_discipline", "Дисциплина слуг", "Ваши призывы получают больше брони.", 2, -600, -1400, "summoner", new Race[]{}, new Talent[]{M_SUMMON_GUARD}),
     M_SUMMON_EFFICIENCY("m_summon_efficiency", "Экономия маны", "Дополнительно снижает расход маны.", 2, -1200, -1400, "summoner", new Race[]{}, new Talent[]{M_SUMMON_GUARD, M_SUMMON_SERVANT}),
     M_ULT_GATE("m_ult_gate", "Врата", "Призывает сильных слуг.", 5, -900, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_DISCIPLINE}),
-    M_ULT_ABSORPTION("m_ult_absorption", "Поглощение", "Убивает ваших слуг и восстанавливает хп и маны за каждого.", 5, -600, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_DISCIPLINE}),
-    M_ULT_TOTEM_FORM("m_ult_totem_form", "Тотемная форма", "Превращает слуг в неподвижные тотемы-стрелялки.", 5, -1500, -1100, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_ENDURANCE}),
+    M_ULT_ABSORPTION("m_ult_absorption", "Поглощение", "Убивает ваших слуг/стражей и восстанавливает хп и маны за каждого.", 5, -600, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_DISCIPLINE}),
+    M_ULT_TOTEM_FORM("m_ult_totem_form", "Тотемная форма", "Превращает слуг/стражей в неподвижные тотемы.", 5, -1500, -1100, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_ENDURANCE}),
     M_ULT_POSSESSION("m_ult_possession", "Эволюция", "Эволюционирует ваших слуг/стражей, усиливая их урон, здоровье.", 5, -1500, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_EFFICIENCY}),
     M_ULT_ELEMENTAL("m_ult_elemental", "Элементаль", "Призывает элементаля.", 5, -1500, -800, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_ENDURANCE}),
 
     //CLERIC
     M_CLERIC_BASE("m_cleric_base", "Жрец", "Открывает путь Жреца.", 2, 600, -800, "mage_subclass", new Race[]{}, new Talent[]{M_EVO}),
     M_CLERIC_SMALL_HEAL("m_cleric_small_heal", "Малый отхил", "Лечит союзника небольшим количеством хп.", 2, 800, -1000, "cleric_active_heal", new Race[]{}, new Talent[]{M_CLERIC_BASE}),
-    M_CLERIC_BLESSING("m_cleric_blessing", "Благословение", "Дает союзнику усиление урона и очищает от 1 негативного эффекта.", 2, 1000, -1000, "cleric_active", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
+    M_CLERIC_BLESSING("m_cleric_blessing", "Благословение", "Дает союзнику усиление урона и очищает от негативного эффекта.", 2, 1000, -1000, "cleric_active", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
     M_CLERIC_LIGHT("m_cleric_light", "Свет", "Создает светящуюся сферу, которая лечит союзников и вредит нежити рядом.", 3, 800, -1200, "cleric_active", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
     M_CLERIC_HEALING_AMP("m_cleric_healing_amp", "Усиление лечения", "Все исцеление повышено.", 2, 900, -1400, "cleric_passive1", new Race[]{}, new Talent[]{M_CLERIC_LIGHT}),
     M_CLERIC_PRAYER("m_cleric_prayer", "Аура", "Пока союзник стоит рядом, он получает небольшое лечение каждую секунду.", 2, 1200, -1100, "cleric_passive1", new Race[]{}, new Talent[]{M_CLERIC_BLESSING}),
@@ -157,7 +157,7 @@ public enum Talent {
     M_CLERIC_MANA_PRAYER("m_cleric_mana_prayer", "Молитва о мане", "Стоя на месте, начинает восстанавливать ману.", 2, 1250, -1500, "cleric_passive2", new Race[]{}, new Talent[]{M_CLERIC_PURITY, M_CLERIC_READ_PRAYER}),
     C_ULT_LIGHT_RAY("m_ult_light_ray", "Луч света", "Призывает столп света, который лечит союзников и вредит врагам.", 5, 1600, -1300, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_PURITY}),
     C_ULT_RESURRECTION("m_ult_resurrection", "Божественное бессмертие", "На вас и всех союзников в радиусе накладывается неуязвость.", 5, 1000, -1900, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_READ_PRAYER}),
-    C_ULT_MARTYR("m_ult_martyr", "Мученик", "На 4 сек становится бессмертным, но не может лечиться. Дает доп. лечение союзникам", 5, 1300, -1900, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_READ_PRAYER}),
+    C_ULT_MARTYR("m_ult_martyr", "Мученик", "На время становится бессмертным, но не может лечиться. Дает доп. лечение союзникам", 5, 1300, -1900, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_READ_PRAYER}),
     C_ULT_SLOW_SPHERE("m_ult_slow_sphere", "Сфера замедления", "Создает сферу, которая замедляет врагов и ускоряет союзников.", 5, 1600, -1500, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_PURITY}),
     C_ULT_DIVINE_PROTECTION("m_ult_divine_protection", "Божественная защита", "Все союзники в радиусе получают щит.", 5, 1450, -1700, "cleric_ult", new Race[]{}, new Talent[]{M_CLERIC_MANA_PRAYER}),
 
@@ -173,65 +173,65 @@ public enum Talent {
     M_MAGIC_BARRIER("m_magic_barrier", "Магический барьер", "Поглащает один удар.", 2, -600, -2100, "spell4", new Race[]{}, new Talent[]{M_TELEPORT}),
     M_SOFT_LANDING("m_soft_landing", "Мягкое приземление", "Не получает урон от падения.", 2, 600, -2100, "spell4", new Race[]{}, new Talent[]{M_STONE_SKIN}),
     M_ULT_METEOR("m_ult_meteor", "Метеорит", "Призывает метеорит в область, нанося огромный урон.", 5, -800, -2300, "spellcaster_ult", new Race[]{}, new Talent[]{M_MAGIC_BARRIER}),
-    M_ULT_ICE_BLOCK("m_ult_ice_block", "Ледяная глыба", "Замораживает цель в льду на 5 сек.", 5, -600, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_MAGIC_BARRIER}),
-    M_ULT_ANTI_MAGIC("m_ult_anti_magic", "Анти-магия", "Создает сферу, отражающую магию и снаряды на 5 сек.", 5, 800, -2300, "spellcaster_ult", new Race[]{}, new Talent[]{M_SOFT_LANDING}),
+    M_ULT_ICE_BLOCK("m_ult_ice_block", "Ледяная глыба", "Замораживает цель в льду.", 5, -600, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_MAGIC_BARRIER}),
+    M_ULT_ANTI_MAGIC("m_ult_anti_magic", "Анти-магия", "Создает сферу, отражающую магию и снаряды.", 5, 800, -2300, "spellcaster_ult", new Race[]{}, new Talent[]{M_SOFT_LANDING}),
     M_ULT_ILLUSIONS("m_ult_illusions", "Иллюзии", "Создает копии мага, которые применяют магию по врагам.", 5, 0, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_MANA_FLOW}),
     M_ULT_CHAOS("m_ult_chaos", "Хаос", "Выпускает волну огня, молнии и льда, накладывая эффекты.", 5, 600, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_SOFT_LANDING}),
 
     // ======================== АССАСИН ========================
-    ASSASSIN_BASE("assassin_base", "Ассасин", "Тень и смерть", 1, 0, -200, "class", new Race[]{}, new Talent[]{START}),
-    AS_SLIDE("as_slide", "Подкат", "Сближение с целью", 1, -300, -300, "assassin1", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
-    AS_SMOKE("as_smoke", "Дымовая завеса", "Скрывает ваше положение", 1, 0, -450, "assassin2", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
-    AS_STEALTH_CRIT("as_crit", "Крит из тени", "Удар в спину из невидимости", 1, 300, -300, "assassin3", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
-    AS_EVO("as_evo", "Эволюция ассасина", "Открывает специализацию и ветку развития.", 1, 0, -650, "assassin", new Race[]{}, new Talent[]{AS_SLIDE, AS_SMOKE, AS_STEALTH_CRIT}),
+    ASSASSIN_BASE("assassin_base", "Ассасин", "Тень и смерть", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
+    AS_SLIDE("as_slide", "Подкат", "Сближение с целью", 1, -300, -100, "assassin1", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_SMOKE("as_smoke", "Дымовая завеса", "Скрывает ваше положение", 1, 0, -200, "assassin2", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_STEALTH_CRIT("as_crit", "Крит из тени", "Удар в спину из невидимости", 1, 300, -100, "assassin3", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
+    AS_EVO("as_evo", "Эволюция ассасина", "Открывает специализацию и ветку развития.", 1, 0, -400, "assassin", new Race[]{}, new Talent[]{AS_SLIDE, AS_SMOKE, AS_STEALTH_CRIT}),
 
     //ROGUE
-    AS_ROGUE_BASE("as_rogue_base", "Вор", "Открывает путь Вора.", 1, -1000, -1050, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
-    AS_ROGUE_STRONG_POISON("as_rogue_strong_poison", "Сильный яд", "Следующая атака накладывает сильное отравление.", 2, -1300, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
-    AS_ROGUE_TRIP("as_rogue_trip", "Подсечка", "Сбивает цель с ног и оглушает.", 2, -1000, -1400, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
-    AS_ROGUE_BLIND("as_rogue_blind", "Ослепление", "Бросает песок в глаза врагу.", 2, -700, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
-    AS_ROGUE_POISON_IMMUNE("as_rogue_poison_immune", "Невосприимчивость к яду", "Яд не действует на вас.", 2, -1450, -1550, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_STRONG_POISON}),
-    AS_ROGUE_SLEIGHT("as_rogue_sleight", "Ловкач", "Предметы и зелья используются быстрее.", 2, -1150, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_TRIP}),
-    AS_ROGUE_NIGHT_EYE("as_rogue_night_eye", "Кошачье зрение", "Постоянное ночное зрение.", 2, -850, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_BLIND}),
-    AS_ROGUE_TRAINED("as_rogue_trained", "Натренированный", "Повышает скорость атаки.", 2, -1300, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_POISON_IMMUNE}),
-    AS_ROGUE_EDGE("as_rogue_edge", "На острие", "-15% макс. здоровья, но +50% урона.", 2, -1000, -1950, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_SLEIGHT, AS_ROGUE_NIGHT_EYE}),
-    AS_ROGUE_TIME_THIEF("as_rogue_time_thief", "Вор времени", "Смок сокращает КД навыков.", 2, -700, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_NIGHT_EYE}),
-    AS_ULT_ROGUE_PERFECT_KILL("as_ult_rogue_perfect_kill", "Идеальное убийство", "Уходит в невидимость, следующая атака усиливается.", 5, -1400, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_TRAINED}),
-    AS_ULT_ROGUE_POISON_VEIL("as_ult_rogue_poison_veil", "Ядовитая завеса", "Ядовитый смок наносит урон в зоне.", 5, -1100, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_EDGE}),
-    AS_ULT_ROGUE_CONFUSION("as_ult_rogue_confusion", "Замешательство", "Цель ненадолго теряет контроль.", 5, -800, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_TIME_THIEF}),
-    AS_ULT_ROGUE_VANISH("as_ult_rogue_vanish", "Исчезновение", "Телепорт и уход в невидимость.", 5, -500, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_ROGUE_TIME_THIEF}),
+    AS_ROGUE_BASE("as_rogue_base", "Вор", "Открывает путь Вора.", 1, -1000, -600, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
+    AS_ROGUE_STRONG_POISON("as_rogue_strong_poison", "Сильный яд", "Следующая атака накладывает сильное отравление.", 2, -1000, -900, "rogue1", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
+    AS_ROGUE_TRIP("as_rogue_trip", "Подсечка", "Сбивает цель с ног и оглушает.", 2, -1300, -600, "rogue1", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
+    AS_ROGUE_BLIND("as_rogue_blind", "Ослепление", "Бросает песок в глаза врагу.", 2, -1200, -800, "rogue1", new Race[]{}, new Talent[]{AS_ROGUE_BASE}),
+    AS_ROGUE_POISON_IMMUNE("as_rogue_poison_immune", "Невосприимчивость к яду", "Яд не действует на вас.", 2, -1100, -1100, "rogue2", new Race[]{}, new Talent[]{AS_ROGUE_BLIND}),
+    AS_ROGUE_NIGHT_EYE("as_rogue_night_eye", "Кошачье зрение", "Постоянное ночное зрение.", 2, -1500, -700, "rogue2", new Race[]{}, new Talent[]{AS_ROGUE_BLIND}),
+    AS_ROGUE_SLEIGHT("as_rogue_sleight", "Ловкач", "Предметы и зелья используются быстрее.", 2, -1400, -1000, "rogue3", new Race[]{}, new Talent[]{AS_ROGUE_TRIP, AS_ROGUE_STRONG_POISON, AS_ROGUE_BLIND}),
+    AS_ROGUE_TRAINED("as_rogue_trained", "Натренированный", "Повышает скорость атаки.", 2, -1700, -800, "rogue4", new Race[]{}, new Talent[]{AS_ROGUE_SLEIGHT}),
+    AS_ROGUE_EDGE("as_rogue_edge", "На острие", "Снижение макс. хп, за увеличения урона", 2, -1200, -1300, "rogue4", new Race[]{}, new Talent[]{AS_ROGUE_SLEIGHT}),
+    AS_ROGUE_TIME_THIEF("as_rogue_time_thief", "Вор времени", "Смок сокращает КД навыков.", 2, -1600, -1200, "rogue4", new Race[]{}, new Talent[]{AS_ROGUE_SLEIGHT}),
+    AS_ULT_ROGUE_PERFECT_KILL("as_ult_rogue_perfect_kill", "Идеальное убийство", "Уходит в невидимость, следующая атака усиливается.", 5, -1400, -1500, "rogue_ult", new Race[]{}, new Talent[]{AS_ROGUE_TRAINED}),
+    AS_ULT_ROGUE_POISON_VEIL("as_ult_rogue_poison_veil", "Ядовитая завеса", "Ядовитый смок наносит урон в зоне.", 5, -1900, -1000, "rogue_ult", new Race[]{}, new Talent[]{AS_ROGUE_EDGE}),
+    AS_ULT_ROGUE_CONFUSION("as_ult_rogue_confusion", "Замешательство", "Цель ненадолго теряет контроль.", 5, -1600, -1500, "rogue_ult", new Race[]{}, new Talent[]{AS_ROGUE_TIME_THIEF, AS_ROGUE_EDGE}),
+    AS_ULT_ROGUE_VANISH("as_ult_rogue_vanish", "Исчезновение", "Телепорт и уход в невидимость.", 5, -1900, -1200, "rogue_ult", new Race[]{}, new Talent[]{AS_ROGUE_TIME_THIEF, AS_ROGUE_TRAINED}),
 
     //WANDERER
-    AS_WANDERER_BASE("as_wanderer_base", "Скиталец", "Открывает путь Скитальца", 1, 0, -1050, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
-    AS_WANDERER_BARRICADE("as_wanderer_barricade", "Баррикада", "Ставит деревянную преграду.", 2, -300, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
-    AS_WANDERER_CLIMB("as_wanderer_climb", "Лазанье", "Позволяет быстро карабкаться по стенам.", 2, 0, -1400, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
-    AS_WANDERER_TRIPWIRE("as_wanderer_tripwire", "Ловушка-растяжка", "Ставит растяжку, которая срабатывает по врагу.", 2, 300, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
-    AS_WANDERER_ENDURANCE("as_wanderer_endurance", "Выносливость", "Повышает скорость бега.", 2, -450, -1550, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_BARRICADE}),
-    AS_WANDERER_NO_SLOW("as_wanderer_no_slow", "Без задержек", "Замедление почти не действует.", 2, -150, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_CLIMB}),
-    AS_WANDERER_SHADOW_WRAP("as_wanderer_shadow_wrap", "Окутанный тенью", "Невидимость длится дольше.", 2, 150, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_TRIPWIRE}),
-    AS_WANDERER_FASTEST("as_wanderer_fastest", "Быстрее всех", "В невидимости получаете сильный бонус скорости.", 2, -300, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_ENDURANCE}),
-    AS_WANDERER_DOUBLE_DODGE("as_wanderer_double_dodge", "Двойное уклонение", "Подкат можно использовать дважды.", 2, 0, -1950, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_NO_SLOW}),
-    AS_WANDERER_KNIFE_EDGE("as_wanderer_knife_edge", "На острие ножа", "Крит из тени наносит больше урона.", 2, 300, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_SHADOW_WRAP}),
-    AS_ULT_WANDERER_CAMP("as_ult_wanderer_camp", "Лагерь", "Ставит палатку лечения.", 5, -400, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_FASTEST}),
-    AS_ULT_WANDERER_DAGGER_RAIN("as_ult_wanderer_dagger_rain", "Град кинжалов", "Серия быстрых бросков кинжалов.", 5, -100, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_DOUBLE_DODGE}),
-    AS_ULT_WANDERER_THORN_TRAIL("as_ult_wanderer_thorn_trail", "Колючий след", "Оставляет за собой опасный след.", 5, 200, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_KNIFE_EDGE}),
-    AS_ULT_WANDERER_GHOSTS("as_ult_wanderer_ghosts", "Призраки", "Призывает отвлекающих призраков.", 5, 500, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_WANDERER_KNIFE_EDGE}),
+    AS_WANDERER_BASE("as_wanderer_base", "Скиталец", "Открывает путь Скитальца", 1, 0, -600, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
+    AS_WANDERER_CLIMB("as_wanderer_climb", "Лазанье", "Позволяет быстро карабкаться по стенам.", 2, -300, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
+    AS_WANDERER_TRIPWIRE("as_wanderer_tripwire", "Ловушка-растяжка", "Ставит растяжку, которая срабатывает по врагу.", 2, 0, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
+    AS_WANDERER_ENDURANCE("as_wanderer_endurance", "Выносливость", "Повышает скорость бега.", 2, 300, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
+    AS_WANDERER_BARRICADE("as_wanderer_barricade", "Баррикада", "Создаёт преграду из барьеров 3×2 и модель.", 2, -300, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_CLIMB}),
+    AS_WANDERER_NO_SLOW("as_wanderer_no_slow", "Без задержек", "Замедление почти не действует.", 2, 300, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_ENDURANCE}),
+    AS_WANDERER_SHADOW_WRAP("as_wanderer_shadow_wrap", "Окутанный тенью", "Любая невидимость длится на процент дольше.", 2, 0, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_TRIPWIRE, AS_WANDERER_CLIMB, AS_WANDERER_ENDURANCE}),
+    AS_WANDERER_DOUBLE_DODGE("as_wanderer_double_dodge", "Двойное уклонение", "Даёт дополнительные заряды подката.", 2, 0, -1500, "wanderer3", new Race[]{}, new Talent[]{AS_WANDERER_SHADOW_WRAP, AS_WANDERER_NO_SLOW, AS_WANDERER_BARRICADE}),
+    AS_WANDERER_FASTEST("as_wanderer_fastest", "Быстрее всех", "В невидимости получаете сильный бонус скорости.", 2, -300, -1500, "wanderer3", new Race[]{}, new Talent[]{AS_WANDERER_SHADOW_WRAP, AS_WANDERER_NO_SLOW, AS_WANDERER_BARRICADE}),
+    AS_WANDERER_KNIFE_EDGE("as_wanderer_knife_edge", "На острие ножа", "Крит из тени наносит больше урона.", 2, 300, -1500, "wanderer3", new Race[]{}, new Talent[]{AS_WANDERER_SHADOW_WRAP, AS_WANDERER_NO_SLOW, AS_WANDERER_BARRICADE}),
+    AS_ULT_WANDERER_CAMP("as_ult_wanderer_camp", "Лагерь", "Ставит палатку лечения.", 5, -300, -1800, "wanderer_ult", new Race[]{}, new Talent[]{AS_WANDERER_FASTEST, AS_WANDERER_DOUBLE_DODGE}),
+    AS_ULT_WANDERER_DAGGER_RAIN("as_ult_wanderer_dagger_rain", "Град кинжалов", "Серия быстрых бросков кинжалов.", 5, -600, -1800, "wanderer_ult", new Race[]{}, new Talent[]{AS_WANDERER_FASTEST}),
+    AS_ULT_WANDERER_THORN_TRAIL("as_ult_wanderer_thorn_trail", "Колючий след", "Оставляет за собой опасный след.", 5, 300, -1800, "wanderer_ult", new Race[]{}, new Talent[]{AS_WANDERER_KNIFE_EDGE, AS_WANDERER_DOUBLE_DODGE}),
+    AS_ULT_WANDERER_GHOSTS("as_ult_wanderer_ghosts", "Призраки", "Призывает отвлекающих призраков.", 5, 600, -1800, "wanderer_ult", new Race[]{}, new Talent[]{AS_WANDERER_KNIFE_EDGE}),
 
     //ASSASSIN
-    AS_ASSASSIN_BASE("as_assassin_base", "Убийца", "Открывает путь Убийцы", 1, 1000, -1050, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
-    AS_ASSASSIN_MARK("as_assassin_mark", "Метка", "Помечает цель и раскрывает ее.", 2, 700, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
-    AS_ASSASSIN_SHURIKEN("as_assassin_shuriken", "Сюрикен", "Кидает сюрикен и накладывает кровотечение.", 2, 1000, -1400, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
-    AS_ASSASSIN_RUPTURE("as_assassin_rupture", "Разрыв", "Взрывает кровотечение мгновенным уроном.", 2, 1300, -1300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
-    AS_ASSASSIN_THROAT("as_assassin_throat", "Удар в горло", "Удары в спину накладывают кровотечение.", 2, 550, -1550, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_MARK}),
-    AS_ASSASSIN_SILENT_STEP("as_assassin_silent_step", "Бесшумный шаг", "При приседе двигается почти как обычно.", 2, 850, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_SHURIKEN}),
-    AS_ASSASSIN_BLOODLETTER("as_assassin_bloodletter", "Кровопускание", "Урон по целям с кровотечением повышен.", 2, 1150, -1650, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_SHURIKEN}),
-    AS_ASSASSIN_ADRENALINE("as_assassin_adrenaline", "Адреналин", "При низком хп дает всплеск скорости.", 2, 700, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_THROAT}),
-    AS_ASSASSIN_SHARP_BLADES("as_assassin_sharp_blades", "Острые лезвия", "Кровотечение длится дольше.", 2, 1000, -1950, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_SILENT_STEP}),
-    AS_ASSASSIN_DARK_STYLE("as_assassin_dark_style", "Тёмный стиль", "Урон повышается при ударе в спину.", 2, 1300, -1850, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_BLOODLETTER}),
-    AS_ULT_ASSASSIN_BLADE_DANCE("as_ult_assassin_blade_dance", "Танец клинков", "Серия быстрых ударов с кровотечением.", 5, 600, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_ADRENALINE}),
-    AS_ULT_ASSASSIN_IMMOBILIZE("as_ult_assassin_immobilize", "Обездвиживание", "Крюк притягивает и фиксирует цель.", 5, 900, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_SHARP_BLADES}),
-    AS_ULT_ASSASSIN_BLACK_MIST("as_ult_assassin_black_mist", "Черная дымка", "Сфера ослабляет врагов и усиливает убийцу.", 5, 1200, -2300, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_DARK_STYLE}),
-    AS_ULT_ASSASSIN_DOUBLE("as_ult_assassin_double", "Двойник", "Оставляет тень и уходит в невидимость.", 5, 1500, -2200, "assassin_subclass", new Race[]{}, new Talent[]{AS_ASSASSIN_DARK_STYLE});
+    AS_ASSASSIN_BASE("as_assassin_base", "Убийца", "Открывает путь Убийцы", 1, 1200, -600, "assassin_subclass", new Race[]{}, new Talent[]{AS_EVO}),
+    AS_ASSASSIN_MARK("as_assassin_mark", "Метка", "Помечает цель и раскрывает ее.", 2, 1200, -900, "assassin1", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
+    AS_ASSASSIN_SHURIKEN("as_assassin_shuriken", "Сюрикен", "Кидает сюрикен и накладывает кровотечение.", 2, 1400, -800, "assassin1", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
+    AS_ASSASSIN_SILENT_STEP("as_assassin_silent_step", "Бесшумный шаг", "При приседе двигается почти как обычно.", 2, 1500, -600, "assassin1", new Race[]{}, new Talent[]{AS_ASSASSIN_BASE}),
+    AS_ASSASSIN_THROAT("as_assassin_throat", "Удар в горло", "Удары в спину накладывают кровотечение.", 2, 1800, -600, "assassin2", new Race[]{}, new Talent[]{AS_ASSASSIN_SHURIKEN}),
+    AS_ASSASSIN_BLOODLETTER("as_assassin_bloodletter", "Кровопускание", "Урон по целям с кровотечением повышен.", 2, 1200, -1200, "assassin2", new Race[]{}, new Talent[]{AS_ASSASSIN_SHURIKEN, AS_ASSASSIN_MARK}),
+    AS_ASSASSIN_ADRENALINE("as_assassin_adrenaline", "Адреналин", "При низком хп дает всплеск скорости.", 2, 2100, -1500, "assassin3", new Race[]{}, new Talent[]{AS_ASSASSIN_THROAT, AS_ASSASSIN_BLOODLETTER}),
+    AS_ASSASSIN_SHARP_BLADES("as_assassin_sharp_blades", "Острые лезвия", "Кровотечение длится дольше.", 2, 1600, -1500, "assassin3", new Race[]{}, new Talent[]{AS_ASSASSIN_BLOODLETTER}),
+    AS_ASSASSIN_RUPTURE("as_assassin_rupture", "Разрыв", "Взрывает кровотечение мгновенным уроном.", 2, 1800, -1200, "assassin3", new Race[]{}, new Talent[]{AS_ASSASSIN_BLOODLETTER, AS_ASSASSIN_THROAT}),
+    AS_ASSASSIN_DARK_STYLE("as_assassin_dark_style", "Тёмный стиль", "Урон повышается при ударе в спину.", 2, 2100, -1000, "assassin3", new Race[]{}, new Talent[]{AS_ASSASSIN_THROAT}),
+    AS_ULT_ASSASSIN_BLADE_DANCE("as_ult_assassin_blade_dance", "Танец клинков", "Серия быстрых ударов с кровотечением.", 5, 2400, -1500, "assassin_ult", new Race[]{}, new Talent[]{AS_ASSASSIN_ADRENALINE, AS_ASSASSIN_DARK_STYLE, AS_ASSASSIN_RUPTURE}),
+    AS_ULT_ASSASSIN_IMMOBILIZE("as_ult_assassin_immobilize", "Обездвиживание", "Крюк притягивает и фиксирует цель.", 5, 2100, -1800, "assassin_ult", new Race[]{}, new Talent[]{AS_ASSASSIN_ADRENALINE, AS_ASSASSIN_SHARP_BLADES, AS_ASSASSIN_RUPTURE}),
+    AS_ULT_ASSASSIN_BLACK_MIST("as_ult_assassin_black_mist", "Черная дымка", "Сфера ослабляет врагов и усиливает убийцу.", 5, 1200, -1800, "assassin_ult", new Race[]{}, new Talent[]{AS_ASSASSIN_ADRENALINE, AS_ASSASSIN_SHARP_BLADES}),
+    AS_ULT_ASSASSIN_DOUBLE("as_ult_assassin_double", "Двойник", "Оставляет тень и уходит в невидимость.", 5, 2400, -600, "assassin_ult", new Race[]{}, new Talent[]{AS_ASSASSIN_ADRENALINE, AS_ASSASSIN_DARK_STYLE});
 
     public final String id, label, description, branch;
     public final int cost, x, y;
@@ -297,15 +297,41 @@ public enum Talent {
      * (не в одной иерархии parents).
      */
     public static List<Talent> mutuallyExclusivePeers(Talent t) {
-        if (t.branch.isEmpty()) return List.of();
+        List<Talent> bases = subclassBasesFor(t);
+        if (!bases.isEmpty() && bases.contains(t)) {
+            ArrayList<Talent> out = new ArrayList<>(bases.size());
+            for (Talent b : bases) if (b != t) out.add(b);
+            out.sort(Comparator.comparing(x -> x.label));
+            return List.copyOf(out);
+        }
+
+        if (t == null || t.branch == null || t.branch.isEmpty()) return List.of();
         ArrayList<Talent> out = new ArrayList<>();
-        for (Talent o : values()) {
-            if (o == t || o.branch.isEmpty()) continue;
-            if (!o.branch.equals(t.branch)) continue;
-            if (isSameHierarchy(t, o)) continue;
-            out.add(o);
+        for (Talent ot : values()) {
+            if (ot == null || ot == t) continue;
+            if (!t.branch.equals(ot.branch)) continue;
+            if (!isSameHierarchy(t, ot)) out.add(ot);
         }
         out.sort(Comparator.comparing(x -> x.label));
         return List.copyOf(out);
+    }
+
+    public static List<Talent> subclassBasesFor(Talent t) {
+        if (t == null) return List.of();
+        if (isAncestorOf(W_EVO, t) || t == W_EVO) return List.of(W_PALADIN_BASE, W_BARBARIAN_BASE, W_SWORDMASTER_BASE);
+        if (isAncestorOf(A_EVO, t) || t == A_EVO) return List.of(A_HUNTER_BASE, A_RANGER_BASE, A_MUSKETEER_BASE);
+        if (isAncestorOf(M_EVO, t) || t == M_EVO) return List.of(M_SUMMONER_BASE, M_CLERIC_BASE, M_SPELLCASTER_BASE);
+        if (isAncestorOf(AS_EVO, t) || t == AS_EVO) return List.of(AS_ROGUE_BASE, AS_WANDERER_BASE, AS_ASSASSIN_BASE);
+        return List.of();
+    }
+
+    public static Talent subclassRootFor(Talent t) {
+        if (t == null) return null;
+        List<Talent> bases = subclassBasesFor(t);
+        if (bases.isEmpty()) return null;
+        for (Talent b : bases) {
+            if (t == b || isAncestorOf(b, t)) return b;
+        }
+        return null;
     }
 }

@@ -51,7 +51,7 @@ narratorHotkey:true
 resourcePacks:[]
 incompatibleResourcePacks:[]
 lastServer:
-lang:en_us
+lang:ru_ru
 chatVisibility:0
 chatOpacity:1.0
 chatLineSpacing:0.0
@@ -145,6 +145,7 @@ key_key.lvluping.ability2:key.keyboard.c
 key_key.lvluping.ability3:key.mouse.4
 key_key.lvluping.ability4:key.keyboard.b
 key_key.lvluping.ability5:key.keyboard.g
+key_key.lvluping.ability6:key.keyboard.h
 soundCategory_master:0.0
 soundCategory_music:0.0
 soundCategory_record:1.0
