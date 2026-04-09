@@ -14,7 +14,7 @@ public enum Talent {
     START("start", "Истоки", "Начало вашего пути", 0, 0, 0, "", new Race[]{}, new Talent[]{}),
 
     // ======================== ВОИН ========================
-    WARRIOR_BASE("warrior_base", "Воин", "Открывает ветку боевых талантов и базовые умения ближнего боя.", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
+    WARRIOR_BASE("warrior_base", "Воин", "Открывает ветку боевых талантов и базовые умения ближнего боя.", 1, 0, 300, "class", new Race[]{Race.NOX, Race.VENTAR, Race.IGNIS}, new Talent[]{START}),
     W_STUN("w_stun", "Оглушающий удар", "Шанс при атаке наложить оглушение.", 1, -300, -100, "warrior1", new Race[]{}, new Talent[]{WARRIOR_BASE}),
     W_PARRY("w_parry", "Парирование", "Вы можете парировать атаку.", 1, 0, -200, "warrior2", new Race[]{}, new Talent[]{WARRIOR_BASE}),
     W_COMBO("w_combo", "Комбо-удары", "Накапливает серии ударов, увеличивая урон.", 1, 300, -100, "warrior3", new Race[]{}, new Talent[]{WARRIOR_BASE}),
@@ -23,26 +23,26 @@ public enum Talent {
     //PALADIN
     W_PALADIN_BASE("w_paladin_base", "Паладин", "Открывает путь Паладина.", 2, -1000, -600, "warrior_subclass", new Race[]{}, new Talent[]{W_EVO}),
     W_PALADIN_SMITE("w_paladin_smite", "Кара", "Удары мечом сильнее и поджигают нежить.", 2, -1300, -600, "paladin1", new Race[]{}, new Talent[]{W_PALADIN_BASE}),
-    W_PALADIN_BLESSING("w_paladin_blessing", "Благословение", "Усиливает союзника регенерацией и очищает вас от негативных эффектов.", 2, -1000, -900, "paladin1", new Race[]{}, new Talent[]{W_PALADIN_BASE}),
-    W_PALADIN_SHIELD_FAITH("w_paladin_shield_faith", "Щит веры", "Блокирование щитом отражает часть урона атакующему.", 3, -1200, -800, "paladin1", new Race[]{}, new Talent[]{W_PALADIN_BASE}),
+    W_PALADIN_BLESSING("w_paladin_blessing", "Благословение", "Регенерация или очищение от вредных эффектов.", 2, -1000, -900, "paladin1", new Race[]{}, new Talent[]{W_PALADIN_BASE}),
+    W_PALADIN_SHIELD_FAITH("w_paladin_shield_faith", "Щит веры", "Блокирование щитом отражает часть урона атакующему.", 3, -1200, -800, "paladin_sup1", new Race[]{}, new Talent[]{W_PALADIN_BASE}),
     W_PALADIN_AURA("w_paladin_aura", "Аура праведности", "Союзники рядом получают сопротивление урону.", 2, -1100, -1100, "paladin2", new Race[]{}, new Talent[]{W_PALADIN_BLESSING}),
-    W_PROVOCATION("w_provocation", "Провокация", "Боевой клич заставляет ближайших врагов атаковать вас. Даёт временные жёлтые сердца (20–40% от макс. здоровья по уровню).", 3, -1400, -1000, "paladin2", new Race[]{}, new Talent[]{W_PALADIN_SHIELD_FAITH, W_PALADIN_BLESSING, W_PALADIN_SMITE}),
+    W_PROVOCATION("w_provocation", "Провокация", "Боевой клич заставляет ближайших врагов атаковать вас.", 3, -1400, -1000, "paladin_sup2", new Race[]{}, new Talent[]{W_PALADIN_SHIELD_FAITH, W_PALADIN_BLESSING, W_PALADIN_SMITE}),
     W_PALADIN_HEALING_TOUCH("w_paladin_healing_touch", "Целебное касание", "Получаемое лечение эффективнее.", 2, -1500, -700, "paladin2", new Race[]{}, new Talent[]{W_PALADIN_SMITE}),
     W_PALADIN_IMMOLATION("w_paladin_immolation", "Испепеление", "Удар по земле поджигает врагов вокруг.", 2, -1700, -800, "paladin3", new Race[]{}, new Talent[]{W_PALADIN_HEALING_TOUCH}),
-    W_PALADIN_PROVIDENCE("w_paladin_providence", "Божественное провидение", "Шанс снять с себя негативный эффект вскоре после получения.", 2, -1200, -1300, "paladin3", new Race[]{}, new Talent[]{W_PALADIN_AURA}),
-    W_UNBREAKABLE("w_unbreakable", "Несокрушимый", "Один раз при смертельном ударе вы не погибаете.", 3, -1600, -1200, "paladin3", new Race[]{}, new Talent[]{W_PROVOCATION}),
-    W_ULT_FINAL_COUNTDOWN("w_ult_final_countdown", "Судный молот", "С неба обрушивается судный молот.", 5, -1400, -1500, "paladin_ult", new Race[]{}, new Talent[]{W_PALADIN_PROVIDENCE}),
+    W_PALADIN_PROVIDENCE("w_paladin_providence", "Божественное провидение", "Шанс снять с себя негативный эффект вскоре после получения.", 2, -1600, -1200, "paladin_sup3", new Race[]{}, new Talent[]{W_PROVOCATION}),
+    W_UNBREAKABLE("w_unbreakable", "Несокрушимый", "Один раз при смертельном ударе вы не погибаете.", 3, -1200, -1300, "paladin3", new Race[]{}, new Talent[]{W_PALADIN_AURA}),
+    W_ULT_FINAL_COUNTDOWN("w_ult_final_countdown", "Судный молот", "С неба обрушивается судный молот.", 5, -1400, -1500, "paladin_ult", new Race[]{}, new Talent[]{W_UNBREAKABLE}),
     W_ULT_PALADIN_WINGS("w_ult_paladin_wings", "Ангельские крылья", "Краткий полёт и ускорение для врыва в бой.", 5, -1900, -1000, "paladin_ult", new Race[]{}, new Talent[]{W_PALADIN_IMMOLATION}),
-    W_ULT_PALADIN_SACRIFICE("w_ult_paladin_sacrifice", "Жертва", "Жертвуя здоровьем, полностью исцеляет союзников рядом.", 5, -1600, -1500, "paladin_ult", new Race[]{}, new Talent[]{W_UNBREAKABLE}),
-    W_ULT_INVULNERABILITY("w_ult_invulnerability", "Неуязвимость", "Вы становитесь святым. Не получаете урон, в радиусе исцеляете союзников, даёте им щит.", 5, -1900, -1200, "paladin_ult", new Race[]{}, new Talent[]{W_UNBREAKABLE}),
+    W_ULT_PALADIN_SACRIFICE("w_ult_paladin_sacrifice", "Жертва", "Жертвуя здоровьем понемногу, постепенно восстанавливает здоровье союзников в зоне.", 5, -1600, -1500, "paladin_ult", new Race[]{}, new Talent[]{W_PALADIN_PROVIDENCE}),
+    W_ULT_INVULNERABILITY("w_ult_invulnerability", "Неуязвимость", "Вы становитесь святым. Не получаете урон, в радиусе исцеляете союзников, даёте им щит.", 5, -1900, -1200, "paladin_ult", new Race[]{}, new Talent[]{W_PALADIN_PROVIDENCE}),
 
     //BARBARIAN
     W_BARBARIAN_BASE("w_barbarian_base", "Варвар", "Открывает путь Варвара.", 2, 1200, -600, "warrior_subclass", new Race[]{}, new Talent[]{W_EVO}),
     W_BARBARIAN_BATTLE_CRY("w_barbarian_battle_cry", "Боевой клич", "Усиливает себя и ослабляет врагов рядом.", 2, 1200, -900, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
-    W_BARBARIAN_BLOODLETTING("w_barbarian_bloodletting", "Кровопускание", "Следующий удар накладывает кровотечение.", 2, 1500, -900, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
+    W_BARBARIAN_BLOODLETTING("w_barbarian_bloodletting", "Кровопускание", "Удар накладывает кровотечение.", 2, 1500, -900, "barbarian_sup1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
     W_SEISMIC("w_seismic", "Сейсмический удар", "Удар по земле создаёт волну перед воином.", 2, 1500, -600, "barbarian1", new Race[]{}, new Talent[]{W_BARBARIAN_BASE}),
     W_BLOODLUST("w_bloodlust", "Кровь за кровь", "Каждая пятая успешная атака восстанавливает здоровье от нанесённого урона.", 2, 1800, -600, "barbarian2", new Race[]{}, new Talent[]{W_SEISMIC}),
-    W_BARBARIAN_RAGE("w_barbarian_rage", "Ярость", "Чем меньше здоровья, тем выше наносимый урон.", 2, 1800, -1200, "barbarian2", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODLETTING, W_BARBARIAN_BATTLE_CRY, W_SEISMIC}),
+    W_BARBARIAN_RAGE("w_barbarian_rage", "Ярость", "Чем меньше здоровья, тем выше наносимый урон.", 2, 1800, -1200, "barbarian_sup2", new Race[]{}, new Talent[]{W_BARBARIAN_BLOODLETTING, W_BARBARIAN_BATTLE_CRY, W_SEISMIC}),
     W_BARBARIAN_KILL_FRENZY("w_barbarian_kill_frenzy", "Боевое безумие", "После убийства повышает скорость атаки на короткое время.", 2, 1200, -1200, "barbarian2", new Race[]{}, new Talent[]{W_BARBARIAN_BATTLE_CRY}),
     W_BARBARIAN_FRENZY("w_barbarian_frenzy", "Запредельная ярость", "Временно повышает урон и скорость атаки, но увеличивает входящий урон.", 2, 2100, -1500, "barbarian3", new Race[]{}, new Talent[]{W_BARBARIAN_RAGE}),
     W_BARBARIAN_BLOODTHIRST("w_barbarian_bloodthirst", "Кровожадность", "При убийстве восстанавливает здоровье.", 2, 1600, -1500, "barbarian3", new Race[]{}, new Talent[]{W_BARBARIAN_KILL_FRENZY, W_BARBARIAN_RAGE}),
@@ -56,11 +56,11 @@ public enum Talent {
     W_SWORDMASTER_BASE("w_swordmaster_base", "Мастер меча", "Открывает путь Мастера Меча.", 2, 0, -600, "warrior_subclass", new Race[]{}, new Talent[]{W_EVO}),
     W_SPIN("w_spin", "Рассекающий удар", "Активный круговой удар по врагам рядом.", 2, 300, -900, "swordmaster1", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
     W_SWORDMASTER_CONCENTRATION("w_swordmaster_concentration", "Концентрация", "Кратковременно увеличивает урон ударов.", 2, -300, -900, "swordmaster1", new Race[]{}, new Talent[]{W_SWORDMASTER_BASE}),
-    W_ARMOR_BREAKER("w_armor_breaker", "Разрез брони", "Пассивный мощный удар, который пробивает защиту цели.", 3, 300, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SPIN}),
+    W_ARMOR_BREAKER("w_armor_breaker", "Разрез брони", "Мощный удар, который пробивает защиту цели.", 3, 300, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SPIN}),
     W_SWORDMASTER_STEEL_BODY("w_swordmaster_steel_body", "Стальное тело", "Временно снижает входящий урон вдвое.", 2, -300, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION}),
-    W_SWORDMASTER_SHARP_BLADE("w_swordmaster_sharp_blade", "Острое лезвие", "Шанс нанести удвоенный урон.", 2, 0, -1200, "swordmaster2", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION, W_SPIN}),
+    W_SWORDMASTER_SHARP_BLADE("w_swordmaster_sharp_blade", "Острое лезвие", "Шанс нанести удвоенный урон.", 2, 0, -1200, "swordmaster_sup1", new Race[]{}, new Talent[]{W_SWORDMASTER_CONCENTRATION, W_SPIN}),
     W_SWORDMASTER_HARDENED_MASTERY("w_swordmaster_hardened_mastery", "Закалённое мастерство", "Пассивно ускоряет атаки.", 2, -600, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_SWORDMASTER_STEEL_BODY}),
-    W_SWORDMASTER_HAND_DEXTERITY("w_swordmaster_hand_dexterity", "Ловкость рук", "Пассивно ускоряет атаки.", 2, -300, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_SWORDMASTER_SHARP_BLADE}),
+    W_SWORDMASTER_HAND_DEXTERITY("w_swordmaster_hand_dexterity", "Ловкость рук", "Чем выше скорость атаки, тем больше урон в ближнем бою.", 2, -300, -1500, "swordmaster_sup2", new Race[]{}, new Talent[]{W_SWORDMASTER_SHARP_BLADE}),
     W_SWORDMASTER_BALANCE("w_swordmaster_balance", "Баланс", "Без щита даёт дополнительную скорость атаки.", 2, 300, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_ARMOR_BREAKER}),
     W_SWORDMASTER_AGILITY("w_swordmaster_agility", "Повышенная ловкость", "Увеличивает скорость передвижения.", 2, 600, -1500, "swordmaster3", new Race[]{}, new Talent[]{W_ARMOR_BREAKER}),
     W_ULT_SWORDMASTER_OMNISLASH("w_ult_swordmaster_omnislash", "Омни-слэш", "Проводит серию быстрых ударов по цели.", 5, -300, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_HAND_DEXTERITY}),
@@ -69,10 +69,10 @@ public enum Talent {
     W_ULT_SWORDMASTER_PERFECT_CUT("w_ult_swordmaster_perfect_cut", "Идеальный разрез", "Следующий удар наносит дополнительный урон от максимального здоровья цели.", 5, 600, -1800, "swordmaster_ult", new Race[]{}, new Talent[]{W_SWORDMASTER_AGILITY}),
 
     // ======================== ЛУЧНИК ========================
-    ARCHER_BASE("archer_base", "Лучник", "Меткость и ловкость", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
-    A_DASH("a_dash", "Рывок спиной", "Быстрый отскок назад", 2, -300, -100, "archer1", new Race[]{}, new Talent[]{ARCHER_BASE}),
-    A_DAGGER("a_dagger", "Кинжал", "Пассивно: урон кинжалом выше на 20%.", 2, 0, -200, "archer2", new Race[]{}, new Talent[]{ARCHER_BASE}),
-    A_POWER("a_power", "Сильный выстрел", "Пробивает броню", 2, 300, -100, "archer3", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    ARCHER_BASE("archer_base", "Лучник", "Меткость и ловкость", 1, 0, 300, "class", new Race[]{Race.DURUM, Race.BEAST}, new Talent[]{START}),
+    A_DASH("a_dash", "Рывок спиной", "Быстрый отскок назад", 1, -300, -100, "archer1", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_DAGGER("a_dagger", "Кинжал", "Урон кинжалом выше.", 1, 0, -200, "archer2", new Race[]{}, new Talent[]{ARCHER_BASE}),
+    A_POWER("a_power", "Сильный выстрел", "Пробивает броню", 1, 300, -100, "archer3", new Race[]{}, new Talent[]{ARCHER_BASE}),
     A_EVO("a_evo", "Эволюция", "Вы на пути к совершеству", 1, 0, -400, "archer", new Race[]{}, new Talent[]{A_DASH, A_DAGGER, A_POWER}),
 
     //HUNTER
@@ -124,34 +124,34 @@ public enum Talent {
     A_ULT_MUSKETEER_EXECUTION("a_ult_musketeer_execution", "Казнь", "Добивает цели с низким здоровьем.", 5, 1800, -1500, "musketeer_ult", new Race[]{}, new Talent[]{A_MUSKETEER_PIERCING_BUCKSHOT}),
 
     // ======================== МАГ ========================
-    MAGE_BASE("mage_base", "Маг", "Знание тайного", 1, 0, -300, "class", new Race[]{Race.MECHANID}, new Talent[]{START}),
-    M_BUFF_ATK("m_buff_atk", "Усиление Атаки", "Вы усиливаете свою атаку магией", 2, 0, -450, "mage1", new Race[]{}, new Talent[]{MAGE_BASE}),
-    M_BUFF_DEF("m_buff_def", "Усиление Защиты", "Повышает броню магией", 2, 0, -600, "mage2", new Race[]{}, new Talent[]{M_BUFF_ATK}),
-    M_BARRIER("m_barrier", "Барьер", "Магический щит", 2, 0, -750, "mage3", new Race[]{}, new Talent[]{M_BUFF_DEF}),
+    MAGE_BASE("mage_base", "Маг", "Знание тайного", 1, 0, -300, "class", new Race[]{Race.NOX, Race.VENTAR, Race.DURUM, Race.BEAST, Race.MECHANID}, new Talent[]{START}),
+    M_BUFF_ATK("m_buff_atk", "Усиление Атаки", "Вы усиливаете свою атаку магией", 1, 0, -450, "mage1", new Race[]{}, new Talent[]{MAGE_BASE}),
+    M_BUFF_DEF("m_buff_def", "Усиление Защиты", "Слегка снижает получаемый урон", 1, 0, -600, "mage2", new Race[]{}, new Talent[]{M_BUFF_ATK}),
+    M_BARRIER("m_barrier", "Барьер", "Магический щит", 1, 0, -750, "mage3", new Race[]{}, new Talent[]{M_BUFF_DEF}),
     M_EVO("m_evo", "Эволюция", "Вы на пути к совершеству", 1, 0, -900, "mage", new Race[]{}, new Talent[]{M_BUFF_ATK, M_BUFF_DEF, M_BARRIER}),
 
     //SUMMONER
     M_SUMMONER_BASE("m_summoner_base", "Призыватель", "Открывает путь Призывателя.", 2, -600, -800, "mage_subclass", new Race[]{}, new Talent[]{M_EVO}),
-    M_SUMMON_SERVANT("m_summon_servant", "Призыв слуги", "Призывает скелета-лучника.", 2, -900, -800, "summoner_choice", new Race[]{}, new Talent[]{M_SUMMONER_BASE}),
-    M_SUMMON_GUARD("m_summon_guard", "Призыв стража", "Призывает зомби-воина.", 2, -600, -1100, "summoner_choice", new Race[]{}, new Talent[]{M_SUMMONER_BASE}),
+    M_SUMMON_SERVANT("m_summon_servant", "Призыв слуги", "Призывает скелета-лучника.", 2, -900, -800, "summoner1", new Race[]{}, new Talent[]{M_SUMMONER_BASE}),
+    M_SUMMON_GUARD("m_summon_guard", "Призыв стража", "Призывает зомби-воина.", 2, -600, -1100, "summoner2", new Race[]{}, new Talent[]{M_SUMMONER_BASE}),
     M_SUMMON_COMMAND("m_summon_command", "Команда", "Приказывает всем слугам атаковать выбранную цель.", 1, -750, -950, "summoner_add", new Race[]{}, new Talent[]{M_SUMMONER_BASE}),
     M_SUMMON_SACRIFICE("m_summon_sacrifice", "Жертва", "Убивает одного слугу, восстанавливая вам хп.", 2, -900, -1100, "summoner_add", new Race[]{}, new Talent[]{M_SUMMON_COMMAND}),
-    M_SUMMON_ENDURANCE("m_summon_endurance", "Выносливость слуг", "Ваши призывы наносят больше урона.", 2, -1200, -800, "summoner", new Race[]{}, new Talent[]{M_SUMMON_SERVANT}),
-    M_SUMMON_DISCIPLINE("m_summon_discipline", "Дисциплина слуг", "Ваши призывы получают больше брони.", 2, -600, -1400, "summoner", new Race[]{}, new Talent[]{M_SUMMON_GUARD}),
-    M_SUMMON_EFFICIENCY("m_summon_efficiency", "Экономия маны", "Дополнительно снижает расход маны.", 2, -1200, -1400, "summoner", new Race[]{}, new Talent[]{M_SUMMON_GUARD, M_SUMMON_SERVANT}),
+    M_SUMMON_ENDURANCE("m_summon_endurance", "Выносливость слуг", "Ваши призывы наносят больше урона.", 2, -1200, -800, "summoner3", new Race[]{}, new Talent[]{M_SUMMON_SERVANT}),
+    M_SUMMON_DISCIPLINE("m_summon_discipline", "Дисциплина слуг", "Ваши призывы получают больше брони.", 2, -600, -1400, "summoner4", new Race[]{}, new Talent[]{M_SUMMON_GUARD}),
+    M_SUMMON_EFFICIENCY("m_summon_efficiency", "Экономия маны", "Дополнительно снижает расход маны.", 2, -1200, -1400, "summoner5", new Race[]{}, new Talent[]{M_SUMMON_GUARD, M_SUMMON_SERVANT}),
     M_ULT_GATE("m_ult_gate", "Врата", "Призывает сильных слуг.", 5, -900, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_DISCIPLINE}),
     M_ULT_ABSORPTION("m_ult_absorption", "Поглощение", "Убивает ваших слуг/стражей и восстанавливает хп и маны за каждого.", 5, -600, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_DISCIPLINE}),
     M_ULT_TOTEM_FORM("m_ult_totem_form", "Тотемная форма", "Превращает слуг/стражей в неподвижные тотемы.", 5, -1500, -1100, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_ENDURANCE}),
-    M_ULT_POSSESSION("m_ult_possession", "Эволюция", "Эволюционирует ваших слуг/стражей, усиливая их урон, здоровье.", 5, -1500, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_EFFICIENCY}),
+    M_ULT_POSSESSION("m_ult_possession", "Эволюция", "Усиливает слугу или стража в направлении взгляда: здоровье, броня, урон, эффекты и размер — только на время действия.", 5, -1500, -1700, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_EFFICIENCY}),
     M_ULT_ELEMENTAL("m_ult_elemental", "Элементаль", "Призывает элементаля.", 5, -1500, -800, "summoner_ult", new Race[]{}, new Talent[]{M_SUMMON_ENDURANCE}),
 
     //CLERIC
     M_CLERIC_BASE("m_cleric_base", "Жрец", "Открывает путь Жреца.", 2, 600, -800, "mage_subclass", new Race[]{}, new Talent[]{M_EVO}),
     M_CLERIC_SMALL_HEAL("m_cleric_small_heal", "Малый отхил", "Лечит союзника небольшим количеством хп.", 2, 800, -1000, "cleric_active_heal", new Race[]{}, new Talent[]{M_CLERIC_BASE}),
-    M_CLERIC_BLESSING("m_cleric_blessing", "Благословение", "Дает союзнику усиление урона и очищает от негативного эффекта.", 2, 1000, -1000, "cleric_active", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
-    M_CLERIC_LIGHT("m_cleric_light", "Свет", "Создает светящуюся сферу, которая лечит союзников и вредит нежити рядом.", 3, 800, -1200, "cleric_active", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
-    M_CLERIC_HEALING_AMP("m_cleric_healing_amp", "Усиление лечения", "Все исцеление повышено.", 2, 900, -1400, "cleric_passive1", new Race[]{}, new Talent[]{M_CLERIC_LIGHT}),
-    M_CLERIC_PRAYER("m_cleric_prayer", "Аура", "Пока союзник стоит рядом, он получает небольшое лечение каждую секунду.", 2, 1200, -1100, "cleric_passive1", new Race[]{}, new Talent[]{M_CLERIC_BLESSING}),
+    M_CLERIC_BLESSING("m_cleric_blessing", "Благословение", "Дает союзнику усиление урона и очищает от негативного эффекта.", 2, 1000, -1000, "cleric_active1", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
+    M_CLERIC_LIGHT("m_cleric_light", "Свет", "Создает светящуюся сферу, которая лечит союзников и вредит нежити рядом.", 3, 800, -1200, "cleric_active2", new Race[]{}, new Talent[]{M_CLERIC_SMALL_HEAL}),
+    M_CLERIC_HEALING_AMP("m_cleric_healing_amp", "Усиление лечения", "Все исцеление повышено.", 2, 900, -1400, "cleric_passive11", new Race[]{}, new Talent[]{M_CLERIC_LIGHT}),
+    M_CLERIC_PRAYER("m_cleric_prayer", "Аура", "Пока союзник стоит рядом, он получает небольшое лечение каждую секунду.", 2, 1200, -1100, "cleric_passive12", new Race[]{}, new Talent[]{M_CLERIC_BLESSING}),
     M_CLERIC_READ_PRAYER("m_cleric_read_prayer", "Молитва о здоровье", "Стоя на месте, начинает восстанавливать хп.", 2, 1000, -1600, "cleric_passive2", new Race[]{}, new Talent[]{M_CLERIC_HEALING_AMP}),
     M_CLERIC_PURITY("m_cleric_purity", "Чистота", "Негативные эффекты длятся меньше.", 2, 1400, -1300, "cleric_passive2", new Race[]{}, new Talent[]{M_CLERIC_PRAYER}),
     M_CLERIC_MANA_PRAYER("m_cleric_mana_prayer", "Молитва о мане", "Стоя на месте, начинает восстанавливать ману.", 2, 1250, -1500, "cleric_passive2", new Race[]{}, new Talent[]{M_CLERIC_PURITY, M_CLERIC_READ_PRAYER}),
@@ -163,15 +163,15 @@ public enum Talent {
 
     //SPELLCASTER
     M_SPELLCASTER_BASE("m_spellcaster_base", "Заклинатель", "Открывает путь Заклинателя.", 2, 0, -1500, "mage_subclass", new Race[]{}, new Talent[]{M_EVO}),
-    M_FIREBALL("m_fireball", "Фаербол", "Кидает огненный шар.", 2, -300, -1600, "spell1", new Race[]{}, new Talent[]{M_SPELLCASTER_BASE}),
-    M_ICE_ARROW("m_ice_arrow", "Ледяная стрела", "Замедляет цель сильным льдом.", 2, 300, -1600, "spell1", new Race[]{}, new Talent[]{M_SPELLCASTER_BASE}),
-    M_LIGHTNING("m_lightning", "Молния", "Бьет молнией по цели.", 2, 0, -1700, "spell2", new Race[]{}, new Talent[]{M_FIREBALL, M_ICE_ARROW}),
+    M_FIREBALL("m_fireball", "Фаербол", "Кидает огненный шар.", 2, -300, -1600, "spell11", new Race[]{}, new Talent[]{M_SPELLCASTER_BASE}),
+    M_ICE_ARROW("m_ice_arrow", "Ледяная стрела", "Замедляет цель сильным льдом.", 2, 300, -1600, "spell12", new Race[]{}, new Talent[]{M_SPELLCASTER_BASE}),
+    M_LIGHTNING("m_lightning", "Молния", "Бьет молнией по цели.", 2, 0, -1700, "spell13", new Race[]{}, new Talent[]{M_FIREBALL, M_ICE_ARROW}),
     M_TELEPORT("m_teleport", "Телепорт", "Мгновенно перемещается на небольшое расстояние.", 3, -450, -1900, "spell3", new Race[]{}, new Talent[]{M_LIGHTNING}),
     M_STONE_SKIN("m_stone_skin", "Каменная кожа", "При получении урона дает сопротивление, но замедляет.", 2, 450, -1900, "spell3", new Race[]{}, new Talent[]{M_LIGHTNING}),
     M_RECHARGE("m_recharge", "Подпитка", "Ускоряет перезарядку навыков.", 2, 0, -2000, "spell3", new Race[]{}, new Talent[]{M_LIGHTNING}),
-    M_MANA_FLOW("m_mana_flow", "Поток маны", "Увеличивает скорость восстонавления маны.", 2, 0, -2200, "spell4", new Race[]{}, new Talent[]{M_RECHARGE}),
-    M_MAGIC_BARRIER("m_magic_barrier", "Магический барьер", "Поглащает один удар.", 2, -600, -2100, "spell4", new Race[]{}, new Talent[]{M_TELEPORT}),
-    M_SOFT_LANDING("m_soft_landing", "Мягкое приземление", "Не получает урон от падения.", 2, 600, -2100, "spell4", new Race[]{}, new Talent[]{M_STONE_SKIN}),
+    M_MANA_FLOW("m_mana_flow", "Поток маны", "Увеличивает скорость восстонавления маны.", 2, 0, -2200, "spell4", new Race[]{}, new Talent[]{M_RECHARGE, M_STONE_SKIN, M_TELEPORT}),
+    M_MAGIC_BARRIER("m_magic_barrier", "Магический барьер", "При пробитии 'Барьера' отбрасывает врагов, наносит им урон и ускоряет вас.", 2, -600, -2100, "spell4", new Race[]{}, new Talent[]{M_RECHARGE, M_STONE_SKIN, M_TELEPORT}),
+    M_SOFT_LANDING("m_soft_landing", "Мягкое приземление", "Не получает урон от падения.", 2, 600, -2100, "spell4", new Race[]{}, new Talent[]{M_RECHARGE, M_STONE_SKIN, M_TELEPORT}),
     M_ULT_METEOR("m_ult_meteor", "Метеорит", "Призывает метеорит в область, нанося огромный урон.", 5, -800, -2300, "spellcaster_ult", new Race[]{}, new Talent[]{M_MAGIC_BARRIER}),
     M_ULT_ICE_BLOCK("m_ult_ice_block", "Ледяная глыба", "Замораживает цель в льду.", 5, -600, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_MAGIC_BARRIER}),
     M_ULT_ANTI_MAGIC("m_ult_anti_magic", "Анти-магия", "Создает сферу, отражающую магию и снаряды.", 5, 800, -2300, "spellcaster_ult", new Race[]{}, new Talent[]{M_SOFT_LANDING}),
@@ -179,7 +179,7 @@ public enum Talent {
     M_ULT_CHAOS("m_ult_chaos", "Хаос", "Выпускает волну огня, молнии и льда, накладывая эффекты.", 5, 600, -2400, "spellcaster_ult", new Race[]{}, new Talent[]{M_SOFT_LANDING}),
 
     // ======================== АССАСИН ========================
-    ASSASSIN_BASE("assassin_base", "Ассасин", "Тень и смерть", 1, 0, 300, "class", new Race[]{}, new Talent[]{START}),
+    ASSASSIN_BASE("assassin_base", "Ассасин", "Тень и смерть", 1, 0, 300, "class", new Race[]{Race.DURUM, Race.IGNIS, Race.MECHANID}, new Talent[]{START}),
     AS_SLIDE("as_slide", "Подкат", "Сближение с целью", 1, -300, -100, "assassin1", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
     AS_SMOKE("as_smoke", "Дымовая завеса", "Скрывает ваше положение", 1, 0, -200, "assassin2", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
     AS_STEALTH_CRIT("as_crit", "Крит из тени", "Удар в спину из невидимости", 1, 300, -100, "assassin3", new Race[]{}, new Talent[]{ASSASSIN_BASE}),
@@ -206,7 +206,7 @@ public enum Talent {
     AS_WANDERER_CLIMB("as_wanderer_climb", "Лазанье", "Позволяет быстро карабкаться по стенам.", 2, -300, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
     AS_WANDERER_TRIPWIRE("as_wanderer_tripwire", "Ловушка-растяжка", "Ставит растяжку, которая срабатывает по врагу.", 2, 0, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
     AS_WANDERER_ENDURANCE("as_wanderer_endurance", "Выносливость", "Повышает скорость бега.", 2, 300, -900, "wanderer1", new Race[]{}, new Talent[]{AS_WANDERER_BASE}),
-    AS_WANDERER_BARRICADE("as_wanderer_barricade", "Баррикада", "Создаёт преграду из барьеров 3×2 и модель.", 2, -300, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_CLIMB}),
+    AS_WANDERER_BARRICADE("as_wanderer_barricade", "Баррикада", "Создаёт преграду.", 2, -300, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_CLIMB}),
     AS_WANDERER_NO_SLOW("as_wanderer_no_slow", "Без задержек", "Замедление почти не действует.", 2, 300, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_ENDURANCE}),
     AS_WANDERER_SHADOW_WRAP("as_wanderer_shadow_wrap", "Окутанный тенью", "Любая невидимость длится на процент дольше.", 2, 0, -1200, "wanderer2", new Race[]{}, new Talent[]{AS_WANDERER_TRIPWIRE, AS_WANDERER_CLIMB, AS_WANDERER_ENDURANCE}),
     AS_WANDERER_DOUBLE_DODGE("as_wanderer_double_dodge", "Двойное уклонение", "Даёт дополнительные заряды подката.", 2, 0, -1500, "wanderer3", new Race[]{}, new Talent[]{AS_WANDERER_SHADOW_WRAP, AS_WANDERER_NO_SLOW, AS_WANDERER_BARRICADE}),
@@ -261,12 +261,18 @@ public enum Talent {
         return null;
     }
 
-    /** Узлы «Эволюция»: нужны все базовые навыки класса (все записи в {@link #parents}), а не любой один. */
+    public boolean isForbiddenForRace(Race race) {
+        if (race == null) return false;
+        for (Race fr : forbiddenRaces) {
+            if (fr == race) return true;
+        }
+        return false;
+    }
+
     public boolean requiresAllParents() {
         return this == W_EVO || this == A_EVO || this == M_EVO || this == AS_EVO;
     }
 
-    /** Условие покупки по цепочке родителей (для эволюции — все родители должны быть изучены). */
     public boolean parentsSatisfiedForPurchase(Set<String> owned) {
         if (parents.length == 0) return true;
         if (requiresAllParents()) {
@@ -279,7 +285,6 @@ public enum Talent {
         return false;
     }
 
-    /** Предок в дереве родителей (цепочка parents). */
     public static boolean isAncestorOf(Talent potentialAncestor, Talent target) {
         for (Talent parent : target.parents) {
             if (parent == potentialAncestor || isAncestorOf(potentialAncestor, parent)) return true;
@@ -287,15 +292,10 @@ public enum Talent {
         return false;
     }
 
-    /** Один и тот же «столбец» дерева: предок/потомок по parents. */
     public static boolean isSameHierarchy(Talent a, Talent b) {
         return isAncestorOf(a, b) || isAncestorOf(b, a);
     }
 
-    /**
-     * Другие таланты с тем же {@link #branch}, с которыми нельзя совмещать по правилам {@code isBranchBlocked}
-     * (не в одной иерархии parents).
-     */
     public static List<Talent> mutuallyExclusivePeers(Talent t) {
         List<Talent> bases = subclassBasesFor(t);
         if (!bases.isEmpty() && bases.contains(t)) {

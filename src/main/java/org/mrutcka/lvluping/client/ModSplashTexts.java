@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class ModSplashTexts {
 
-    private static final String[] KEYS = {
+    private static final String[] KEYS = new String[]{
             "splash.lvluping.1",
             "splash.lvluping.2",
             "splash.lvluping.3",
@@ -21,7 +21,18 @@ public final class ModSplashTexts {
             "splash.lvluping.12",
             "splash.lvluping.13",
             "splash.lvluping.14",
-            "splash.lvluping.15"
+            "splash.lvluping.15",
+            "splash.lvluping.16",
+            "splash.lvluping.17",
+            "splash.lvluping.18",
+            "splash.lvluping.19",
+            "splash.lvluping.20",
+            "splash.lvluping.21",
+            "splash.lvluping.22",
+            "splash.lvluping.23",
+            "splash.lvluping.24",
+            "splash.lvluping.25",
+            "splash.lvluping.26"
     };
 
     private ModSplashTexts() {}

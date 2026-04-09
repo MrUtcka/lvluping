@@ -18,15 +18,12 @@ public final class LvlupingItems {
     public static final Supplier<Item> HUNTER_TRAP_MODEL = ITEMS.register("hunter_trap_model",
             () -> new Item(new Item.Properties()));
 
-    /** Модель дерева для слияния (рейнджер). */
     public static final Supplier<Item> RANGER_TREE_MODEL = ITEMS.register("ranger_tree_model",
             () -> new Item(new Item.Properties()));
 
-    /** Модель кустов/корней (колючий куст и т.п.). */
     public static final Supplier<Item> RANGER_KORNI_MODEL = ITEMS.register("ranger_korni_model",
             () -> new Item(new Item.Properties()));
 
-    /** Модель тотема жизни (ульт рейнджера). */
     public static final Supplier<Item> RANGER_TOTEM_MODEL = ITEMS.register("ranger_totem_model",
             () -> new Item(new Item.Properties()));
 

@@ -17,6 +17,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Snowball;
 import net.minecraft.world.entity.projectile.SmallFireball;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ItemStack;
@@ -32,7 +33,19 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.Component;
+import org.mrutcka.lvluping.LvlupingMod;
+import org.mrutcka.lvluping.ModItemTags;
+import org.mrutcka.lvluping.util.AllyHelper;
+
+import java.util.Locale;
+import java.util.Set;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.compat.ArsManaCompat;
@@ -50,10 +63,18 @@ import org.mrutcka.lvluping.network.S2CSyncCooldown;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TalentAbilityHandler {
+    public static final ResourceLocation EVOLUTION_SCALE_MODIFIER_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "summoner_evolution_scale");
+    public static final String EVOLUTION_FX_UNTIL_KEY = "lvluping_evolution_fx_until";
+    public static final String EVOLUTION_PREV_DAMAGE_MULT_KEY = "lvluping_evolution_prev_damage_mult";
+    private static final String EVOLUTION_PREV_MAX_HP_BASE_KEY = "lvluping_evo_prev_max_hp_base";
+    private static final String EVOLUTION_EQUIP_SNAPSHOT_KEY = "lvluping_evo_equip_snap";
+    private static final double M_ULT_POSSESSION_LOOK_RANGE = 28.0;
+    private static final double M_ULT_POSSESSION_LOOK_CONE_DEG = 40.0;
+
     public static void removeHarmfulEffects(ServerPlayer p, int maxCount) {
         int n = 0;
         for (MobEffectInstance inst : p.getActiveEffects()) {
@@ -82,8 +103,111 @@ public class TalentAbilityHandler {
                 .orElse(null);
     }
 
+    private static boolean isEvolutionSummonCandidate(ServerPlayer player, Mob cand, int servantLvl, int guardLvl) {
+        if (cand == null || !cand.isAlive()) return false;
+        if (!cand.getPersistentData().hasUUID("lvluping_summon_owner")) return false;
+        if (!player.getUUID().equals(cand.getPersistentData().getUUID("lvluping_summon_owner"))) return false;
+        boolean isServant = cand.getType() == EntityType.SKELETON;
+        boolean isGuard = cand.getType() == EntityType.ZOMBIE;
+        if (!isServant && !isGuard) return false;
+        if (isServant && servantLvl <= 0) return false;
+        if (isGuard && guardLvl <= 0) return false;
+        return true;
+    }
+
+    private static Mob pickSummonForEvolution(ServerPlayer player, List<Mob> summons, int servantLvl, int guardLvl) {
+        LivingEntity cross = getTargetInFront(player, M_ULT_POSSESSION_LOOK_RANGE, M_ULT_POSSESSION_LOOK_CONE_DEG);
+        if (cross instanceof Mob mm && isEvolutionSummonCandidate(player, mm, servantLvl, guardLvl)) {
+            return mm;
+        }
+        Vec3 eye = player.getEyePosition();
+        Vec3 look = player.getLookAngle().normalize();
+        double cosHalf = Math.cos(Math.toRadians(M_ULT_POSSESSION_LOOK_CONE_DEG * 0.5));
+        Mob best = null;
+        double bestDot = -2.0;
+        double bestDist = Double.MAX_VALUE;
+        for (Mob cand : summons) {
+            if (!isEvolutionSummonCandidate(player, cand, servantLvl, guardLvl)) continue;
+            Vec3 mid = cand.position().add(0.0, cand.getBbHeight() * 0.5, 0.0).subtract(eye);
+            double len = mid.length();
+            if (len > M_ULT_POSSESSION_LOOK_RANGE || len < 1.0e-4) continue;
+            Vec3 dir = mid.scale(1.0 / len);
+            double dot = look.dot(dir);
+            if (dot < cosHalf) continue;
+            double d2 = len * len;
+            if (dot > bestDot + 1.0e-4 || (Math.abs(dot - bestDot) <= 1.0e-4 && d2 < bestDist)) {
+                bestDot = dot;
+                bestDist = d2;
+                best = cand;
+            }
+        }
+        return best;
+    }
+
+    private static CompoundTag copyEquipmentSnapshot(Mob mob) {
+        var reg = mob.registryAccess();
+        CompoundTag out = new CompoundTag();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            ItemStack st = mob.getItemBySlot(slot);
+            if (!st.isEmpty()) {
+                out.put(slot.getName(), st.save(reg));
+            }
+        }
+        return out;
+    }
+
+    private static void restoreEquipmentFromSnapshot(Mob mob, CompoundTag snap) {
+        var reg = mob.registryAccess();
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            String k = slot.getName();
+            if (snap.contains(k)) {
+                Optional<ItemStack> opt = ItemStack.parse(reg, snap.getCompound(k));
+                mob.setItemSlot(slot, opt.orElse(ItemStack.EMPTY));
+            } else {
+                mob.setItemSlot(slot, ItemStack.EMPTY);
+            }
+        }
+    }
+
+    public static void revertPossessionEvolution(Mob mob) {
+        var pd = mob.getPersistentData();
+        pd.remove(EVOLUTION_FX_UNTIL_KEY);
+        var sc = mob.getAttribute(Attributes.SCALE);
+        if (sc != null) {
+            sc.removeModifier(EVOLUTION_SCALE_MODIFIER_ID);
+        }
+        if (pd.contains(EVOLUTION_PREV_DAMAGE_MULT_KEY)) {
+            double prev = pd.getDouble(EVOLUTION_PREV_DAMAGE_MULT_KEY);
+            pd.remove(EVOLUTION_PREV_DAMAGE_MULT_KEY);
+            pd.putDouble("lvluping_summon_damage_mult", prev);
+        }
+        if (pd.contains(EVOLUTION_PREV_MAX_HP_BASE_KEY)) {
+            double prevBase = pd.getDouble(EVOLUTION_PREV_MAX_HP_BASE_KEY);
+            pd.remove(EVOLUTION_PREV_MAX_HP_BASE_KEY);
+            var mh = mob.getAttribute(Attributes.MAX_HEALTH);
+            if (mh != null) {
+                float cur = mob.getHealth();
+                float maxBefore = mob.getMaxHealth();
+                mh.setBaseValue(prevBase);
+                float maxAfter = mob.getMaxHealth();
+                float nh = cur * (maxAfter / Math.max(maxBefore, 1.0e-4f));
+                mob.setHealth(Mth.clamp(nh, 1.0e-4f, maxAfter));
+            }
+        }
+        if (pd.contains(EVOLUTION_EQUIP_SNAPSHOT_KEY)) {
+            CompoundTag snap = pd.getCompound(EVOLUTION_EQUIP_SNAPSHOT_KEY);
+            pd.remove(EVOLUTION_EQUIP_SNAPSHOT_KEY);
+            restoreEquipmentFromSnapshot(mob, snap);
+        }
+        mob.refreshDimensions();
+    }
+
     private static final double LOOK_POINT_FALLBACK_RANGE = 10.0;
     private static final double LOOK_POINT_NORMAL_PUSH = 0.35;
+
+    public static final String PALADIN_SACRIFICE_CHANNEL_TICKS_KEY = "lvluping_paladin_sacrifice_ch";
+    public static final String PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY = "lvluping_paladin_sacrifice_pl_rem";
+    public static final String PALADIN_SACRIFICE_ALLIES_KEY = "lvluping_paladin_sacrifice_allies";
 
     public static Vec3 snapStandingPosition(ServerLevel level, ServerPlayer player, Vec3 v) {
         int x = Mth.floor(v.x);
@@ -175,28 +299,8 @@ public class TalentAbilityHandler {
                 .limit(maxTargets)
                 .toList();
     }
-    private static final int SLIDE_COOLDOWN = 200;
-    private static final int SMOKE_COOLDOWN = 400;
     private static final double DASH_DELTA_BACK_MULT = 1.2;
-    private static final int DASH_COOLDOWN = 160;
-    public static final int SHIELD_WINDOW = 40;
-    public static final int SHIELD_COOLDOWN = 160;
     private static final int SHIELD_STUN_DURATION = 40;
-    private static final int SEISMIC_COOLDOWN = 200;
-    private static final int IRON_SKIN_COOLDOWN = 300;
-    private static final int SPIN_COOLDOWN = 220;
-    private static final int HEAVY_STEP_COOLDOWN = 160;
-    public static final int UNBREAKABLE_COOLDOWN = 1800;
-    private static final int PARRY_WINDOW = 20;
-    private static final int PARRY_COOLDOWN = 100;
-    public static final int PROVOCATION_COOLDOWN = 240;
-    public static final int PROVOCATION_DURATION_TICKS = 60;
-    private static final int ULT_BERSERK_DURATION = 160;
-    private static final int ULT_BERSERK_COOLDOWN = 600;
-    private static final int ULT_BROTHERHOOD_DURATION = 120;
-    private static final int ULT_BROTHERHOOD_COOLDOWN = 500;
-    private static final int ULT_FINAL_COUNTDOWN_DELAY = 60;
-    private static final int ULT_FINAL_COUNTDOWN_COOLDOWN = 400;
     private static final int W_ULT_BERSERK_FIRE_RESISTANCE_AMPLIFIER = 0;
     private static final int W_ULT_BERSERK_REGENERATION_AMPLIFIER = 0;
     private static final int W_ULT_BERSERK_MOVEMENT_SPEED_AMPLIFIER = 1;
@@ -235,20 +339,6 @@ public class TalentAbilityHandler {
     private static final int SMOKE_EFFECT_DURATION_TICKS = 200;
     private static final int TELEPORT_NO_COLLISION_ATTEMPTS = 6;
     private static final double TELEPORT_BACKTRACK_STEP = 1.0;
-    private static final int BUFF_COOLDOWN = 600;
-    private static final int BARRIER_WINDOW = 200;
-    private static final int M_FIRE_COOLDOWN = 80;
-    private static final int M_ICE_COOLDOWN = 80;
-    private static final int M_TELEPORT_COOLDOWN = 120;
-    private static final int M_SUMMON_COOLDOWN = 200;
-    private static final int M_SACRIFICE_COOLDOWN = 60;
-    private static final int M_COMMAND_COOLDOWN = 40;
-    private static final int ABILITY_FAIL_COOLDOWN = 20;
-    private static final int M_CLERIC_SMALL_HEAL_COOLDOWN = 120;
-    private static final int M_CLERIC_BLESSING_COOLDOWN = 140;
-    private static final int M_CLERIC_LIGHT_COOLDOWN = 140;
-    private static final int M_ULT_LIGHT_RAY_COOLDOWN = 900;
-    private static final int M_ULT_RESURRECTION_COOLDOWN = 3600;
     public static final String CLERIC_INVULN_UNTIL_KEY = "lvluping_cleric_invuln_until";
     public static final String W_LIGHT_FORM_UNTIL_KEY = "lvluping_w_light_form_until";
     public static final String W_LIGHT_FORM_RADIUS_KEY = "lvluping_w_light_form_radius";
@@ -333,7 +423,6 @@ public class TalentAbilityHandler {
     public static final String A_HUNTER_TRAP_VISUAL_KEY = "lvluping_a_hunter_trap_visual_id";
     public static final String AS_WANDERER_BARRICADE_VISUAL_KEY = "lvluping_as_barricade_visual_id";
     public static final String AS_WANDERER_BARRICADE_Y_ROT_KEY = "lvluping_as_barricade_y_rot";
-    /** Server: wall-climb from as_wanderer_climb until this game time. */
     public static final String AS_WANDERER_WALL_CLIMB_UNTIL_KEY = "lvluping_wall_climb_until";
     public static final String LVLUPING_SLIDE_CHARGES_KEY = "lvluping_slide_charges";
     public static final String AS_WANDERER_TRIPWIRE_VISUAL_KEY = "lvluping_as_tripwire_visual_id";
@@ -368,36 +457,6 @@ public class TalentAbilityHandler {
         var pkt = new org.mrutcka.lvluping.network.S2CAssassinBarricadeHide(vid);
         for (ServerPlayer sp : sl.players()) {
             if (sp.level() == sl) PacketDistributor.sendToPlayer(sp, pkt);
-        }
-    }
-
-    public static void placeAssassinBarricadeBarriers(ServerLevel sl, int bx, int by, int bz, float yRotDeg) {
-        double tRad = Math.toRadians(yRotDeg + 90.0);
-        double pdx = Math.cos(tRad);
-        double pdz = Math.sin(tRad);
-        for (int w = -1; w <= 1; w++) {
-            BlockPos column = BlockPos.containing(bx + 0.5 + pdx * w, by, bz + 0.5 + pdz * w);
-            for (int h = 0; h < 2; h++) {
-                BlockPos pos = column.above(h);
-                if (sl.getBlockState(pos).canBeReplaced()) {
-                    sl.setBlock(pos, Blocks.BARRIER.defaultBlockState(), 3);
-                }
-            }
-        }
-    }
-
-    public static void removeAssassinBarricadeBarriers(ServerLevel sl, int bx, int by, int bz, float yRotDeg) {
-        double tRad = Math.toRadians(yRotDeg + 90.0);
-        double pdx = Math.cos(tRad);
-        double pdz = Math.sin(tRad);
-        for (int w = -1; w <= 1; w++) {
-            BlockPos column = BlockPos.containing(bx + 0.5 + pdx * w, by, bz + 0.5 + pdz * w);
-            for (int h = 0; h < 2; h++) {
-                BlockPos pos = column.above(h);
-                if (sl.getBlockState(pos).is(Blocks.BARRIER)) {
-                    sl.setBlock(pos, Blocks.AIR.defaultBlockState(), 3);
-                }
-            }
         }
     }
 
@@ -583,9 +642,6 @@ public class TalentAbilityHandler {
     public static final String AS_ASSASSIN_BLACK_MIST_Y_KEY = "lvluping_as_assassin_black_mist_y";
     public static final String AS_ASSASSIN_BLACK_MIST_Z_KEY = "lvluping_as_assassin_black_mist_z";
     public static final String AS_ASSASSIN_BLACK_MIST_R_KEY = "lvluping_as_assassin_black_mist_r";
-    private static final int M_ULT_MARTYR_COOLDOWN = 900;
-    private static final int M_ULT_SLOW_SPHERE_COOLDOWN = 900;
-    private static final int M_ULT_DIVINE_PROTECTION_COOLDOWN = 1200;
     private static final double CLERIC_LIGHT_RAY_TARGET_AIM_RANGE_XZ = 25.0;
     private static final double CLERIC_LIGHT_RAY_AIM_CONE_DEG = 25.0;
     private static final double CLERIC_LIGHT_RAY_BEAM_RADIUS = 1.0;
@@ -641,38 +697,156 @@ public class TalentAbilityHandler {
     private static final double W_ULT_FINAL_COUNTDOWN_AIM_CONE_DEG = 25.0;
     private static final double DIVINE_PROTECTION_HITBOX_Y_THICKNESS = 5.0;
 
+    private static int getSummonerDisciplineArmorBonus(ServerPlayer player, Set<String> talents) {
+        if (!talents.contains("m_summon_discipline")) return 0;
+        int dLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_discipline", talents);
+        return AbilityUpgradeConfig.getInt("m_summon_discipline", "armor_bonus", dLvl, 0);
+    }
+
     private static void applySummonLoadout(String abilityId, int lvl, Mob summon, double hpMultiplier, int armorBonus) {
         int armorTier = AbilityUpgradeConfig.getInt(abilityId, "armor_tier", lvl, 1) + armorBonus;
-        if (armorTier < 0) armorTier = 0;
-        if (armorTier > 3) armorTier = 3;
+        armorTier = Mth.clamp(armorTier, 0, 3);
         double hp = AbilityUpgradeConfig.getDouble(abilityId, "health", lvl, summon.getMaxHealth()) * hpMultiplier;
         if (summon.getAttribute(Attributes.MAX_HEALTH) != null) {
             summon.getAttribute(Attributes.MAX_HEALTH).setBaseValue(hp);
             summon.setHealth((float) hp);
+        }
+        for (EquipmentSlot slot : EquipmentSlot.values()) {
+            if (slot.getType() == EquipmentSlot.Type.HUMANOID_ARMOR) {
+                summon.setItemSlot(slot, ItemStack.EMPTY);
+            }
+        }
+        if (armorTier >= 3) {
+            summon.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+            summon.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
+            summon.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
+            summon.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
+        } else if (armorTier >= 2) {
+            summon.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.CHAINMAIL_HELMET));
+            summon.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.CHAINMAIL_CHESTPLATE));
+            summon.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.CHAINMAIL_LEGGINGS));
+            summon.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.CHAINMAIL_BOOTS));
+        } else if (armorTier >= 1) {
+            summon.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.LEATHER_HELMET));
+            summon.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.LEATHER_CHESTPLATE));
+            summon.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.LEATHER_LEGGINGS));
+            summon.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.LEATHER_BOOTS));
         }
         if ("m_summon_guard".equals(abilityId)) {
             summon.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.IRON_SWORD));
         } else {
             summon.setItemSlot(EquipmentSlot.MAINHAND, new ItemStack(Items.BOW));
         }
-        if (armorTier >= 1) {
-            summon.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.LEATHER_HELMET));
-            summon.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.LEATHER_CHESTPLATE));
-        }
-        if (armorTier >= 2) {
-            summon.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.CHAINMAIL_LEGGINGS));
-            summon.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.CHAINMAIL_BOOTS));
-        }
-        if (armorTier >= 3) {
-            summon.setItemSlot(EquipmentSlot.CHEST, new ItemStack(Items.IRON_CHESTPLATE));
-            summon.setItemSlot(EquipmentSlot.LEGS, new ItemStack(Items.IRON_LEGGINGS));
-            summon.setItemSlot(EquipmentSlot.FEET, new ItemStack(Items.IRON_BOOTS));
-            summon.setItemSlot(EquipmentSlot.HEAD, new ItemStack(Items.IRON_HELMET));
+    }
+
+    public static void refreshOwnedSummonLoadouts(ServerPlayer player, String abilityId) {
+        if (!(player.level() instanceof ServerLevel sl)) return;
+        Set<String> talents = PlayerLevels.getPlayerTalents(player.getUUID());
+        if (!talents.contains(abilityId)) return;
+        if (!"m_summon_servant".equals(abilityId) && !"m_summon_guard".equals(abilityId)) return;
+
+        double hpMult = getSummonerBaseHpMult(player, talents);
+        int armorBonus = getSummonerDisciplineArmorBonus(player, talents);
+        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), abilityId, talents);
+        long time = sl.getGameTime();
+        EntityType<?> want = "m_summon_guard".equals(abilityId) ? EntityType.ZOMBIE : EntityType.SKELETON;
+
+        for (Mob mob : SummonerHandler.getAliveSummons(sl, player)) {
+            if (mob.getType() != want) continue;
+            var pd = mob.getPersistentData();
+            if (pd.getBoolean("lvluping_spell_illusion")) continue;
+            if (pd.getLong("lvluping_totem_until") > time) continue;
+            if (pd.getLong(EVOLUTION_FX_UNTIL_KEY) > time) continue;
+
+            float ratio = mob.getMaxHealth() > 1.0e-4f ? mob.getHealth() / mob.getMaxHealth() : 1.0f;
+            applySummonLoadout(abilityId, lvl, mob, hpMult, armorBonus);
+            mob.setHealth(Mth.clamp(mob.getMaxHealth() * ratio, 1.0e-4f, mob.getMaxHealth()));
         }
     }
 
+    private static boolean tryConsumeAbilityMana(ServerPlayer player, double cost) {
+        if (ArsManaCompat.tryConsumeMana(player, cost)) {
+            return true;
+        }
+        player.displayClientMessage(
+                Component.translatable("message.lvluping.insufficient_mana").withStyle(ChatFormatting.RED),
+                true);
+        return false;
+    }
+
+    private static void performSummonerSummon(ServerPlayer player, ServerLevel serverLevel, boolean guard) {
+        Set<String> talents = PlayerLevels.getPlayerTalents(player.getUUID());
+        String abilityId = guard ? "m_summon_guard" : "m_summon_servant";
+        String cdKey = guard ? "cd_m_summon_guard" : "cd_m_summon_servant";
+        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), abilityId, talents);
+        double cost = AbilityUpgradeConfig.getDouble(abilityId, "mana", lvl, 60.0);
+        cost = getSummonerManaCost(player, talents, cost);
+        if (!tryConsumeAbilityMana(player, cost)) {
+            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
+            setCooldown(player, cdKey, abilityFailCooldownTicks());
+            return;
+        }
+        Mob summon = guard ? EntityType.ZOMBIE.create(serverLevel) : EntityType.SKELETON.create(serverLevel);
+        if (summon == null) {
+            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
+            setCooldown(player, cdKey, abilityFailCooldownTicks());
+            return;
+        }
+        Vec3 forward = player.getLookAngle().normalize();
+        double sx = player.getX() + forward.x * 2.0;
+        double sy = player.getY();
+        double sz = player.getZ() + forward.z * 2.0;
+        Vec3 spawn = snapStandingPosition(serverLevel, player, new Vec3(sx, sy, sz));
+        summon.moveTo(spawn.x, spawn.y, spawn.z, player.getYRot(), 0);
+        double hpMult = getSummonerBaseHpMult(player, talents);
+        int armorBonus = getSummonerDisciplineArmorBonus(player, talents);
+        applySummonLoadout(abilityId, lvl, summon, hpMult, armorBonus);
+        serverLevel.addFreshEntity(summon);
+        applySummonLoadout(abilityId, lvl, summon, hpMult, armorBonus);
+        int duration = AbilityUpgradeConfig.getInt(abilityId, "duration_ticks", lvl, (int) (20L * 30L));
+        long until = serverLevel.getGameTime() + duration;
+        int endLvl = talents.contains("m_summon_endurance")
+                ? PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_endurance", talents) : 0;
+        double summonDamageMult = AbilityUpgradeConfig.getDouble("m_summon_endurance", "damage_mult", endLvl, 1.0);
+        summon.getPersistentData().putDouble("lvluping_summon_damage_mult", summonDamageMult);
+        SummonerHandler.addSummon(serverLevel, player, summon, until);
+        serverLevel.playSound(null, spawn.x, spawn.y, spawn.z, SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 0.9f, 1.2f);
+        serverLevel.sendParticles(ParticleTypes.SMOKE, spawn.x, spawn.y + 0.8, spawn.z, 15, 0.3, 0.4, 0.3, 0.02);
+        int cd = AbilityUpgradeConfig.getInt(abilityId, "cooldown", lvl, 200);
+        setCooldown(player, cdKey, cd);
+    }
+
+    private static final Set<String> ARCHER_DAGGER_COMPAT_NAMESPACES = Set.of(
+            "slu",
+            "simplymore",
+            "simply_more",
+            "epicfight",
+            "blockfactorysbosses",
+            "block_factorys_bosses",
+            "simpleswords",
+            "simple_swords");
+
     public static boolean isDagger(Item item) {
-        return item == Items.IRON_SWORD;
+        ItemStack probe = new ItemStack(item);
+        if (probe.is(ModItemTags.ARCHER_DAGGERS)) {
+            return true;
+        }
+        ResourceLocation id = BuiltInRegistries.ITEM.getKey(item);
+        if (id == null || !ARCHER_DAGGER_COMPAT_NAMESPACES.contains(id.getNamespace())) {
+            return false;
+        }
+        String path = id.getPath().toLowerCase(Locale.ROOT);
+        return path.contains("dagger")
+                || path.contains("knife")
+                || path.contains("kunai")
+                || path.contains("katar")
+                || path.contains("stiletto")
+                || path.contains("kukri")
+                || path.contains("dirk");
+    }
+
+    private static int abilityFailCooldownTicks() {
+        return AbilityUpgradeConfig.getInt("lvluping_meta", "ability_fail_cooldown", 1, 20);
     }
 
     public static void setCooldown(ServerPlayer player, String key, int ticks) {
@@ -701,7 +875,6 @@ public class TalentAbilityHandler {
         }
     }
 
-    /** Base 1 + bonus from as_wanderer_double_dodge (typically +2 → 3 total). */
     public static int getSlideMaxCharges(ServerPlayer player, Set<String> talents) {
         if (!talents.contains("as_wanderer_double_dodge")) return 1;
         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_wanderer_double_dodge", talents);
@@ -748,7 +921,7 @@ public class TalentAbilityHandler {
                 "cd_w_swordmaster_concentration", "cd_w_swordmaster_steel_body", "cd_w_barbarian_battle_cry", "cd_w_barbarian_bloodletting", "cd_w_barbarian_frenzy",
                 "cd_w_provocation", "cd_w_paladin_blessing", "cd_w_paladin_immolation", "cd_w_ult_berserk", "cd_w_ult_final_countdown", "cd_w_ult_invulnerability", "cd_w_ult_paladin_wings", "cd_w_ult_paladin_sacrifice", "cd_w_ult_swordmaster_hurricane", "cd_w_ult_barbarian_taste_blood"
                 , "cd_w_ult_swordmaster_omnislash", "cd_w_ult_swordmaster_blade_wall", "cd_w_ult_swordmaster_perfect_cut", "cd_w_ult_barbarian_feast"
-                , "cd_m_fireball", "cd_m_lightning", "cd_m_ice", "cd_m_teleport", "cd_m_summon", "cd_m_sacrifice", "cd_m_command",
+                , "cd_m_fireball", "cd_m_lightning", "cd_m_ice", "cd_m_teleport", "cd_m_summon_servant", "cd_m_summon_guard", "cd_m_sacrifice", "cd_m_command",
                 "cd_m_ult_gate", "cd_m_ult_absorption", "cd_m_ult_totem_form", "cd_m_ult_possession", "cd_m_ult_elemental",
                 "cd_m_stone_skin", "cd_m_magic_barrier",
                 "cd_m_ult_meteor", "cd_m_ult_ice_block", "cd_m_ult_anti_magic", "cd_m_ult_illusions", "cd_m_ult_chaos"
@@ -811,15 +984,20 @@ public class TalentAbilityHandler {
                         int bx = (int) Math.floor(player.getX() + look.x * 2.0);
                         int by = (int) Math.floor(player.getY());
                         int bz = (int) Math.floor(player.getZ() + look.z * 2.0);
-                        data.putLong("lvluping_as_barricade_remove_at", sl.getGameTime() + dur);
-                        data.putInt("lvluping_as_barricade_x", bx);
-                        data.putInt("lvluping_as_barricade_y", by);
-                        data.putInt("lvluping_as_barricade_z", bz);
+                        var barricade = org.mrutcka.lvluping.LvlupingEntityTypes.ASSASSIN_BARRICADE.get().create(sl);
+                        if (barricade == null) {
+                            setCooldown(player, "cd_as_wanderer_barricade", abilityFailCooldownTicks());
+                            return;
+                        }
+                        barricade.moveTo(bx + 0.5, by, bz + 0.5, player.getYRot(), 0f);
+                        long until = sl.getGameTime() + dur;
+                        barricade.setRemoveAtGameTime(until);
+                        sl.addFreshEntity(barricade);
+                        UUID vid = barricade.getUUID();
+                        data.putLong("lvluping_as_barricade_remove_at", until);
                         data.putFloat(AS_WANDERER_BARRICADE_Y_ROT_KEY, player.getYRot());
-                        placeAssassinBarricadeBarriers(sl, bx, by, bz, player.getYRot());
-                        UUID vid = UUID.randomUUID();
                         data.putUUID(AS_WANDERER_BARRICADE_VISUAL_KEY, vid);
-                        broadcastAssassinBarricadeShow(sl, vid, bx + 0.5, by, bz + 0.5, player.getYRot(), data.getLong("lvluping_as_barricade_remove_at"));
+                        broadcastAssassinBarricadeShow(sl, vid, bx + 0.5, by, bz + 0.5, player.getYRot(), until);
                         sl.playSound(null, bx, by, bz, SoundEvents.WOOD_PLACE, SoundSource.PLAYERS, 0.9f, 1.0f);
                         setCooldown(player, "cd_as_wanderer_barricade", cd);
                     }
@@ -829,7 +1007,7 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel sl) {
                         LivingEntity t = getTargetInFront(player, 25.0, 25.0);
                         if (t == null) {
-                            setCooldown(player, "cd_as_assassin_mark", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_assassin_mark", abilityFailCooldownTicks());
                             return;
                         }
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_assassin_mark", talents);
@@ -891,7 +1069,7 @@ public class TalentAbilityHandler {
                         var a = net.minecraft.world.entity.EntityType.ARROW.create(sl);
                         if (a == null) {
                             sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_a_musketeer_quick_reload", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_a_musketeer_quick_reload", abilityFailCooldownTicks());
                             return;
                         }
                         a.setOwner(player);
@@ -911,17 +1089,12 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_paladin_blessing", talents);
                         int cd = AbilityUpgradeConfig.getInt("w_paladin_blessing", "cooldown", lvl, 200);
-                        if (player.isShiftKeyDown()) {
-                            int n = AbilityUpgradeConfig.getInt("w_paladin_blessing", "cleanse_count", lvl, 1);
-                            removeHarmfulEffects(player, n);
-                        } else {
-                            LivingEntity target = getTargetInFront(player, 20.0, 35.0);
-                            if (target == null) target = player;
-                            if (!target.isAlliedTo(player)) target = player;
-                            int regenTicks = AbilityUpgradeConfig.getInt("w_paladin_blessing", "regen_ticks", lvl, 100);
-                            int amp = AbilityUpgradeConfig.getInt("w_paladin_blessing", "regen_amp", lvl, 0);
-                            target.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenTicks, amp, false, false));
-                        }
+                        LivingEntity target = getTargetInFront(player, 20.0, 35.0);
+                        if (target == null) target = player;
+                        if (!AllyHelper.isSupportAlly(player, target)) target = player;
+                        int regenTicks = AbilityUpgradeConfig.getInt("w_paladin_blessing", "regen_ticks", lvl, 100);
+                        int amp = AbilityUpgradeConfig.getInt("w_paladin_blessing", "regen_amp", lvl, 0);
+                        target.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenTicks, amp, false, false));
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.7f, 1.3f);
                         setCooldown(player, "cd_w_paladin_blessing", cd);
                     }
@@ -955,7 +1128,7 @@ public class TalentAbilityHandler {
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(radius, 2.0, radius))) {
                             if (e == player) continue;
                             if (player.distanceToSqr(e) > radius * radius) continue;
-                            if (e.isAlliedTo(player)) continue;
+                            if (AllyHelper.isSupportAlly(player, e)) continue;
                             e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, dur, weakAmp, false, false));
                         }
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 0.6f);
@@ -965,64 +1138,16 @@ public class TalentAbilityHandler {
                     return;
                 }
 
-        // --- W_PARRY ---
-        if (talents.contains("w_parry") && data.getInt("cd_parry") <= 0) {
-            setCooldown(player, "lvluping_parry_window", PARRY_WINDOW);
-            setCooldown(player, "cd_parry", PARRY_COOLDOWN);
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.ARMOR_EQUIP_IRON, SoundSource.PLAYERS, 1.0f, 1.0f);
-            return;
-        }
-
-                // --- M_SUMMON_SERVANT / M_SUMMON_GUARD ---
-                if ((talents.contains("m_summon_servant") || talents.contains("m_summon_guard")) && data.getInt("cd_m_summon") <= 0) {
+                // --- M_SUMMON_SERVANT (слот 1); страж только без слуги — тоже слот 1. Оба таланта: страж — слот 7 (case 6). ---
+                if (talents.contains("m_summon_servant") && data.getInt("cd_m_summon_servant") <= 0) {
                     if (player.level() instanceof ServerLevel serverLevel) {
-                        String abilityId = talents.contains("m_summon_guard") ? "m_summon_guard" : "m_summon_servant";
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), abilityId, talents);
-                        double cost = AbilityUpgradeConfig.getDouble(abilityId, "mana", lvl, 60.0);
-                        cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
-                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_summon", ABILITY_FAIL_COOLDOWN);
-                            return;
-                        }
-                        Mob summon;
-                        if (talents.contains("m_summon_guard")) {
-                            summon = net.minecraft.world.entity.EntityType.ZOMBIE.create(serverLevel);
-                        } else {
-                            summon = net.minecraft.world.entity.EntityType.SKELETON.create(serverLevel);
-                        }
-                        if (summon == null) {
-                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_summon", ABILITY_FAIL_COOLDOWN);
-                            return;
-                        }
-                        Vec3 forward = player.getLookAngle().normalize();
-                        double sx = player.getX() + forward.x * 2.0;
-                        double sy = player.getY();
-                        double sz = player.getZ() + forward.z * 2.0;
-                        Vec3 spawn = snapStandingPosition(serverLevel, player, new Vec3(sx, sy, sz));
-                        sx = spawn.x;
-                        sy = spawn.y;
-                        sz = spawn.z;
-                        summon.moveTo(sx, sy, sz, player.getYRot(), 0);
-                        double hpMult = getSummonerBaseHpMult(player, talents);
-                        int disciplineLvl = talents.contains("m_summon_discipline")
-                                ? PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_discipline", talents) : 0;
-                        int armorBonus = AbilityUpgradeConfig.getInt("m_summon_discipline", "armor_bonus", disciplineLvl, 0);
-                        applySummonLoadout(abilityId, lvl, summon, hpMult, armorBonus);
-                        serverLevel.addFreshEntity(summon);
-                        int duration = AbilityUpgradeConfig.getInt(abilityId, "duration_ticks", lvl, (int) (20L * 30L));
-                        long until = serverLevel.getGameTime() + duration;
-                        int endLvl = talents.contains("m_summon_endurance")
-                                ? PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_endurance", talents) : 0;
-                        double summonDamageMult = AbilityUpgradeConfig.getDouble("m_summon_endurance", "damage_mult", endLvl, 1.0);
-                        summon.getPersistentData().putDouble("lvluping_summon_damage_mult", summonDamageMult);
-                        SummonerHandler.addSummon(serverLevel, player, summon, until);
-                        serverLevel.playSound(null, sx, sy, sz, SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 0.9f, 1.2f);
-                        serverLevel.sendParticles(ParticleTypes.SMOKE, sx, sy + 0.8, sz, 15, 0.3, 0.4, 0.3, 0.02);
-                        int cd = AbilityUpgradeConfig.getInt(abilityId, "cooldown", lvl, M_SUMMON_COOLDOWN);
-                        setCooldown(player, "cd_m_summon", cd);
+                        performSummonerSummon(player, serverLevel, false);
+                    }
+                    return;
+                }
+                if (talents.contains("m_summon_guard") && !talents.contains("m_summon_servant") && data.getInt("cd_m_summon_guard") <= 0) {
+                    if (player.level() instanceof ServerLevel serverLevel) {
+                        performSummonerSummon(player, serverLevel, true);
                     }
                     return;
                 }
@@ -1032,9 +1157,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_fireball", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_fireball", "mana", lvl, 30.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_fireball", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_fireball", abilityFailCooldownTicks());
                             return;
                         }
                         double igniteR = AbilityUpgradeConfig.getDouble("m_fireball", "ignite_radius", lvl, 2.0);
@@ -1049,7 +1174,7 @@ public class TalentAbilityHandler {
                             serverLevel.addFreshEntity(fb);
                         }
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BLAZE_SHOOT, SoundSource.PLAYERS, 0.7f, 1.2f);
-                        int cd = AbilityUpgradeConfig.getInt("m_fireball", "cooldown", lvl, M_FIRE_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_fireball", "cooldown", lvl, 80);
                         setCooldown(player, "cd_m_fireball", cd);
                     }
                     return;
@@ -1060,15 +1185,15 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_cleric_small_heal", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_cleric_small_heal", "mana", lvl, 20.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_cleric_heal", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_cleric_heal", abilityFailCooldownTicks());
                             return;
                         }
 
                         LivingEntity target = getTargetInFront(player, M_CLERIC_SMALL_HEAL_AIM_RANGE_XZ, M_CLERIC_SMALL_HEAL_AIM_CONE_DEG);
                         if (target == null) target = player;
-                        if (target != player && !target.isAlliedTo(player)) target = player;
+                        if (target != player && !AllyHelper.isSupportAlly(player, target)) target = player;
 
                         long martyrUntil = player.getPersistentData().getLong("lvluping_cleric_martyr_until");
                         boolean martyrActive = martyrUntil > serverLevel.getGameTime();
@@ -1079,7 +1204,7 @@ public class TalentAbilityHandler {
                         if (martyrActive) {
                             if (target == player) {
                                 serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                                setCooldown(player, "cd_m_cleric_heal", ABILITY_FAIL_COOLDOWN);
+                                setCooldown(player, "cd_m_cleric_heal", abilityFailCooldownTicks());
                                 return;
                             }
                             heal *= CLERIC_SMALL_HEAL_HEAL_AMP_MARTYR_MULT;
@@ -1089,26 +1214,10 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.GENERIC_EAT, SoundSource.PLAYERS, 0.7f, 1.1f);
                         serverLevel.sendParticles(ParticleTypes.HEART, target.getX(), target.getY() + 1.0, target.getZ(), 12, 0.25, 0.35, 0.25, 0.05);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_cleric_small_heal", "cooldown", lvl, M_CLERIC_SMALL_HEAL_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_cleric_small_heal", "cooldown", lvl, 120);
                         setCooldown(player, "cd_m_cleric_heal", cd);
                     }
                     return;
-                }
-
-                // --- M_BARRIER ---
-        if (talents.contains("m_barrier") && data.getInt("cd_buff") <= 0) {
-            setCooldown(player, "cd_buff", BUFF_COOLDOWN);
-            setCooldown(player, "lvluping_barrier_window", BARRIER_WINDOW);
-
-            player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
-                    SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0f, 1.5f);
-
-            if (talents.contains("m_buff_def")) {
-                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, BARRIER_EFFECT_DURATION_TICKS, BARRIER_DEF_RESISTANCE_AMPLIFIER, false, false));
-                if (talents.contains("m_buff_atk")) {
-                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, BARRIER_EFFECT_DURATION_TICKS, BARRIER_ATK_DAMAGE_BOOST_AMPLIFIER, false, false));
-                        }
-                    }
                 }
             }
             case 1 -> {
@@ -1128,7 +1237,7 @@ public class TalentAbilityHandler {
                             sl.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0f, 0.8f);
                             setCooldown(player, "cd_as_rogue_trip", cd);
                         } else {
-                            setCooldown(player, "cd_as_rogue_trip", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_rogue_trip", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -1153,7 +1262,7 @@ public class TalentAbilityHandler {
                         int cd = AbilityUpgradeConfig.getInt("as_assassin_shuriken", "cooldown", lvl, 160);
                         Snowball sb = net.minecraft.world.entity.EntityType.SNOWBALL.create(sl);
                         if (sb == null) {
-                            setCooldown(player, "cd_as_assassin_shuriken", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_assassin_shuriken", abilityFailCooldownTicks());
                             return;
                         }
                         sb.setOwner(player);
@@ -1193,7 +1302,7 @@ public class TalentAbilityHandler {
                         var wolf = net.minecraft.world.entity.EntityType.WOLF.create(sl);
                         if (wolf == null) {
                             sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_a_hunter_call_nature", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_a_hunter_call_nature", abilityFailCooldownTicks());
                             return;
                         }
                         Vec3 fwd = player.getLookAngle().normalize();
@@ -1221,7 +1330,7 @@ public class TalentAbilityHandler {
                         int stacks = data.getInt("lvluping_ranger_evasion_stacks");
                         if (stacks <= 0) {
                             sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_a_ranger_evasion", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_a_ranger_evasion", abilityFailCooldownTicks());
                             return;
                         }
                         stacks--;
@@ -1270,25 +1379,9 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.GENERIC_EXPLODE, SoundSource.PLAYERS, 0.6f, 1.1f);
                         serverLevel.sendParticles(ParticleTypes.FLAME, player.getX(), player.getY() + 0.2, player.getZ(), 40, radius * 0.15, 0.1, radius * 0.15, 0.05);
                         CommonEventsHandler.igniteBlocksInHorizontalRadius(serverLevel, pos, igniteR);
+                        int fireResTicks = AbilityUpgradeConfig.getInt("w_paladin_immolation", "fire_resist_ticks", lvl, 100 + lvl * 40);
+                        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, fireResTicks, Math.max(0, lvl - 1), false, false, true));
                         setCooldown(player, "cd_w_paladin_immolation", cd);
-                    }
-                    return;
-                }
-                if (player.isShiftKeyDown() && talents.contains("w_barbarian_frenzy") && data.getInt("cd_w_barbarian_frenzy") <= 0) {
-                    if (player.level() instanceof ServerLevel serverLevel) {
-                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_barbarian_frenzy", talents);
-                        int dur = AbilityUpgradeConfig.getInt("w_barbarian_frenzy", "duration_ticks", lvl, 80);
-                        double dmgMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "damage_mult", lvl, 1.3);
-                        double inMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "incoming_damage_mult", lvl, 1.2);
-                        double asMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "attack_speed_mult", lvl, 1.15);
-                        int cd = AbilityUpgradeConfig.getInt("w_barbarian_frenzy", "cooldown", lvl, 260);
-                        data.putLong(W_BARBARIAN_FRENZY_UNTIL_KEY, serverLevel.getGameTime() + dur);
-                        data.putFloat(W_BARBARIAN_FRENZY_DAMAGE_MULT_KEY, (float) dmgMult);
-                        data.putFloat(W_BARBARIAN_FRENZY_INCOMING_MULT_KEY, (float) inMult);
-                        data.putFloat("lvluping_w_barbarian_frenzy_as_mult", (float) asMult);
-                        serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 0.55f);
-                        serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY() + 1.0, player.getZ(), 26, 0.5, 0.4, 0.5, 0.05);
-                        setCooldown(player, "cd_w_barbarian_frenzy", cd);
                     }
                     return;
                 }
@@ -1299,7 +1392,7 @@ public class TalentAbilityHandler {
                         float bleedDps = (float) AbilityUpgradeConfig.getDouble("w_barbarian_bloodletting", "bleed_damage_per_sec", lvl, 1.0);
                         int cd = AbilityUpgradeConfig.getInt("w_barbarian_bloodletting", "cooldown", lvl, 160);
                         LivingEntity target = getTargetInFront(player, 6.0, 30.0);
-                        if (target != null && target != player && !target.isAlliedTo(player)) {
+                        if (target != null && target != player) {
                             target.getPersistentData().putLong("lvluping_barbarian_bleed_until", serverLevel.getGameTime() + bleedDur);
                             target.getPersistentData().putFloat("lvluping_barbarian_bleed_dps", bleedDps);
                             target.getPersistentData().putUUID("lvluping_barbarian_bleed_src", player.getUUID());
@@ -1308,7 +1401,7 @@ public class TalentAbilityHandler {
                             serverLevel.sendParticles(ParticleTypes.DAMAGE_INDICATOR, target.getX(), target.getY() + 1.0, target.getZ(), 12, 0.3, 0.3, 0.3, 0.08);
                             setCooldown(player, "cd_w_barbarian_bloodletting", cd);
                         } else {
-                            setCooldown(player, "cd_w_barbarian_bloodletting", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_w_barbarian_bloodletting", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -1320,16 +1413,16 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_sacrifice", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_summon_sacrifice", "mana", lvl, 10.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_sacrifice", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_sacrifice", abilityFailCooldownTicks());
                             return;
                         }
                         LivingEntity looked = getTargetInFront(player, M_SUMMON_SACRIFICE_AIM_RANGE_XZ, M_SUMMON_SACRIFICE_AIM_CONE_DEG);
                         Mob mob = (looked instanceof Mob m) ? m : null;
                         if (mob == null || !mob.getPersistentData().hasUUID("lvluping_summon_owner") || !player.getUUID().equals(mob.getPersistentData().getUUID("lvluping_summon_owner"))) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_sacrifice", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_sacrifice", abilityFailCooldownTicks());
                             return;
                         }
                         mob.discard();
@@ -1337,7 +1430,7 @@ public class TalentAbilityHandler {
                         player.heal(heal);
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.6f, 1.6f);
                         serverLevel.sendParticles(ParticleTypes.HEART, player.getX(), player.getY() + 1.0, player.getZ(), 8, 0.4, 0.5, 0.4, 0.1);
-                        int cd = AbilityUpgradeConfig.getInt("m_summon_sacrifice", "cooldown", lvl, M_SACRIFICE_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_summon_sacrifice", "cooldown", lvl, 60);
                         setCooldown(player, "cd_m_sacrifice", cd);
                     }
                     return;
@@ -1348,16 +1441,16 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_lightning", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_lightning", "mana", lvl, 45.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_lightning", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_lightning", abilityFailCooldownTicks());
                             return;
                         }
                         int maxTargets = AbilityUpgradeConfig.getInt("m_lightning", "targets", lvl, 1);
                         var targets = getLightningTargets(player, serverLevel, maxTargets, M_LIGHTNING_AIM_RANGE_XZ, M_LIGHTNING_AIM_CONE_DEG);
                         if (targets.isEmpty()) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_lightning", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_lightning", abilityFailCooldownTicks());
                             return;
                         }
                         float dmg = (float) AbilityUpgradeConfig.getDouble("m_lightning", "damage", lvl, 1.0);
@@ -1370,7 +1463,7 @@ public class TalentAbilityHandler {
                             serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.TRIDENT_THUNDER, SoundSource.PLAYERS, 0.8f, 1.2f);
                             serverLevel.sendParticles(ParticleTypes.ELECTRIC_SPARK, target.getX(), target.getY() + 1.0, target.getZ(), 25, 0.4, 0.6, 0.4, 0.15);
                         }
-                        int cd = AbilityUpgradeConfig.getInt("m_lightning", "cooldown", lvl, M_FIRE_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_lightning", "cooldown", lvl, 80);
                         setCooldown(player, "cd_m_lightning", cd);
                     }
                     return;
@@ -1381,15 +1474,15 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_cleric_blessing", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_cleric_blessing", "mana", lvl, 25.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_cleric_blessing", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_cleric_blessing", abilityFailCooldownTicks());
                             return;
                         }
 
                         LivingEntity target = getTargetInFront(player, M_CLERIC_BLESSING_AIM_RANGE_XZ, M_CLERIC_BLESSING_AIM_CONE_DEG);
                         if (target == null) target = player;
-                        if (!target.isAlliedTo(player)) target = player;
+                        if (!AllyHelper.isSupportAlly(player, target)) target = player;
 
                         int dur = AbilityUpgradeConfig.getInt("m_cleric_blessing", "duration_ticks", lvl, 100);
                         int cleanses = AbilityUpgradeConfig.getInt("m_cleric_blessing", "cleanses", lvl, 1);
@@ -1413,7 +1506,7 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 1.2f);
                         serverLevel.sendParticles(ParticleTypes.END_ROD, target.getX(), target.getY() + 1.0, target.getZ(), 20, 0.3, 0.5, 0.3, 0.1);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_cleric_blessing", "cooldown", lvl, M_CLERIC_BLESSING_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_cleric_blessing", "cooldown", lvl, 140);
                         setCooldown(player, "cd_m_cleric_blessing", cd);
                     }
                     return;
@@ -1421,6 +1514,9 @@ public class TalentAbilityHandler {
             }
             case 2 -> {
                 if (talents.contains("as_slide") && data.getInt("cd_slide") <= 0) {
+                    int slideLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_slide", talents);
+                    int slideCd = AbilityUpgradeConfig.getInt("as_slide", "cooldown", slideLvl, 200);
+                    double slideSpd = AbilityUpgradeConfig.getDouble("as_slide", "slide_speed_mult", slideLvl, 1.0);
                     int maxCh = getSlideMaxCharges(player, talents);
                     int ch = data.getInt(LVLUPING_SLIDE_CHARGES_KEY);
                     if (ch <= 0) ch = maxCh;
@@ -1429,10 +1525,10 @@ public class TalentAbilityHandler {
                     data.putInt(LVLUPING_SLIDE_CHARGES_KEY, ch);
                     PacketDistributor.sendToPlayer(player, new S2CSyncCooldown(LVLUPING_SLIDE_CHARGES_KEY, ch));
                     Vec3 look = player.getLookAngle();
-                    player.setDeltaMovement(look.x * SLIDE_DELTA_MULT_XZ, 0, look.z * SLIDE_DELTA_MULT_XZ);
+                    player.setDeltaMovement(look.x * SLIDE_DELTA_MULT_XZ * slideSpd, 0, look.z * SLIDE_DELTA_MULT_XZ * slideSpd);
                     player.hurtMarked = true;
                     if (ch <= 0) {
-                        setCooldown(player, "cd_slide", SLIDE_COOLDOWN);
+                        setCooldown(player, "cd_slide", slideCd);
                     }
                     player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.PLAYER_ATTACK_SWEEP, SoundSource.PLAYERS, 1.0f, 1.5f);
@@ -1457,7 +1553,7 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_spin", talents);
                         double range = AbilityUpgradeConfig.getDouble("w_spin", "range", lvl, SPIN_RANGE);
-                        int baseCd = AbilityUpgradeConfig.getInt("w_spin", "cooldown", lvl, SPIN_COOLDOWN);
+                        int baseCd = AbilityUpgradeConfig.getInt("w_spin", "cooldown", lvl, 220);
                         int halfCdHits = AbilityUpgradeConfig.getInt("w_spin", "half_cd_hits", lvl, SPIN_HALF_CD_MIN_HITCOUNT);
                         int hitCount = 0;
 
@@ -1490,9 +1586,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ice_arrow", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ice_arrow", "mana", lvl, 25.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ice", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ice", abilityFailCooldownTicks());
                             return;
                         }
                         LivingEntity target = getTargetInFront(player, M_ICE_ARROW_AIM_RANGE_XZ, M_ICE_ARROW_AIM_CONE_DEG);
@@ -1513,7 +1609,7 @@ public class TalentAbilityHandler {
                             snowball.getPersistentData().putInt("lvluping_ice_slow_amp", slowAmp);
                             serverLevel.addFreshEntity(snowball);
                         }
-                        int cd = AbilityUpgradeConfig.getInt("m_ice_arrow", "cooldown", lvl, M_ICE_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ice_arrow", "cooldown", lvl, 80);
                         setCooldown(player, "cd_m_ice", cd);
                     }
                     return;
@@ -1532,7 +1628,7 @@ public class TalentAbilityHandler {
                         float dmgBonus = (float) AbilityUpgradeConfig.getDouble("w_seismic", "damage_bonus", lvl, SEISMIC_DAMAGE_BONUS);
                         int slowTicks = AbilityUpgradeConfig.getInt("w_seismic", "slow_ticks", lvl, SEISMIC_SLOW_DURATION_TICKS);
                         int slowAmp = AbilityUpgradeConfig.getInt("w_seismic", "slow_amp", lvl, SEISMIC_SLOW_AMPLIFIER);
-                        int cd = AbilityUpgradeConfig.getInt("w_seismic", "cooldown", lvl, SEISMIC_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("w_seismic", "cooldown", lvl, 200);
                         float baseDamage = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * dmgMult + dmgBonus;
                         Vec3 playerPos = player.position();
 
@@ -1580,10 +1676,12 @@ public class TalentAbilityHandler {
 
         // --- A_DASH ---
         if (talents.contains("a_dash") && data.getInt("cd_dash") <= 0) {
+            int dashLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "a_dash", talents);
+            int dashCd = AbilityUpgradeConfig.getInt("a_dash", "cooldown", dashLvl, 160);
             Vec3 look = player.getLookAngle();
                     player.setDeltaMovement(-look.x * DASH_DELTA_BACK_MULT, 0, -look.z * DASH_DELTA_BACK_MULT);
             player.hurtMarked = true;
-            setCooldown(player, "cd_dash", DASH_COOLDOWN);
+            setCooldown(player, "cd_dash", dashCd);
             player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
                     SoundEvents.ENDER_DRAGON_FLAP, SoundSource.PLAYERS, 0.8f, 2.0f);
             return;
@@ -1595,21 +1693,21 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_command", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_summon_command", "mana", lvl, 5.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_command", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_command", abilityFailCooldownTicks());
                             return;
                         }
                         LivingEntity target = getTargetInFront(player, M_SUMMON_COMMAND_AIM_RANGE_XZ, M_SUMMON_COMMAND_AIM_CONE_DEG);
                         if (target == null) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_command", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_command", abilityFailCooldownTicks());
                             return;
                         }
                         List<Mob> summons = SummonerHandler.getAliveSummons(serverLevel, player);
                         if (summons.isEmpty()) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_command", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_command", abilityFailCooldownTicks());
                             return;
                         }
                         for (Mob m : summons) {
@@ -1618,7 +1716,7 @@ public class TalentAbilityHandler {
                         SummonerHandler.setCommandTarget(player, target, 0);
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.EVOKER_PREPARE_ATTACK, SoundSource.PLAYERS, 0.7f, 1.4f);
                         serverLevel.sendParticles(ParticleTypes.ENCHANT, target.getX(), target.getY() + 1.0, target.getZ(), 20, 0.4, 0.6, 0.4, 0.12);
-                        int cd = AbilityUpgradeConfig.getInt("m_summon_command", "cooldown", lvl, M_COMMAND_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_summon_command", "cooldown", lvl, 40);
                         setCooldown(player, "cd_m_command", cd);
                     }
                     return;
@@ -1629,9 +1727,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_cleric_light", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_cleric_light", "mana", lvl, 30.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_cleric_light", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_cleric_light", abilityFailCooldownTicks());
                             return;
                         }
 
@@ -1657,7 +1755,7 @@ public class TalentAbilityHandler {
 
                         serverLevel.playSound(null, center.x, center.y, center.z, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.8f, 1.2f);
                         serverLevel.sendParticles(ParticleTypes.END_ROD, center.x, center.y + 1.0, center.z, 60, radius * 0.2, radius * 0.2, radius * 0.2, 0.05);
-                        int cd = AbilityUpgradeConfig.getInt("m_cleric_light", "cooldown", lvl, M_CLERIC_LIGHT_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_cleric_light", "cooldown", lvl, 140);
                         setCooldown(player, "cd_m_cleric_light", cd);
                     }
                     return;
@@ -1665,8 +1763,10 @@ public class TalentAbilityHandler {
             }
             case 3 -> {
                 if (talents.contains("as_smoke") && data.getInt("cd_smoke") <= 0) {
+                    int smokeLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_smoke", talents);
+                    int smokeCd = AbilityUpgradeConfig.getInt("as_smoke", "cooldown", smokeLvl, 400);
                     ServerLevel level = player.serverLevel();
-                    int invisTicks = SMOKE_EFFECT_DURATION_TICKS;
+                    int invisTicks = AbilityUpgradeConfig.getInt("as_smoke", "invis_duration_ticks", smokeLvl, SMOKE_EFFECT_DURATION_TICKS);
                     player.addEffect(new MobEffectInstance(MobEffects.INVISIBILITY, invisTicks, 0, false, false));
                     level.playSound(null, player.getX(), player.getY(), player.getZ(),
                             SoundEvents.GENERIC_EXTINGUISH_FIRE, SoundSource.PLAYERS, 1.0f, 1.0f);
@@ -1693,7 +1793,7 @@ public class TalentAbilityHandler {
                                 2, 0.1, 0.2, 0.1, 0.02
                         );
                     }
-                    setCooldown(player, "cd_smoke", SMOKE_COOLDOWN);
+                    setCooldown(player, "cd_smoke", smokeCd);
                     if (talents.contains("as_rogue_time_thief")) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "as_rogue_time_thief", talents);
                         int cdr = AbilityUpgradeConfig.getInt("as_rogue_time_thief", "cdr_ticks", lvl, 20);
@@ -1719,7 +1819,7 @@ public class TalentAbilityHandler {
                         int cd = AbilityUpgradeConfig.getInt("a_hunter_net", "cooldown", lvl, 220);
                         Snowball sb = net.minecraft.world.entity.EntityType.SNOWBALL.create(sl);
                         if (sb == null) {
-                            setCooldown(player, "cd_a_hunter_net", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_a_hunter_net", abilityFailCooldownTicks());
                             return;
                         }
                         sb.setOwner(player);
@@ -1785,8 +1885,8 @@ public class TalentAbilityHandler {
                 if (talents.contains("w_provocation") && data.getInt("cd_w_provocation") <= 0) {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_provocation", talents);
-                        int dur = AbilityUpgradeConfig.getInt("w_provocation", "duration_ticks", lvl, PROVOCATION_DURATION_TICKS);
-                        int cd = AbilityUpgradeConfig.getInt("w_provocation", "cooldown", lvl, PROVOCATION_COOLDOWN);
+                        int dur = AbilityUpgradeConfig.getInt("w_provocation", "duration_ticks", lvl, 60);
+                        int cd = AbilityUpgradeConfig.getInt("w_provocation", "cooldown", lvl, 240);
                         long until = serverLevel.getGameTime() + dur;
                         player.getPersistentData().putLong("lvluping_provocation_until", until);
                         double absRatio = AbilityUpgradeConfig.getDouble("w_provocation", "absorption_max_hp_ratio", lvl, 0.2);
@@ -1822,7 +1922,9 @@ public class TalentAbilityHandler {
                                 20, 0.4, 0.6, 0.4, 0.02);
                     }
 
-                    setCooldown(player, "cd_w_iron_skin", IRON_SKIN_COOLDOWN);
+                    int ironLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_iron_skin", talents);
+                    int ironCd = AbilityUpgradeConfig.getInt("w_iron_skin", "cooldown", ironLvl, 300);
+                    setCooldown(player, "cd_w_iron_skin", ironCd);
                     return;
                 }
 
@@ -1831,9 +1933,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_teleport", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_teleport", "mana", lvl, 40.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_teleport", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_teleport", abilityFailCooldownTicks());
                             return;
                         }
                         Vec3 look = player.getLookAngle().normalize();
@@ -1850,7 +1952,7 @@ public class TalentAbilityHandler {
                         player.resetFallDistance();
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_TELEPORT, SoundSource.PLAYERS, 0.8f, 1.5f);
                         serverLevel.sendParticles(ParticleTypes.PORTAL, dest.x, dest.y + 1.0, dest.z, 30, 0.5, 0.8, 0.5, 0.1);
-                        int cd = AbilityUpgradeConfig.getInt("m_teleport", "cooldown", lvl, M_TELEPORT_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_teleport", "cooldown", lvl, 120);
                         setCooldown(player, "cd_m_teleport", cd);
                     }
                     return;
@@ -1899,7 +2001,7 @@ public class TalentAbilityHandler {
                             mob.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, dur, 2, false, false));
                             setCooldown(player, "cd_as_ult_rogue_confusion", cd);
                         } else {
-                            setCooldown(player, "cd_as_ult_rogue_confusion", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_ult_rogue_confusion", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -1997,7 +2099,7 @@ public class TalentAbilityHandler {
                             data.putLong("lvluping_as_blade_dance_next_hit_at", sl.getGameTime());
                             setCooldown(player, "cd_as_ult_assassin_blade_dance", cd);
                         } else {
-                            setCooldown(player, "cd_as_ult_assassin_blade_dance", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_ult_assassin_blade_dance", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -2023,7 +2125,7 @@ public class TalentAbilityHandler {
                             t.hurt(player.damageSources().playerAttack(player), (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE) * mult);
                             setCooldown(player, "cd_as_ult_assassin_immobilize", cd);
                         } else {
-                            setCooldown(player, "cd_as_ult_assassin_immobilize", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_ult_assassin_immobilize", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -2080,7 +2182,7 @@ public class TalentAbilityHandler {
                         LivingEntity t = getTargetInFront(player, 40.0, 20.0);
                         if (t == null || t == player) {
                             sl.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_a_ult_hunter_track", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_a_ult_hunter_track", abilityFailCooldownTicks());
                             return;
                         }
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "a_ult_hunter_track", talents);
@@ -2265,17 +2367,32 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_ult_paladin_sacrifice", talents);
                         double ratio = AbilityUpgradeConfig.getDouble("w_ult_paladin_sacrifice", "hp_cost_ratio", lvl, 0.5);
                         double hr = AbilityUpgradeConfig.getDouble("w_ult_paladin_sacrifice", "heal_radius", lvl, 10.0);
+                        int channelTicks = AbilityUpgradeConfig.getInt("w_ult_paladin_sacrifice", "channel_ticks", lvl, 40);
                         int cd = AbilityUpgradeConfig.getInt("w_ult_paladin_sacrifice", "cooldown", lvl, 700);
+                        channelTicks = Math.max(1, channelTicks);
+
                         float hp = player.getHealth();
                         float loss = (float) (hp * ratio);
                         float nh = Math.max(1f, hp - loss);
-                        player.setHealth(nh);
+                        float totalLoss = Math.max(0f, hp - nh);
+
+                        ListTag allyList = new ListTag();
                         AABB box = player.getBoundingBox().inflate(hr, 4.0, hr);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, box)) {
                             if (e == player) continue;
-                            if (!e.isAlliedTo(player)) continue;
-                            e.setHealth(e.getMaxHealth());
+                            if (!AllyHelper.isSupportAlly(player, e)) continue;
+                            float missing = Math.max(0f, e.getMaxHealth() - e.getHealth());
+                            if (missing <= 0f) continue;
+                            CompoundTag ac = new CompoundTag();
+                            ac.putUUID("u", e.getUUID());
+                            ac.putFloat("pt", missing / (float) channelTicks);
+                            allyList.add(ac);
                         }
+
+                        data.putInt(PALADIN_SACRIFICE_CHANNEL_TICKS_KEY, channelTicks);
+                        data.putFloat(PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY, totalLoss);
+                        data.put(PALADIN_SACRIFICE_ALLIES_KEY, allyList);
+
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1.0f, 1.1f);
                         setCooldown(player, "cd_w_ult_paladin_sacrifice", cd);
                     }
@@ -2285,9 +2402,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_light_ray", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_ult_light_ray", "mana", lvl, 120.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_light_ray", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_light_ray", abilityFailCooldownTicks());
                             return;
                         }
 
@@ -2325,7 +2442,7 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, center.x, center.y, center.z, SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.8f, 1.4f);
                         UltimatesHandler.playLightRayBeaconVisual(serverLevel, center.x, center.z, yMin, yMax);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_ult_light_ray", "cooldown", lvl, M_ULT_LIGHT_RAY_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ult_light_ray", "cooldown", lvl, 2400);
                         setCooldown(player, "cd_m_ult_light_ray", cd);
                     }
                     return;
@@ -2339,18 +2456,18 @@ public class TalentAbilityHandler {
                         double radius = AbilityUpgradeConfig.getDouble("m_ult_resurrection", "radius", lvl, 10.0);
                         int durationTicks = AbilityUpgradeConfig.getInt("m_ult_resurrection", "duration_ticks", lvl, 100);
                         int regenAmp = AbilityUpgradeConfig.getInt("m_ult_resurrection", "regen_amp", lvl, 0);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_resurrection", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_resurrection", abilityFailCooldownTicks());
                             return;
                         }
                         AABB box = player.getBoundingBox().inflate(radius, Math.min(radius, 8.0), radius);
-                        for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, box, le -> le == player || player.isAlliedTo(le))) {
+                        for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, box, le -> le == player || AllyHelper.isSupportAlly(player, le))) {
                             e.addEffect(new MobEffectInstance(MobEffects.REGENERATION, durationTicks, regenAmp, false, true, true));
                         }
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 0.9f, 1.35f);
                         serverLevel.sendParticles(ParticleTypes.TOTEM_OF_UNDYING, player.getX(), player.getY() + 1.0, player.getZ(), 48, radius * 0.35, 0.5, radius * 0.35, 0.12);
-                        int cd = AbilityUpgradeConfig.getInt("m_ult_resurrection", "cooldown", lvl, M_ULT_RESURRECTION_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ult_resurrection", "cooldown", lvl, 3600);
                         setCooldown(player, "cd_m_ult_resurrection", cd);
                     }
                     return;
@@ -2361,9 +2478,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_martyr", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_ult_martyr", "mana", lvl, 140.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_martyr", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_martyr", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_martyr", "duration_ticks", lvl, 80);
@@ -2372,7 +2489,7 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENDERMAN_SCREAM, SoundSource.PLAYERS, 0.6f, 1.6f);
                         serverLevel.sendParticles(ParticleTypes.ENCHANT, player.getX(), player.getY() + 1.0, player.getZ(), 35, 0.6, 0.8, 0.6, 0.06);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_ult_martyr", "cooldown", lvl, M_ULT_MARTYR_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ult_martyr", "cooldown", lvl, 1300);
                         setCooldown(player, "cd_m_ult_martyr", cd);
                     }
                     return;
@@ -2383,9 +2500,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_slow_sphere", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_ult_slow_sphere", "mana", lvl, 150.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_slow_sphere", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_slow_sphere", abilityFailCooldownTicks());
                             return;
                         }
 
@@ -2416,7 +2533,7 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, center.x, center.y, center.z, SoundEvents.SNOW_GOLEM_SHOOT, SoundSource.PLAYERS, 0.8f, 1.2f);
                         serverLevel.sendParticles(ParticleTypes.SNOWFLAKE, center.x, center.y + 1.0, center.z, 60, 0.6, 0.9, 0.6, 0.05);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_ult_slow_sphere", "cooldown", lvl, M_ULT_SLOW_SPHERE_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ult_slow_sphere", "cooldown", lvl, 1200);
                         setCooldown(player, "cd_m_ult_slow_sphere", cd);
                     }
                     return;
@@ -2427,9 +2544,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_divine_protection", talents);
                         double cost = applyClericBaseMana(player, talents, AbilityUpgradeConfig.getDouble("m_ult_divine_protection", "mana", lvl, 170.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_divine_protection", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_divine_protection", abilityFailCooldownTicks());
                             return;
                         }
 
@@ -2447,12 +2564,7 @@ public class TalentAbilityHandler {
                                 e.getPersistentData().putFloat("lvluping_cleric_divine_hps", healPerSec);
                                 continue;
                             }
-                            boolean allied = e.isAlliedTo(player);
-                            if (!allied && e instanceof Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                    && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(player.getUUID())) {
-                                allied = true;
-                            }
-                            if (allied) {
+                            if (AllyHelper.isSupportAlly(player, e)) {
                                 e.getPersistentData().putLong("lvluping_cleric_divine_protection_until", until);
                                 e.getPersistentData().putFloat("lvluping_cleric_divine_shield_pct", shieldPct);
                                 e.getPersistentData().putFloat("lvluping_cleric_divine_hps", healPerSec);
@@ -2466,7 +2578,7 @@ public class TalentAbilityHandler {
                         serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BEACON_ACTIVATE, SoundSource.PLAYERS, 0.8f, 1.4f);
                         serverLevel.sendParticles(ParticleTypes.ENCHANT, player.getX(), player.getY() + 1.0, player.getZ(), 60, 0.6, 0.9, 0.6, 0.06);
 
-                        int cd = AbilityUpgradeConfig.getInt("m_ult_divine_protection", "cooldown", lvl, M_ULT_DIVINE_PROTECTION_COOLDOWN);
+                        int cd = AbilityUpgradeConfig.getInt("m_ult_divine_protection", "cooldown", lvl, 1200);
                         setCooldown(player, "cd_m_ult_divine_protection", cd);
                     }
                     return;
@@ -2477,9 +2589,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_meteor", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ult_meteor", "mana", lvl, 120.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_meteor", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_meteor", abilityFailCooldownTicks());
                             return;
                         }
                         LivingEntity target = getTargetInFront(player, M_ULT_METEOR_AIM_RANGE_XZ, M_ULT_METEOR_AIM_CONE_DEG);
@@ -2502,15 +2614,15 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_ice_block", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ult_ice_block", "mana", lvl, 90.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_ice_block", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_ice_block", abilityFailCooldownTicks());
                             return;
                         }
                         LivingEntity t = getTargetInFront(player, M_ULT_ICE_BLOCK_AIM_RANGE_XZ, M_ULT_ICE_BLOCK_AIM_CONE_DEG);
                         if (t == null) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_ice_block", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_ice_block", abilityFailCooldownTicks());
                             return;
                         }
                         int freezeDur = AbilityUpgradeConfig.getInt("m_ult_ice_block", "duration_ticks", lvl, 100);
@@ -2532,9 +2644,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_anti_magic", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ult_anti_magic", "mana", lvl, 110.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_anti_magic", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_anti_magic", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_anti_magic", "duration_ticks", lvl, 100);
@@ -2554,9 +2666,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_illusions", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ult_illusions", "mana", lvl, 100.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_illusions", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_illusions", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_illusions", "duration_ticks", lvl, 160);
@@ -2594,9 +2706,9 @@ public class TalentAbilityHandler {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_chaos", talents);
                         double cost = applySpellcasterManaCost(player, talents, AbilityUpgradeConfig.getDouble("m_ult_chaos", "mana", lvl, 130.0));
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_chaos", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_chaos", abilityFailCooldownTicks());
                             return;
                         }
                         double range = AbilityUpgradeConfig.getDouble("m_ult_chaos", "range", lvl, 10.0);
@@ -2639,9 +2751,9 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_gate", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_ult_gate", "mana", lvl, 140.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_gate", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_gate", abilityFailCooldownTicks());
                             return;
                         }
                         int count = AbilityUpgradeConfig.getInt("m_ult_gate", "count", lvl, 3);
@@ -2697,15 +2809,15 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_absorption", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_ult_absorption", "mana", lvl, 60.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_absorption", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_absorption", abilityFailCooldownTicks());
                             return;
                         }
                         List<Mob> summons = SummonerHandler.getAliveSummons(serverLevel, player);
                         if (summons.isEmpty()) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_absorption", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_absorption", abilityFailCooldownTicks());
                             return;
                         }
                         float healPer = (float) AbilityUpgradeConfig.getDouble("m_ult_absorption", "heal_per", lvl, 6.0);
@@ -2742,15 +2854,15 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_totem_form", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_ult_totem_form", "mana", lvl, 90.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_totem_form", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_totem_form", abilityFailCooldownTicks());
                             return;
                         }
                         List<Mob> summons = SummonerHandler.getAliveSummons(serverLevel, player);
                         if (summons.isEmpty()) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_totem_form", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_totem_form", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_totem_form", "duration_ticks", lvl, 160);
@@ -2779,34 +2891,41 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_possession", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_ult_possession", "mana", lvl, 80.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_possession", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_possession", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_possession", "duration_ticks", lvl, 200);
 
                         double hpMult = AbilityUpgradeConfig.getDouble("m_ult_possession", "hp_mult", lvl, 1.8);
                         double damageMult = AbilityUpgradeConfig.getDouble("m_ult_possession", "damage_mult", lvl, 1.5);
+                        double visualScale = AbilityUpgradeConfig.getDouble("m_ult_possession", "visual_scale", lvl, 1.2);
                         int armorBonus = 1;
 
                         int servantLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_servant", talents);
                         int guardLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_guard", talents);
 
                         List<Mob> summons = SummonerHandler.getAliveSummons(serverLevel, player);
-                        boolean applied = false;
-                        for (Mob m : summons) {
-                            if (m == null || !m.isAlive()) continue;
-                            if (!m.getPersistentData().hasUUID("lvluping_summon_owner")) continue;
-                            if (!player.getUUID().equals(m.getPersistentData().getUUID("lvluping_summon_owner"))) continue;
+                        Mob m = pickSummonForEvolution(player, summons, servantLvl, guardLvl);
+
+                        if (m != null) {
+                            long now = serverLevel.getGameTime();
+                            if (m.getPersistentData().getLong(EVOLUTION_FX_UNTIL_KEY) > now) {
+                                revertPossessionEvolution(m);
+                            }
+
+                            var pdPre = m.getPersistentData();
+                            var mhPre = m.getAttribute(Attributes.MAX_HEALTH);
+                            if (mhPre != null) {
+                                pdPre.putDouble(EVOLUTION_PREV_MAX_HP_BASE_KEY, mhPre.getBaseValue());
+                            }
+                            pdPre.put(EVOLUTION_EQUIP_SNAPSHOT_KEY, copyEquipmentSnapshot(m));
 
                             boolean isServant = m.getType() == net.minecraft.world.entity.EntityType.SKELETON;
-                            boolean isGuard = m.getType() == net.minecraft.world.entity.EntityType.ZOMBIE;
-                            if (!isServant && !isGuard) continue;
-
-                            if (isServant && servantLvl > 0) {
+                            if (isServant) {
                                 applySummonLoadout("m_summon_servant", servantLvl, m, hpMult, armorBonus);
-                            } else if (isGuard && guardLvl > 0) {
+                            } else {
                                 applySummonLoadout("m_summon_guard", guardLvl, m, hpMult, armorBonus);
                             }
 
@@ -2814,13 +2933,29 @@ public class TalentAbilityHandler {
                             m.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, dur, M_ULT_POSSESSION_MOVEMENT_SPEED_AMPLIFIER, false, false));
                             m.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, dur, M_ULT_POSSESSION_DAMAGE_BOOST_AMPLIFIER, false, false));
                             m.addEffect(new MobEffectInstance(MobEffects.GLOWING, dur, M_ULT_POSSESSION_GLOWING_AMPLIFIER, false, false));
-                            m.getPersistentData().putDouble("lvluping_summon_damage_mult", damageMult);
-                            applied = true;
+
+                            var pdEv = m.getPersistentData();
+                            double prevDmg = pdEv.getDouble("lvluping_summon_damage_mult");
+                            if (prevDmg <= 0.0) prevDmg = 1.0;
+                            pdEv.putDouble(EVOLUTION_PREV_DAMAGE_MULT_KEY, prevDmg);
+                            pdEv.putDouble("lvluping_summon_damage_mult", prevDmg * damageMult);
+
+                            long fxUntil = serverLevel.getGameTime() + dur;
+                            pdEv.putLong(EVOLUTION_FX_UNTIL_KEY, fxUntil);
+                            if (visualScale > 1.0 && m.getAttribute(Attributes.SCALE) != null) {
+                                var sc = m.getAttribute(Attributes.SCALE);
+                                sc.removeModifier(EVOLUTION_SCALE_MODIFIER_ID);
+                                double add = visualScale - sc.getBaseValue();
+                                if (add > 0.0) {
+                                    sc.addPermanentModifier(new AttributeModifier(EVOLUTION_SCALE_MODIFIER_ID, add, AttributeModifier.Operation.ADD_VALUE));
+                                }
+                                m.refreshDimensions();
+                            }
                         }
 
-                        if (!applied) {
+                        if (m == null) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_possession", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_possession", abilityFailCooldownTicks());
                             return;
                         }
 
@@ -2838,9 +2973,9 @@ public class TalentAbilityHandler {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_ult_elemental", talents);
                         double cost = AbilityUpgradeConfig.getDouble("m_ult_elemental", "mana", lvl, 120.0);
                         cost = getSummonerManaCost(player, talents, cost);
-                        if (!ArsManaCompat.tryConsumeMana(player, cost)) {
+                        if (!tryConsumeAbilityMana(player, cost)) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_elemental", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_elemental", abilityFailCooldownTicks());
                             return;
                         }
                         int dur = AbilityUpgradeConfig.getInt("m_ult_elemental", "duration_ticks", lvl, 200);
@@ -2854,7 +2989,7 @@ public class TalentAbilityHandler {
                                 : net.minecraft.world.entity.EntityType.STRAY.create(serverLevel);
                         if (summon == null) {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
-                            setCooldown(player, "cd_m_ult_elemental", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_m_ult_elemental", abilityFailCooldownTicks());
                             return;
                         }
                         Vec3 fwd = player.getLookAngle().normalize();
@@ -2888,8 +3023,8 @@ public class TalentAbilityHandler {
                 if (talents.contains("w_ult_berserk") && data.getInt("cd_w_ult_berserk") <= 0) {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_ult_berserk", talents);
-                        int dur = AbilityUpgradeConfig.getInt("w_ult_berserk", "duration_ticks", lvl, ULT_BERSERK_DURATION);
-                        int cd = AbilityUpgradeConfig.getInt("w_ult_berserk", "cooldown", lvl, ULT_BERSERK_COOLDOWN);
+                        int dur = AbilityUpgradeConfig.getInt("w_ult_berserk", "duration_ticks", lvl, 120);
+                        int cd = AbilityUpgradeConfig.getInt("w_ult_berserk", "cooldown", lvl, 600);
                         int speedAmp = AbilityUpgradeConfig.getInt("w_ult_berserk", "speed_amp", lvl, W_ULT_BERSERK_MOVEMENT_SPEED_AMPLIFIER);
                         int regenAmp = AbilityUpgradeConfig.getInt("w_ult_berserk", "regen_amp", lvl, W_ULT_BERSERK_REGENERATION_AMPLIFIER);
                         int jumpAmp = AbilityUpgradeConfig.getInt("w_ult_berserk", "jump_amp", lvl, W_ULT_BERSERK_JUMP_AMPLIFIER);
@@ -2938,7 +3073,7 @@ public class TalentAbilityHandler {
                         if (target == null) {
                             double best = Double.MAX_VALUE;
                             for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, player.getBoundingBox().inflate(7.0, 2.0, 7.0))) {
-                                if (e == player || e.isAlliedTo(player)) continue;
+                                if (e == player) continue;
                                 double d = player.distanceToSqr(e);
                                 if (d < best) {
                                     best = d;
@@ -2946,7 +3081,7 @@ public class TalentAbilityHandler {
                                 }
                             }
                         }
-                        if (target != null && target != player && !target.isAlliedTo(player)) {
+                        if (target != null && target != player) {
                             float base = (float) player.getAttributeValue(Attributes.ATTACK_DAMAGE);
                             float total = Math.max(0.1f, base * hitMult * Math.max(1, hits));
                             target.invulnerableTime = 0;
@@ -2955,7 +3090,7 @@ public class TalentAbilityHandler {
                             serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + 1.0, target.getZ(), 24, 0.4, 0.4, 0.4, 0.03);
                             setCooldown(player, "cd_w_ult_swordmaster_omnislash", cd);
                         } else {
-                            setCooldown(player, "cd_w_ult_swordmaster_omnislash", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_w_ult_swordmaster_omnislash", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -3007,7 +3142,7 @@ public class TalentAbilityHandler {
                         float ls = (float) AbilityUpgradeConfig.getDouble("w_ult_barbarian_feast", "lifesteal_ratio", lvl, 0.5);
                         int cd = AbilityUpgradeConfig.getInt("w_ult_barbarian_feast", "cooldown", lvl, 750);
                         LivingEntity target = getTargetInFront(player, 4.0, 35.0);
-                        if (target != null && target != player && !target.isAlliedTo(player)) {
+                        if (target != null && target != player) {
                             target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, dur, 10, false, false));
                             target.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, dur, 1, false, false));
                             int ticks = Math.max(1, dur / 10);
@@ -3018,7 +3153,7 @@ public class TalentAbilityHandler {
                             serverLevel.playSound(null, target.getX(), target.getY(), target.getZ(), SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.0f, 0.7f);
                             setCooldown(player, "cd_w_ult_barbarian_feast", cd);
                         } else {
-                            setCooldown(player, "cd_w_ult_barbarian_feast", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_w_ult_barbarian_feast", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -3027,8 +3162,8 @@ public class TalentAbilityHandler {
                 if (talents.contains("w_ult_final_countdown") && data.getInt("cd_w_ult_final_countdown") <= 0) {
                     if (player.level() instanceof ServerLevel serverLevel) {
                         int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_ult_final_countdown", talents);
-                        int delay = AbilityUpgradeConfig.getInt("w_ult_final_countdown", "delay_ticks", lvl, ULT_FINAL_COUNTDOWN_DELAY);
-                        int cd = AbilityUpgradeConfig.getInt("w_ult_final_countdown", "cooldown", lvl, ULT_FINAL_COUNTDOWN_COOLDOWN);
+                        int delay = AbilityUpgradeConfig.getInt("w_ult_final_countdown", "delay_ticks", lvl, 60);
+                        int cd = AbilityUpgradeConfig.getInt("w_ult_final_countdown", "cooldown", lvl, 400);
                         LivingEntity target = getTargetInFront(player, W_ULT_FINAL_COUNTDOWN_AIM_RANGE_XZ, W_ULT_FINAL_COUNTDOWN_AIM_CONE_DEG);
                         if (target != null) {
                             long at = serverLevel.getGameTime() + delay;
@@ -3050,7 +3185,7 @@ public class TalentAbilityHandler {
                         } else {
                             serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(),
                                     SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.5f);
-                            setCooldown(player, "cd_w_ult_final_countdown", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_w_ult_final_countdown", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -3091,6 +3226,69 @@ public class TalentAbilityHandler {
                 }
             }
             case 5 -> {
+                if (talents.contains("w_barbarian_frenzy") && data.getInt("cd_w_barbarian_frenzy") <= 0) {
+                    if (player.level() instanceof ServerLevel serverLevel) {
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_barbarian_frenzy", talents);
+                        int dur = AbilityUpgradeConfig.getInt("w_barbarian_frenzy", "duration_ticks", lvl, 80);
+                        double dmgMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "damage_mult", lvl, 1.3);
+                        double inMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "incoming_damage_mult", lvl, 1.2);
+                        double asMult = AbilityUpgradeConfig.getDouble("w_barbarian_frenzy", "attack_speed_mult", lvl, 1.15);
+                        int cd = AbilityUpgradeConfig.getInt("w_barbarian_frenzy", "cooldown", lvl, 260);
+                        data.putLong(W_BARBARIAN_FRENZY_UNTIL_KEY, serverLevel.getGameTime() + dur);
+                        data.putFloat(W_BARBARIAN_FRENZY_DAMAGE_MULT_KEY, (float) dmgMult);
+                        data.putFloat(W_BARBARIAN_FRENZY_INCOMING_MULT_KEY, (float) inMult);
+                        data.putFloat("lvluping_w_barbarian_frenzy_as_mult", (float) asMult);
+                        serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.RAVAGER_ROAR, SoundSource.PLAYERS, 1.0f, 0.55f);
+                        serverLevel.sendParticles(ParticleTypes.ANGRY_VILLAGER, player.getX(), player.getY() + 1.0, player.getZ(), 26, 0.5, 0.4, 0.5, 0.05);
+                        setCooldown(player, "cd_w_barbarian_frenzy", cd);
+                    }
+                    return;
+                }
+                if (talents.contains("w_paladin_blessing") && data.getInt("cd_w_paladin_blessing") <= 0) {
+                    if (player.level() instanceof ServerLevel serverLevel) {
+                        int lvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_paladin_blessing", talents);
+                        int cd = AbilityUpgradeConfig.getInt("w_paladin_blessing", "cooldown", lvl, 200);
+                        int n = AbilityUpgradeConfig.getInt("w_paladin_blessing", "cleanse_count", lvl, 1);
+                        removeHarmfulEffects(player, n);
+                        serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 0.7f, 1.3f);
+                        setCooldown(player, "cd_w_paladin_blessing", cd);
+                    }
+                    return;
+                }
+                // --- M_BARRIER ---
+                if (talents.contains("m_barrier") && data.getInt("cd_buff") <= 0) {
+                    int barrierLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "m_barrier", talents);
+                    int buffCd = AbilityUpgradeConfig.getInt("m_barrier", "cooldown", barrierLvl, 600);
+                    int barrierWin = AbilityUpgradeConfig.getInt("m_barrier", "barrier_window_ticks", barrierLvl, 200);
+                    setCooldown(player, "cd_buff", buffCd);
+                    setCooldown(player, "lvluping_barrier_window", barrierWin);
+
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.ENCHANTMENT_TABLE_USE, SoundSource.PLAYERS, 1.0f, 1.5f);
+
+                    if (player.level() instanceof ServerLevel shockLevel
+                            && !(talents.contains("m_magic_barrier") && talents.contains("m_spellcaster_base"))) {
+                        double shockR = AbilityUpgradeConfig.getDouble("m_barrier", "shock_radius", barrierLvl, 4.0);
+                        float shockDmg = (float) AbilityUpgradeConfig.getDouble("m_barrier", "shock_damage", barrierLvl, 3.0);
+                        float shockKb = (float) AbilityUpgradeConfig.getDouble("m_barrier", "shock_knockback", barrierLvl, 0.55);
+                        AABB shockBox = player.getBoundingBox().inflate(shockR, 0.5, shockR);
+                        for (LivingEntity e : shockLevel.getEntitiesOfClass(LivingEntity.class, shockBox)) {
+                            if (e == player || !e.isAlive()) continue;
+                            e.hurt(player.damageSources().magic(), shockDmg);
+                            e.knockback(shockKb, player.getX() - e.getX(), player.getZ() - e.getZ());
+                        }
+                        shockLevel.sendParticles(ParticleTypes.CLOUD, player.getX(), player.getY() + 0.5, player.getZ(), 24,
+                                shockR * 0.25, 0.15, shockR * 0.25, 0.03);
+                    }
+
+                    if (talents.contains("m_buff_def")) {
+                        player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, BARRIER_EFFECT_DURATION_TICKS, BARRIER_DEF_RESISTANCE_AMPLIFIER, false, false));
+                        if (talents.contains("m_buff_atk")) {
+                            player.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, BARRIER_EFFECT_DURATION_TICKS, BARRIER_ATK_DAMAGE_BOOST_AMPLIFIER, false, false));
+                        }
+                    }
+                    return;
+                }
                 if (talents.contains("as_rogue_blind") && data.getInt("cd_as_rogue_blind") <= 0) {
                     if (player.level() instanceof ServerLevel sl) {
                         LivingEntity t = getTargetInFront(player, 6.0, 35.0);
@@ -3102,7 +3300,7 @@ public class TalentAbilityHandler {
                             sl.playSound(null, t.getX(), t.getY(), t.getZ(), SoundEvents.SAND_BREAK, SoundSource.PLAYERS, 0.8f, 1.0f);
                             setCooldown(player, "cd_as_rogue_blind", cd);
                         } else {
-                            setCooldown(player, "cd_as_rogue_blind", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_rogue_blind", abilityFailCooldownTicks());
                         }
                     }
                     return;
@@ -3145,9 +3343,27 @@ public class TalentAbilityHandler {
                             }
                             setCooldown(player, "cd_as_assassin_rupture", cd);
                         } else {
-                            setCooldown(player, "cd_as_assassin_rupture", ABILITY_FAIL_COOLDOWN);
+                            setCooldown(player, "cd_as_assassin_rupture", abilityFailCooldownTicks());
                         }
                     }
+                    return;
+                }
+            }
+            case 6 -> {
+                if (talents.contains("m_summon_guard") && talents.contains("m_summon_servant") && data.getInt("cd_m_summon_guard") <= 0) {
+                    if (player.level() instanceof ServerLevel serverLevel) {
+                        performSummonerSummon(player, serverLevel, true);
+                    }
+                    return;
+                }
+                if (talents.contains("w_parry") && data.getInt("cd_parry") <= 0) {
+                    int parryLvl = PlayerLevels.getAbilityLevel(player.getUUID(), "w_parry", talents);
+                    int parryWindow = AbilityUpgradeConfig.getInt("w_parry", "parry_window_ticks", parryLvl, 20);
+                    int parryCd = AbilityUpgradeConfig.getInt("w_parry", "cooldown", parryLvl, 100);
+                    setCooldown(player, "lvluping_parry_window", parryWindow);
+                    setCooldown(player, "cd_parry", parryCd);
+                    player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
+                            SoundEvents.ARMOR_EQUIP_IRON, SoundSource.PLAYERS, 1.0f, 1.0f);
                     return;
                 }
             }

@@ -64,6 +64,12 @@ public final class SummonerHandler {
                 long until = mob.getPersistentData().getLong("lvluping_summon_until");
                 UUID owner = mob.getPersistentData().hasUUID(KEY_OWNER) ? mob.getPersistentData().getUUID(KEY_OWNER) : null;
                 if (owner == null || !owner.equals(player.getUUID())) continue;
+
+                long evoFxUntil = mob.getPersistentData().getLong(TalentAbilityHandler.EVOLUTION_FX_UNTIL_KEY);
+                if (evoFxUntil > 0 && time >= evoFxUntil) {
+                    TalentAbilityHandler.revertPossessionEvolution(mob);
+                }
+
                 if (until > 0 && until <= time) {
                     level.sendParticles(ParticleTypes.POOF, mob.getX(), mob.getY() + 1.0, mob.getZ(), 18, 0.35, 0.6, 0.35, 0.02);
                     level.sendParticles(ParticleTypes.SMOKE, mob.getX(), mob.getY() + 0.8, mob.getZ(), 24, 0.4, 0.5, 0.4, 0.01);

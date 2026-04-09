@@ -9,6 +9,9 @@ import net.neoforged.neoforge.event.RegisterCommandsEvent;
 import org.mrutcka.lvluping.command.LevelCommand;
 import org.mrutcka.lvluping.command.RaceCommand;
 import org.mrutcka.lvluping.command.StarCommand;
+import org.mrutcka.lvluping.command.StatCommand;
+import org.mrutcka.lvluping.command.StatTrainingCommand;
+import org.mrutcka.lvluping.LvlupingEntityTypes;
 import org.mrutcka.lvluping.LvlupingItems;
 import org.slf4j.Logger;
 
@@ -19,6 +22,7 @@ public class LvlupingMod {
 
     public LvlupingMod(IEventBus modEventBus) {
         LvlupingItems.ITEMS.register(modEventBus);
+        LvlupingEntityTypes.ENTITY_TYPES.register(modEventBus);
         modEventBus.addListener(this::setup);
         NeoForge.EVENT_BUS.addListener(this::onRegisterCommands);
     }
@@ -30,6 +34,8 @@ public class LvlupingMod {
     private void onRegisterCommands(RegisterCommandsEvent event) {
         LevelCommand.register(event.getDispatcher());
         StarCommand.register(event.getDispatcher());
+        StatCommand.register(event.getDispatcher());
+        StatTrainingCommand.register(event.getDispatcher());
         RaceCommand.register(event.getDispatcher());
     }
 }

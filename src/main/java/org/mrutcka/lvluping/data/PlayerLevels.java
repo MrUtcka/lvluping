@@ -1,13 +1,15 @@
 package org.mrutcka.lvluping.data;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.minecraft.nbt.*;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.level.storage.LevelResource;
+import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
+import org.mrutcka.lvluping.network.S2CSyncTalents;
 
 import java.io.*;
 import java.nio.file.*;
@@ -115,7 +117,7 @@ public class PlayerLevels {
     public static float getStoredHealth(UUID uuid) { return playerStoredHealth.getOrDefault(uuid, -1f); }
 
     public static int getMaxLevel(int stars) {
-        return stars * 10;
+        return stars * 15;
     }
 
     public static int getTalentLimit(int stars) {
@@ -152,11 +154,19 @@ public class PlayerLevels {
     }
 
     public static boolean isRaceForbidden(UUID uuid, Talent t) {
-        Race playerRace = getRace(uuid);
-        for (Race forbidden : t.forbiddenRaces) {
-            if (forbidden == playerRace) return true;
-        }
-        return false;
+        return t != null && t.isForbiddenForRace(getRace(uuid));
+    }
+
+    public static void syncTalentsToClient(ServerPlayer player) {
+        UUID uuid = player.getUUID();
+        PacketDistributor.sendToPlayer(player, new S2CSyncTalents(
+                getLevel(player),
+                getStars(uuid),
+                getPlayerTalents(uuid),
+                getPlayerStatsMap(uuid),
+                getPlayerAbilityLevels(uuid),
+                getRace(uuid).id
+        ));
     }
 
     public static void applyStartingBonus(ServerPlayer player) {
@@ -165,27 +175,53 @@ public class PlayerLevels {
 
         if (playerRaces.containsKey(uuid)) return;
 
-        Path configPath = player.getServer().getWorldPath(LevelResource.ROOT).resolve("lvluping_preset.json");
+        Path configPath = LvlupingServerData.presetPath(player.getServer());
 
         Race raceToSet = Race.HUMAN;
         int starsToSet = 2;
 
         if (Files.exists(configPath)) {
             try (Reader reader = Files.newBufferedReader(configPath)) {
-                JsonObject json = JsonParser.parseReader(reader).getAsJsonObject();
-                JsonArray players = json.getAsJsonArray("players");
-
-                for (int i = 0; i < players.size(); i++) {
-                    JsonObject pObj = players.get(i).getAsJsonObject();
-                    if (pObj.get("name").getAsString().equalsIgnoreCase(playerName)) {
-                        raceToSet = Race.getById(pObj.get("race").getAsString());
-                        starsToSet = pObj.get("stars").getAsInt();
-                        break;
+                JsonElement rootEl = JsonParser.parseReader(reader);
+                if (!rootEl.isJsonObject()) {
+                    LvlupingMod.LOGGER.warn("lvluping_preset.json: корень должен быть объектом с полем \"players\"");
+                } else {
+                    JsonObject json = rootEl.getAsJsonObject();
+                    if (!json.has("players") || !json.get("players").isJsonArray()) {
+                        LvlupingMod.LOGGER.warn("lvluping_preset.json: нужен массив \"players\" с объектами { \"name\", \"race\", \"stars\" }");
+                    } else {
+                        JsonArray players = json.getAsJsonArray("players");
+                        boolean matched = false;
+                        for (int i = 0; i < players.size(); i++) {
+                            if (!players.get(i).isJsonObject()) continue;
+                            JsonObject pObj = players.get(i).getAsJsonObject();
+                            if (!pObj.has("name")) continue;
+                            if (!playerName.equalsIgnoreCase(pObj.get("name").getAsString().trim())) continue;
+                            matched = true;
+                            if (pObj.has("race") && pObj.get("race").isJsonPrimitive()) {
+                                raceToSet = Race.getById(pObj.get("race").getAsString().trim());
+                            }
+                            if (pObj.has("stars")) {
+                                try {
+                                    starsToSet = pObj.get("stars").getAsInt();
+                                } catch (Exception ignored) {
+                                    starsToSet = pObj.get("stars").getAsNumber().intValue();
+                                }
+                            }
+                            starsToSet = Math.max(1, Math.min(7, starsToSet));
+                            LvlupingMod.LOGGER.info("lvluping_preset: для «{}» заданы раса={}, звёзд={}", playerName, raceToSet.id, starsToSet);
+                            break;
+                        }
+                        if (!matched) {
+                            LvlupingMod.LOGGER.info("lvluping_preset: игрок «{}» не в списке — раса человек, 2 звезды", playerName);
+                        }
                     }
                 }
             } catch (Exception e) {
-                LvlupingMod.LOGGER.error("Ошибка чтения lvluping_preset.json: " + e.getMessage());
+                LvlupingMod.LOGGER.error("Ошибка чтения lvluping_preset.json: {}", e.toString());
             }
+        } else {
+            LvlupingMod.LOGGER.debug("lvluping_preset.json отсутствует ({}), новый игрок без пресета", configPath.toAbsolutePath());
         }
 
         playerRaces.put(uuid, raceToSet != null ? raceToSet : Race.HUMAN);
@@ -196,12 +232,21 @@ public class PlayerLevels {
     }
 
     public static void save(MinecraftServer server) {
-        Path path = server.getWorldPath(LevelResource.ROOT).resolve("lvluping_data.dat");
+        Path path = LvlupingServerData.playerDataPath(server);
+        try {
+            LvlupingServerData.ensureRootExists(server);
+        } catch (IOException e) {
+            LvlupingMod.LOGGER.error("LVLuping: не удалось создать папку данных: {}", e.toString());
+            return;
+        }
         CompoundTag root = new CompoundTag();
         Set<UUID> allPlayers = new HashSet<>(playerLevels.keySet());
         allPlayers.addAll(playerStars.keySet());
         allPlayers.addAll(playerCooldowns.keySet());
         allPlayers.addAll(playerAbilityLevels.keySet());
+        allPlayers.addAll(playerTalents.keySet());
+        allPlayers.addAll(playerStats.keySet());
+        allPlayers.addAll(PlayerStatTrainingData.extraSaveUuids());
 
         for (UUID uuid : allPlayers) {
             CompoundTag pData = new CompoundTag();
@@ -226,6 +271,8 @@ public class PlayerLevels {
             getPlayerAbilityLevels(uuid).forEach(aData::putInt);
             pData.put("ability_upgrades", aData);
 
+            PlayerStatTrainingData.appendTag(pData, uuid);
+
             root.put(uuid.toString(), pData);
         }
 
@@ -235,7 +282,8 @@ public class PlayerLevels {
     }
 
     public static void load(MinecraftServer server) {
-        Path path = server.getWorldPath(LevelResource.ROOT).resolve("lvluping_data.dat");
+        LvlupingServerData.migratePlayerDataIfNeeded(server);
+        Path path = LvlupingServerData.playerDataPath(server);
         if (!Files.exists(path)) return;
 
         try (InputStream in = Files.newInputStream(path)) {
@@ -268,6 +316,8 @@ public class PlayerLevels {
                 abilityMap.clear();
                 CompoundTag aData = pData.contains("ability_upgrades") ? pData.getCompound("ability_upgrades") : new CompoundTag();
                 for (String aKey : aData.getAllKeys()) abilityMap.put(aKey, aData.getInt(aKey));
+
+                PlayerStatTrainingData.readTag(pData, uuid);
             }
         } catch (Exception e) { e.printStackTrace(); }
     }

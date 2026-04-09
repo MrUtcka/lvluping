@@ -11,6 +11,7 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Items;
 import net.minecraft.tags.EntityTypeTags;
@@ -31,6 +32,8 @@ import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.world.entity.Entity;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -56,6 +59,7 @@ import org.mrutcka.lvluping.compat.ArsManaCompat;
 import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.network.S2CSyncCooldown;
+import org.mrutcka.lvluping.util.AllyHelper;
 import org.mrutcka.lvluping.network.S2CUnbreakableShieldOrbit;
 
 
@@ -168,16 +172,16 @@ public class CommonEventsHandler {
     private static final int W_ULT_BERSERK_HIT_PARTICLE_COUNT = 3;
 
     private static final double AS_CRIT_BACKSTAB_DOT_THRESHOLD = 0.7;
-    private static final float AS_CRIT_DAMAGE_MULTIPLIER = 2.0f;
+    private static final float AS_CRIT_DAMAGE_MULTIPLIER = 1.5f;
     private static final float AS_CRIT_SOUND_PITCH = 1.2f;
 
-    private static final float A_POWER_ARROW_CRIT_MULTIPLIER = 2.0f;
+    private static final float A_POWER_ARROW_CRIT_MULTIPLIER = 1.3f;
 
     private static final int W_COMBO_CHAIN_WINDOW_TICKS = 20;
     private static final int W_COMBO_MAX_STACK = 10;
     private static final float W_COMBO_SOUND_PITCH_BASE = 0.5f;
     private static final float W_COMBO_SOUND_PITCH_PER_STACK = 0.1f;
-    private static final float W_COMBO_DAMAGE_PER_STACK = 0.1f;
+    private static final float W_COMBO_DAMAGE_PER_STACK = 0.05f;
     private static final int W_COMBO_CRIT_PARTICLE_COUNT = 8;
     private static final int W_COMBO_SWEEP_PARTICLE_COUNT = 2;
 
@@ -189,7 +193,6 @@ public class CommonEventsHandler {
 
     private static final float W_ARMOR_BREAKER_DAMAGE_MULTIPLIER = 1.5f;
     private static final int W_ARMOR_BREAKER_ARMOR_DEBUFF_DURATION_TICKS = 100;
-    private static final int W_ARMOR_BREAKER_COOLDOWN_TICKS = 200;
     private static final float W_ARMOR_BREAKER_ANVIL_PITCH = 0.7f;
     private static final int W_ARMOR_BREAKER_CRIT_PARTICLE_COUNT = 10;
 
@@ -327,6 +330,45 @@ public class CommonEventsHandler {
                         }
                     }
                 }
+                if (sp.getPersistentData().contains(TalentAbilityHandler.PALADIN_SACRIFICE_CHANNEL_TICKS_KEY)) {
+                    var pd = sp.getPersistentData();
+                    int ch = pd.getInt(TalentAbilityHandler.PALADIN_SACRIFICE_CHANNEL_TICKS_KEY);
+                    if (!sp.isAlive() || ch <= 0) {
+                        pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_CHANNEL_TICKS_KEY);
+                        pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY);
+                        pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_ALLIES_KEY);
+                    } else {
+                        float plRem = pd.getFloat(TalentAbilityHandler.PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY);
+                        float take = plRem / ch;
+                        take = Math.min(take, Math.max(0f, sp.getHealth() - 1f));
+                        if (take > 0) {
+                            sp.setHealth(sp.getHealth() - take);
+                            plRem -= take;
+                        }
+                        pd.putFloat(TalentAbilityHandler.PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY, Math.max(0f, plRem));
+
+                        ListTag allyList = pd.getList(TalentAbilityHandler.PALADIN_SACRIFICE_ALLIES_KEY, CompoundTag.TAG_COMPOUND);
+                        for (int i = 0; i < allyList.size(); i++) {
+                            CompoundTag ac = allyList.getCompound(i);
+                            UUID u = ac.getUUID("u");
+                            float pt = ac.getFloat("pt");
+                            Entity ent = sp.serverLevel().getEntity(u);
+                            if (ent instanceof LivingEntity le && le.isAlive() && AllyHelper.isSupportAlly(sp, le)) {
+                                float room = le.getMaxHealth() - le.getHealth();
+                                float h = Math.min(pt, room);
+                                if (h > 0) le.heal(h);
+                            }
+                        }
+                        ch--;
+                        if (ch <= 0) {
+                            pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_CHANNEL_TICKS_KEY);
+                            pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_PLAYER_DROP_LEFT_KEY);
+                            pd.remove(TalentAbilityHandler.PALADIN_SACRIFICE_ALLIES_KEY);
+                        } else {
+                            pd.putInt(TalentAbilityHandler.PALADIN_SACRIFICE_CHANNEL_TICKS_KEY, ch);
+                        }
+                    }
+                }
                 if (talents.contains("m_mana_flow") && talents.contains("m_spellcaster_base") && sp.level().getGameTime() % M_MANA_FLOW_TICK_INTERVAL == 0) {
                     int mfLvl = PlayerLevels.getAbilityLevel(sp.getUUID(), "m_mana_flow", talents);
                     double bonusPct = AbilityUpgradeConfig.getDouble("m_mana_flow", "regen_bonus_percent", mfLvl, 15.0);
@@ -354,13 +396,7 @@ public class CommonEventsHandler {
                     AABB box = sp.getBoundingBox().inflate(prayRadius, CLERIC_PRAYER_AABB_INFLATE_Y, prayRadius);
                     for (LivingEntity e : sp.level().getEntitiesOfClass(LivingEntity.class, box)) {
                         if (e == sp) continue;
-
-                        boolean allied = e.isAlliedTo(sp);
-                        if (!allied && e instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(sp.getUUID())) {
-                            allied = true;
-                        }
-                        if (!allied) continue;
+                        if (!AllyHelper.isSupportAlly(sp, e)) continue;
                         e.heal(heal);
                     }
                 }
@@ -427,12 +463,7 @@ public class CommonEventsHandler {
                         AABB mBox = sp.getBoundingBox().inflate(teamR, 4, teamR);
                         for (LivingEntity e : sp.level().getEntitiesOfClass(LivingEntity.class, mBox)) {
                             if (e == sp) continue;
-                            boolean allied = e.isAlliedTo(sp);
-                            if (!allied && e instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                    && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(sp.getUUID())) {
-                                allied = true;
-                            }
-                            if (allied) {
+                            if (AllyHelper.isSupportAlly(sp, e)) {
                                 e.heal(teamHps);
                             }
                         }
@@ -475,7 +506,8 @@ public class CommonEventsHandler {
             decrementCooldown(player, "cd_m_lightning");
             decrementCooldown(player, "cd_m_ice");
             decrementCooldown(player, "cd_m_teleport");
-            decrementCooldown(player, "cd_m_summon");
+            decrementCooldown(player, "cd_m_summon_servant");
+            decrementCooldown(player, "cd_m_summon_guard");
             decrementCooldown(player, "cd_m_sacrifice");
             decrementCooldown(player, "cd_m_command");
             decrementCooldown(player, "cd_m_stone_skin");
@@ -768,15 +800,12 @@ public class CommonEventsHandler {
                 }
                 long barrUntil = p.getPersistentData().getLong("lvluping_as_barricade_remove_at");
                 if (barrUntil > 0 && barrUntil <= time) {
-                    int barrX = p.getPersistentData().getInt("lvluping_as_barricade_x");
-                    int barrY = p.getPersistentData().getInt("lvluping_as_barricade_y");
-                    int barrZ = p.getPersistentData().getInt("lvluping_as_barricade_z");
-                    float barrRot = p.getPersistentData().getFloat(TalentAbilityHandler.AS_WANDERER_BARRICADE_Y_ROT_KEY);
-                    TalentAbilityHandler.removeAssassinBarricadeBarriers(serverLevel, barrX, barrY, barrZ, barrRot);
                     p.getPersistentData().remove("lvluping_as_barricade_remove_at");
                     p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_BARRICADE_Y_ROT_KEY);
                     if (p.getPersistentData().hasUUID(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY)) {
                         UUID vid = p.getPersistentData().getUUID(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY);
+                        var ent = serverLevel.getEntity(vid);
+                        if (ent != null) ent.discard();
                         TalentAbilityHandler.broadcastAssassinBarricadeHide(serverLevel, vid);
                         p.getPersistentData().remove(TalentAbilityHandler.AS_WANDERER_BARRICADE_VISUAL_KEY);
                     }
@@ -790,7 +819,7 @@ public class CommonEventsHandler {
                     float dmg = p.getPersistentData().getFloat("lvluping_as_tripwire_dmg");
                     AABB area = new AABB(x - r, y - 2, z - r, x + r, y + 2, z + r);
                     for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                        if (e == p || e.isAlliedTo(p)) continue;
+                        if (e == p) continue;
                         e.hurt(p.damageSources().playerAttack(p), dmg);
                         e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 60, 3, false, false));
                         p.getPersistentData().putLong("lvluping_as_tripwire_until", 0);
@@ -814,7 +843,7 @@ public class CommonEventsHandler {
                     if (time % 10 == 0) {
                         AABB area = p.getBoundingBox().inflate(1.8, 1.0, 1.8);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e == p || e.isAlliedTo(p)) continue;
+                            if (e == p) continue;
                             e.hurt(p.damageSources().playerAttack(p), dps);
                             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 20, 1, false, false));
                         }
@@ -830,7 +859,7 @@ public class CommonEventsHandler {
                     if (time % 20 == 0) {
                         AABB area = new AABB(x - r, y - 2, z - r, x + r, y + 2, z + r);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e.isAlliedTo(p)) continue;
+                            if (e == p) continue;
                             e.hurt(p.damageSources().magic(), dps);
                             e.addEffect(new MobEffectInstance(MobEffects.POISON, 40, 0, false, false));
                         }
@@ -846,7 +875,7 @@ public class CommonEventsHandler {
                     if (time % 20 == 0) {
                         AABB area = new AABB(x - r, y - 2, z - r, x + r, y + 2, z + r);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e == p || e.isAlliedTo(p)) e.heal(hps);
+                            if (e == p || AllyHelper.isSupportAlly(p, e)) e.heal(hps);
                         }
                     }
                     serverLevel.sendParticles(ParticleTypes.HEART, x, y + 1.0, z, 3, r * 0.2, 0.2, r * 0.2, 0.01);
@@ -884,7 +913,7 @@ public class CommonEventsHandler {
                     double r = p.getPersistentData().getDouble(TalentAbilityHandler.AS_ASSASSIN_BLACK_MIST_R_KEY);
                     AABB area = new AABB(x - r, y - 2, z - r, x + r, y + 2, z + r);
                     for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                        if (e.isAlliedTo(p)) continue;
+                        if (e == p) continue;
                         e.addEffect(new MobEffectInstance(MobEffects.WEAKNESS, 40, 0, false, false));
                     }
                     if (p.distanceToSqr(x, y, z) <= r * r) {
@@ -910,7 +939,7 @@ public class CommonEventsHandler {
                     AABB area = new AABB(x - r, y - 2.0, z - r, x + r, y + 2.0, z + r);
                     boolean triggered = false;
                     for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                        if (e == p || e.isAlliedTo(p)) continue;
+                        if (e == p) continue;
                         if (e.distanceToSqr(x, y, z) > r * r) continue;
                         e.hurt(p.damageSources().playerAttack(p), dmg);
                         e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, root, 8, false, false));
@@ -973,7 +1002,7 @@ public class CommonEventsHandler {
                     if (time % 20 == 0) {
                         AABB area = new AABB(x - r, y - 2.0, z - r, x + r, y + 2.0, z + r);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e.isAlliedTo(p)) continue;
+                            if (e == p) continue;
                             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 25, Math.max(0, slowAmp), false, false));
                             var epd = e.getPersistentData();
                             if (!epd.getBoolean("lvluping_thorn_init")) {
@@ -1010,7 +1039,7 @@ public class CommonEventsHandler {
                         float heal = total * (float) p.getMaxHealth() / 10.0f;
                         AABB area = new AABB(x - r, y - 3.0, z - r, x + r, y + 3.0, z + r);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e == p || e.isAlliedTo(p)) {
+                            if (e == p || AllyHelper.isSupportAlly(p, e)) {
                                 e.heal(heal);
                                 serverLevel.sendParticles(ParticleTypes.HEART, e.getX(), e.getY() + 1.0, e.getZ(), 1, 0.2, 0.3, 0.2, 0.0);
                             }
@@ -1030,7 +1059,7 @@ public class CommonEventsHandler {
                         LivingEntity best = null;
                         double bestD2 = Double.MAX_VALUE;
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                            if (e.isAlliedTo(p)) continue;
+                            if (e == p) continue;
                             double d2 = (e.getX() - x) * (e.getX() - x) + (e.getZ() - z) * (e.getZ() - z);
                             if (d2 < bestD2) {
                                 bestD2 = d2;
@@ -1054,7 +1083,7 @@ public class CommonEventsHandler {
                     double r = p.getPersistentData().getDouble(TalentAbilityHandler.A_RANGER_ROOTS_R_KEY);
                     AABB area = new AABB(x - r, y - 2.0, z - r, x + r, y + 2.0, z + r);
                     for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, area)) {
-                        if (e.isAlliedTo(p)) continue;
+                        if (e == p) continue;
                         e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 25, 9, false, false));
                     }
                     serverLevel.sendParticles(ParticleTypes.HAPPY_VILLAGER, x, y + 0.6, z, 6, r * 0.3, 0.2, r * 0.3, 0.02);
@@ -1112,7 +1141,7 @@ public class CommonEventsHandler {
                         serverLevel.sendParticles(ParticleTypes.CAMPFIRE_COSY_SMOKE, p.getX(), p.getY() + 0.5, p.getZ(), 40, 0.6, 0.3, 0.6, 0.02);
                         for (LivingEntity e : serverLevel.getEntitiesOfClass(LivingEntity.class, p.getBoundingBox().inflate(radius, 2.0, radius))) {
                             if (e == p) continue;
-                            if (e.isAlliedTo(p)) continue;
+                            if (e == p) continue;
                             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, dur, slowAmp, false, false));
                         }
                     }
@@ -1286,6 +1315,31 @@ public class CommonEventsHandler {
         }
         Set<String> talents = PlayerLevels.getPlayerTalents(attacker.getUUID());
 
+        // --- M_BUFF_ATK ---
+        if (attacker instanceof ServerPlayer sp
+                && !sp.isSpectator()
+                && talents.contains("m_buff_atk")
+                && event.getTarget() instanceof LivingEntity main
+                && main.isAlive()
+                && main != sp
+                && sp.level() instanceof ServerLevel sl) {
+            int lvl = PlayerLevels.getAbilityLevel(sp.getUUID(), "m_buff_atk", talents);
+            double splashR = AbilityUpgradeConfig.getDouble("m_buff_atk", "splash_radius", lvl, 2.25);
+            double ratio = AbilityUpgradeConfig.getDouble("m_buff_atk", "splash_ratio", lvl, 0.22);
+            float base = (float) sp.getAttributeValue(Attributes.ATTACK_DAMAGE);
+            float splashDmg = Math.max(0.15f, base * (float) ratio);
+            if (splashDmg > 0f && splashR > 0.0) {
+                AABB box = main.getBoundingBox().inflate(splashR, 0.35, splashR);
+                var src = sp.damageSources().playerAttack(sp);
+                for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, box)) {
+                    if (e == sp || e == main || !e.isAlive()) continue;
+                    if (e.hurt(src, splashDmg)) {
+                        sl.sendParticles(ParticleTypes.DAMAGE_INDICATOR, e.getX(), e.getEyeY(), e.getZ(), 2, 0.12, 0.06, 0.12, 0.02);
+                    }
+                }
+            }
+        }
+
         // --- A_DAGGER ---
     }
 
@@ -1388,7 +1442,7 @@ public class CommonEventsHandler {
                 AABB area = living.getBoundingBox().inflate(Math.max(0.5, r), 2.5, Math.max(0.5, r));
                 for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, area)) {
                     if (e == living) continue;
-                    if (owner != null && (e == owner || e.isAlliedTo(owner))) continue;
+                    if (owner != null && e == owner) continue;
                     if (owner != null) e.hurt(owner.damageSources().playerAttack(owner), dmg);
                     else e.hurt(sl.damageSources().magic(), dmg);
                     if (bleedTicks > 0) {
@@ -1464,7 +1518,7 @@ public class CommonEventsHandler {
                 clearArrowNextArrowNbt(ad);
             }
         } else if (eff == 2 && hit instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity victim && victim.isAlive()) {
-            if (!victim.isAlliedTo(owner)) {
+            if (victim != owner) {
                 int slowTicks = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P1_KEY);
                 int slowAmp = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
                 if (slowTicks > 0) {
@@ -1475,7 +1529,7 @@ public class CommonEventsHandler {
             }
             clearArrowNextArrowNbt(ad);
         } else if (eff == 14 && hit instanceof EntityHitResult ehr && ehr.getEntity() instanceof LivingEntity victim && victim.isAlive() && victim != owner) {
-            if (!victim.isAlliedTo(owner)) {
+            if (victim != owner) {
                 int rootTicks = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P1_KEY);
                 float dps = ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
                 long until = sl.getGameTime() + rootTicks;
@@ -1494,7 +1548,7 @@ public class CommonEventsHandler {
             float dmg = ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
             AABB area = new AABB(pos.x - r, pos.y - 2.0, pos.z - r, pos.x + r, pos.y + 2.0, pos.z + r);
             for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, area)) {
-                if (e == owner || e.isAlliedTo(owner)) continue;
+                if (e == owner) continue;
                 if (e.distanceToSqr(pos) > r * r) continue;
                 e.hurt(owner.damageSources().playerAttack(owner), dmg);
                 e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 40, 1, false, false));
@@ -1594,8 +1648,9 @@ public class CommonEventsHandler {
             Vec3 pos = hit.getLocation();
             AABB area = new AABB(pos.x - r, pos.y - 2.0, pos.z - r, pos.x + r, pos.y + 2.0, pos.z + r);
             Player owner = snowball.getOwner() instanceof Player p ? p : null;
+            ServerPlayer ownerSp = owner instanceof ServerPlayer osp ? osp : null;
             for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, area)) {
-                if (owner != null && e.isAlliedTo(owner)) continue;
+                if (owner != null && e == owner) continue;
                 if (e.distanceToSqr(pos) > r * r) continue;
                 if (owner != null) e.hurt(owner.damageSources().playerAttack(owner), dmg);
                 else e.hurt(sl.damageSources().magic(), dmg);
@@ -1614,8 +1669,9 @@ public class CommonEventsHandler {
             Vec3 pos = hit.getLocation();
             AABB area = new AABB(pos.x - r, pos.y - 2.0, pos.z - r, pos.x + r, pos.y + 2.0, pos.z + r);
             Player owner = snowball.getOwner() instanceof Player p ? p : null;
+            ServerPlayer netOwner = owner instanceof ServerPlayer osp2 ? osp2 : null;
             for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, area)) {
-                if (owner != null && e.isAlliedTo(owner)) continue;
+                if (owner != null && e == owner) continue;
                 if (e.distanceToSqr(pos) > r * r) continue;
                 e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, root, 8, false, false));
             }
@@ -1710,7 +1766,7 @@ public class CommonEventsHandler {
                     int root = (int) ad.getFloat(TalentAbilityHandler.A_NEXT_ARROW_P2_KEY);
                     AABB area = victim.getBoundingBox().inflate(r, 2.0, r);
                     for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, area)) {
-                        if (e.isAlliedTo(owner)) continue;
+                        if (e == owner) continue;
                         e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, root, 8, false, false));
                     }
                     sl.playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.TRIPWIRE_DETACH, SoundSource.PLAYERS, 0.8f, 0.9f);
@@ -1811,7 +1867,7 @@ public class CommonEventsHandler {
                             Math.max(start.x, end.x), Math.max(start.y, end.y), Math.max(start.z, end.z)
                     ).inflate(1.25, 1.0, 1.25);
 
-                    var candidates = sl.getEntitiesOfClass(LivingEntity.class, box, e -> e != victim && e != owner && !e.isAlliedTo(owner));
+                    var candidates = sl.getEntitiesOfClass(LivingEntity.class, box, e -> e != victim && e != owner);
                     candidates.sort(java.util.Comparator.comparingDouble(e -> e.position().subtract(start).dot(dir)));
 
                     int done = 0;
@@ -1980,6 +2036,11 @@ public class CommonEventsHandler {
                 double red = AbilityUpgradeConfig.getDouble("w_barbarian_indestructible_body", "damage_reduction", lvl, 0.08);
                 amount *= (float) (1.0 - red);
             }
+            if (talents.contains("m_buff_def")) {
+                int dl = PlayerLevels.getAbilityLevel(sp.getUUID(), "m_buff_def", talents);
+                double red = AbilityUpgradeConfig.getDouble("m_buff_def", "passive_damage_reduction", dl, 0.06);
+                if (red > 0.0 && red < 1.0) amount *= (float) (1.0 - red);
+            }
             long frenzyUntil = sp.getPersistentData().getLong(TalentAbilityHandler.W_BARBARIAN_FRENZY_UNTIL_KEY);
             if (sp.level() instanceof ServerLevel sl && frenzyUntil > sl.getGameTime()) {
                 float inMult = sp.getPersistentData().getFloat(TalentAbilityHandler.W_BARBARIAN_FRENZY_INCOMING_MULT_KEY);
@@ -2012,11 +2073,7 @@ public class CommonEventsHandler {
                 double pr = AbilityUpgradeConfig.getDouble("w_paladin_aura", "radius", alvl, 5.0);
                 double red = AbilityUpgradeConfig.getDouble("w_paladin_aura", "damage_reduction", alvl, 0.05);
                 if (pal.distanceToSqr(victim) > pr * pr) continue;
-                boolean allied = victim.isAlliedTo(pal);
-                if (!allied && victim instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                        && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(pal.getUUID())) {
-                    allied = true;
-                }
+                boolean allied = victim == pal || AllyHelper.isSupportAlly(pal, victim);
                 if (!allied) continue;
                 event.setAmount((float) (event.getAmount() * (1.0 - red)));
                 break;
@@ -2042,6 +2099,7 @@ public class CommonEventsHandler {
                 if (victim.getHealth() - event.getAmount() <= 0f) {
                     event.setCanceled(true);
                     int ulvl = PlayerLevels.getAbilityLevel(victim.getUUID(), "w_unbreakable", talents);
+                    int unbreakCd = AbilityUpgradeConfig.getInt("w_unbreakable", "cooldown", ulvl, 1800);
                     int regenTicks = AbilityUpgradeConfig.getInt("w_unbreakable", "regen_ticks", ulvl, W_UNBREAKABLE_REGENERATION_DURATION_TICKS);
                     int regenAmp = AbilityUpgradeConfig.getInt("w_unbreakable", "regen_amp", ulvl, W_UNBREAKABLE_REGENERATION_AMPLIFIER);
                     int absorbTicks = AbilityUpgradeConfig.getInt("w_unbreakable", "duration_ticks", ulvl, W_UNBREAKABLE_REGENERATION_DURATION_TICKS);
@@ -2056,10 +2114,10 @@ public class CommonEventsHandler {
                     victim.getPersistentData().putFloat(W_UNBREAKABLE_ABSORB_OUR_KEY, ourAbs);
                     victim.getPersistentData().putLong(W_UNBREAKABLE_ABSORB_UNTIL_KEY, victim.level().getGameTime() + absorbTicks);
                     victim.addEffect(new MobEffectInstance(MobEffects.REGENERATION, regenTicks, regenAmp, false, false));
-                    PlayerLevels.setCooldown(victim.getUUID(), "cd_w_unbreakable", TalentAbilityHandler.UNBREAKABLE_COOLDOWN);
-                    victim.getPersistentData().putInt("cd_w_unbreakable", TalentAbilityHandler.UNBREAKABLE_COOLDOWN);
+                    PlayerLevels.setCooldown(victim.getUUID(), "cd_w_unbreakable", unbreakCd);
+                    victim.getPersistentData().putInt("cd_w_unbreakable", unbreakCd);
                     if (victim instanceof ServerPlayer sp) {
-                        PacketDistributor.sendToPlayer(sp, new S2CSyncCooldown("cd_w_unbreakable", TalentAbilityHandler.UNBREAKABLE_COOLDOWN));
+                        PacketDistributor.sendToPlayer(sp, new S2CSyncCooldown("cd_w_unbreakable", unbreakCd));
                     }
                     victim.level().playSound(null, victim.getX(), victim.getY(), victim.getZ(), SoundEvents.TOTEM_USE, SoundSource.PLAYERS, 1f, 1f);
                     if (victim.level() instanceof ServerLevel sl) {
@@ -2104,7 +2162,34 @@ public class CommonEventsHandler {
 
                 if (victim.level() instanceof ServerLevel sl) {
                     sl.sendParticles(ParticleTypes.POOF, victim.getX(), victim.getY() + 1, victim.getZ(), W_BARRIER_POOF_COUNT, W_BARRIER_POOF_SPREAD, W_BARRIER_POOF_SPREAD, W_BARRIER_POOF_SPREAD, 0.1);
+
+                    if (victim instanceof ServerPlayer spVict) {
+                        Set<String> vt = PlayerLevels.getPlayerTalents(spVict.getUUID());
+                        if (vt.contains("m_magic_barrier") && vt.contains("m_spellcaster_base") && vt.contains("m_barrier")) {
+                            int mbLvl = PlayerLevels.getAbilityLevel(spVict.getUUID(), "m_magic_barrier", vt);
+                            double shockR = AbilityUpgradeConfig.getDouble("m_magic_barrier", "barrier_break_radius", mbLvl, 4.0);
+                            float shockDmg = (float) AbilityUpgradeConfig.getDouble("m_magic_barrier", "barrier_break_damage", mbLvl, 3.5);
+                            float shockKb = (float) AbilityUpgradeConfig.getDouble("m_magic_barrier", "barrier_break_knockback", mbLvl, 0.58);
+                            int speedTicks = AbilityUpgradeConfig.getInt("m_magic_barrier", "barrier_owner_speed_ticks", mbLvl, 55);
+                            int speedAmp = AbilityUpgradeConfig.getInt("m_magic_barrier", "barrier_owner_speed_amp", mbLvl, 0);
+                            if (shockR > 0.0 && shockDmg > 0f) {
+                                AABB shockBox = spVict.getBoundingBox().inflate(shockR, 0.5, shockR);
+                                var src = spVict.damageSources().magic();
+                                for (LivingEntity e : sl.getEntitiesOfClass(LivingEntity.class, shockBox)) {
+                                    if (e == spVict || !e.isAlive()) continue;
+                                    e.hurt(src, shockDmg);
+                                    e.knockback(shockKb, spVict.getX() - e.getX(), spVict.getZ() - e.getZ());
+                                }
+                                sl.sendParticles(ParticleTypes.CLOUD, spVict.getX(), spVict.getY() + 0.5, spVict.getZ(), 28,
+                                        shockR * 0.25, 0.2, shockR * 0.25, 0.04);
+                            }
+                            if (speedTicks > 0) {
+                                spVict.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, speedTicks, Math.max(0, speedAmp), false, false));
+                            }
+                        }
+                    }
                 }
+                return;
             }
 
             }
@@ -2227,7 +2312,9 @@ public class CommonEventsHandler {
             long currentTime = attacker.level().getGameTime();
 
             if (talents.contains("a_dagger") && TalentAbilityHandler.isDagger(attacker.getMainHandItem().getItem())) {
-                event.setNewDamage(event.getNewDamage() * 1.2f);
+                int adLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "a_dagger", talents);
+                float dMult = (float) AbilityUpgradeConfig.getDouble("a_dagger", "dagger_damage_mult", adLvl, 1.2);
+                event.setNewDamage(event.getNewDamage() * dMult);
             }
 
             long blessUntil = attacker.getPersistentData().getLong("lvluping_blessing_damage_until");
@@ -2257,7 +2344,9 @@ public class CommonEventsHandler {
                 Vec3 lookT = target.getLookAngle().normalize();
 
                 if (lookA.dot(lookT) > AS_CRIT_BACKSTAB_DOT_THRESHOLD) {
-                    event.setNewDamage(event.getOriginalDamage() * AS_CRIT_DAMAGE_MULTIPLIER);
+                    int acLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "as_crit", talents);
+                    float backMult = (float) AbilityUpgradeConfig.getDouble("as_crit", "backstab_mult", acLvl, AS_CRIT_DAMAGE_MULTIPLIER);
+                    event.setNewDamage(event.getOriginalDamage() * backMult);
                     attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(),
                             SoundEvents.PLAYER_ATTACK_CRIT, SoundSource.PLAYERS, 1.0f, AS_CRIT_SOUND_PITCH);
                 }
@@ -2338,10 +2427,10 @@ public class CommonEventsHandler {
 
             // --- A_POWER ---
             if (event.getSource().getDirectEntity() instanceof AbstractArrow arrow) {
-                if (talents.contains("a_power")) {
-                    if (arrow.isCritArrow()) {
-                        event.setNewDamage(event.getOriginalDamage() * A_POWER_ARROW_CRIT_MULTIPLIER);
-                    }
+                if (talents.contains("a_power") && arrow.isCritArrow()) {
+                    int apLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "a_power", talents);
+                    float critMult = (float) AbilityUpgradeConfig.getDouble("a_power", "crit_damage_mult", apLvl, A_POWER_ARROW_CRIT_MULTIPLIER);
+                    event.setNewDamage(event.getOriginalDamage() * critMult);
                 }
             }
             if (event.getSource().getDirectEntity() instanceof AbstractArrow arrow) {
@@ -2368,13 +2457,17 @@ public class CommonEventsHandler {
             // --- W_COMBO ---
             float comboMultiplier = 1.0f;
             if (talents.contains("w_combo")) {
+                int wcLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "w_combo", talents);
+                int comboChainWin = AbilityUpgradeConfig.getInt("w_combo", "chain_window_ticks", wcLvl, W_COMBO_CHAIN_WINDOW_TICKS);
+                int comboMax = AbilityUpgradeConfig.getInt("w_combo", "max_stack", wcLvl, W_COMBO_MAX_STACK);
+                float comboDmgPer = (float) AbilityUpgradeConfig.getDouble("w_combo", "damage_per_stack", wcLvl, W_COMBO_DAMAGE_PER_STACK);
                 long lastHit = attacker.getPersistentData().getLong("lvluping_last_hit");
                 int combo = attacker.getPersistentData().getInt("lvluping_combo");
 
-                if (currentTime - lastHit < W_COMBO_CHAIN_WINDOW_TICKS) {
+                if (currentTime - lastHit < comboChainWin) {
                     attacker.level().playSound(null, attacker.getX(), attacker.getY(), attacker.getZ(),
                             SoundEvents.EXPERIENCE_ORB_PICKUP, SoundSource.PLAYERS, 0.2f, W_COMBO_SOUND_PITCH_BASE + (combo * W_COMBO_SOUND_PITCH_PER_STACK));
-                    combo = Math.min(combo + 1, W_COMBO_MAX_STACK);
+                    combo = Math.min(combo + 1, comboMax);
                 } else {
                     combo = 1;
                 }
@@ -2390,21 +2483,26 @@ public class CommonEventsHandler {
                         serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + 0.5, target.getZ(), W_COMBO_SWEEP_PARTICLE_COUNT, 0.0, 0.0, 0.0, 0.0);
                     }
                 }
-                comboMultiplier = 1.0f + (combo * W_COMBO_DAMAGE_PER_STACK);
+                comboMultiplier = 1.0f + (combo * comboDmgPer);
                 event.setNewDamage(event.getNewDamage() * comboMultiplier);
             }
 
 
             // --- W_STUN ---
-            if (talents.contains("w_stun") && attacker.getRandom().nextFloat() < W_STUN_PROC_CHANCE) {
-                target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, W_STUN_EFFECT_DURATION_TICKS, W_STUN_EFFECT_AMPLIFIER, false, false));
-                target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, W_STUN_EFFECT_DURATION_TICKS, W_STUN_EFFECT_AMPLIFIER, false, false));
+            if (talents.contains("w_stun")) {
+                int wsLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "w_stun", talents);
+                float stunProc = (float) AbilityUpgradeConfig.getDouble("w_stun", "proc_chance", wsLvl, W_STUN_PROC_CHANCE);
+                int stunDur = AbilityUpgradeConfig.getInt("w_stun", "duration_ticks", wsLvl, W_STUN_EFFECT_DURATION_TICKS);
+                if (attacker.getRandom().nextFloat() < stunProc) {
+                    target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, stunDur, W_STUN_EFFECT_AMPLIFIER, false, false));
+                    target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, stunDur, W_STUN_EFFECT_AMPLIFIER, false, false));
 
-                attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(),
-                        SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.5f, W_STUN_ANVIL_PITCH);
+                    attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(),
+                            SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.5f, W_STUN_ANVIL_PITCH);
 
-                if (attacker.level() instanceof ServerLevel serverLevel) {
-                    serverLevel.sendParticles(ParticleTypes.FLASH, target.getX(), target.getY() + 1.5, target.getZ(), 1, 0, 0, 0, 0);
+                    if (attacker.level() instanceof ServerLevel serverLevel) {
+                        serverLevel.sendParticles(ParticleTypes.FLASH, target.getX(), target.getY() + 1.5, target.getZ(), 1, 0, 0, 0, 0);
+                    }
                 }
             }
 
@@ -2440,6 +2538,23 @@ public class CommonEventsHandler {
                     if (attacker.level() instanceof ServerLevel sl) {
                         sl.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + 1.0, target.getZ(), 10, 0.25, 0.25, 0.25, 0.1);
                     }
+                }
+            }
+            // --- W_SWORDMASTER_HAND_DEXTERITY: bonus damage scaling with attack speed (melee / non-projectile) ---
+            if (talents.contains("w_swordmaster_hand_dexterity") && !(event.getSource().getDirectEntity() instanceof Projectile)) {
+                int hdLvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "w_swordmaster_hand_dexterity", talents);
+                double baseline = AbilityUpgradeConfig.getDouble("w_swordmaster_hand_dexterity", "baseline_attack_speed", hdLvl, 4.0);
+                double perExcess = AbilityUpgradeConfig.getDouble("w_swordmaster_hand_dexterity", "damage_per_attack_speed_excess", hdLvl, 0.07);
+                double maxMult = AbilityUpgradeConfig.getDouble("w_swordmaster_hand_dexterity", "max_damage_mult", hdLvl, 1.35);
+                var asAttr = attacker.getAttribute(Attributes.ATTACK_SPEED);
+                double attackSpeed = asAttr != null ? asAttr.getValue() : baseline;
+                double excess = Math.max(0.0, attackSpeed - baseline);
+                double mult = 1.0 + perExcess * excess;
+                if (mult > maxMult) {
+                    mult = maxMult;
+                }
+                if (mult > 1.0 + 1.0e-6) {
+                    event.setNewDamage((float) (event.getNewDamage() * mult));
                 }
             }
             if (talents.contains("w_barbarian_rage")) {
@@ -2500,7 +2615,7 @@ public class CommonEventsHandler {
                     int alvl = PlayerLevels.getAbilityLevel(attacker.getUUID(), "w_armor_breaker", talents);
                     float dmult = (float) AbilityUpgradeConfig.getDouble("w_armor_breaker", "damage_mult", alvl, W_ARMOR_BREAKER_DAMAGE_MULTIPLIER);
                     int debuffTicks = AbilityUpgradeConfig.getInt("w_armor_breaker", "heal_reduction_duration_ticks", alvl, W_ARMOR_BREAKER_ARMOR_DEBUFF_DURATION_TICKS);
-                    int cd = AbilityUpgradeConfig.getInt("w_armor_breaker", "cooldown", alvl, W_ARMOR_BREAKER_COOLDOWN_TICKS);
+                    int cd = AbilityUpgradeConfig.getInt("w_armor_breaker", "cooldown", alvl, 200);
                     float newDamage = event.getNewDamage() * dmult;
                     event.setNewDamage(newDamage);
 

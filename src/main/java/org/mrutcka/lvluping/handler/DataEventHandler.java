@@ -11,9 +11,11 @@ import net.neoforged.neoforge.event.server.ServerStoppingEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
+import org.mrutcka.lvluping.data.LvlupingServerData;
 import org.mrutcka.lvluping.data.PlayerLevels;
+import org.mrutcka.lvluping.data.PlayerStatTrainingData;
+import org.mrutcka.lvluping.data.StatTrainingConfig;
 import org.mrutcka.lvluping.network.S2CProvocationHint;
-import org.mrutcka.lvluping.network.S2CSyncTalents;
 
 @EventBusSubscriber(modid = LvlupingMod.MODID)
 public class DataEventHandler {
@@ -51,20 +53,18 @@ public class DataEventHandler {
     }
 
     private static void syncPlayer(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new S2CSyncTalents(
-                PlayerLevels.getLevel(player),
-                PlayerLevels.getStars(player.getUUID()),
-                PlayerLevels.getPlayerTalents(player.getUUID()),
-                PlayerLevels.getPlayerStatsMap(player.getUUID()),
-                PlayerLevels.getPlayerAbilityLevels(player.getUUID()),
-                PlayerLevels.getRace(player.getUUID()).id
-        ));
+        PlayerLevels.syncTalentsToClient(player);
+        PlayerStatTrainingData.syncToClient(player);
     }
 
     @SubscribeEvent
     public static void onServerStarted(ServerStartedEvent event) {
-        PlayerLevels.load(event.getServer());
+        var server = event.getServer();
+        LvlupingServerData.migratePresetIfNeeded(server);
+        PlayerLevels.load(server);
+        LvlupingMod.LOGGER.info("LVLuping: данные игроков и пресет — {}", LvlupingServerData.root(server));
         AbilityUpgradeConfig.load();
+        StatTrainingConfig.load(server);
     }
 
     @SubscribeEvent

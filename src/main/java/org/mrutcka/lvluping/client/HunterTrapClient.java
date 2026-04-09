@@ -73,7 +73,6 @@ public final class HunterTrapClient {
             pose.pushPose();
             pose.translate(v.x - camX, v.y - camY + 0.06, v.z - camZ);
             pose.mulPose(Axis.YP.rotationDegrees(-v.yRot + 180f));
-            pose.mulPose(Axis.XP.rotationDegrees(90f));
             pose.mulPose(Axis.ZP.rotationDegrees(90f));
             pose.scale(0.55f, 0.55f, 0.55f);
             itemRenderer.render(stack, ItemDisplayContext.GROUND, false, pose, buffer, LightTexture.FULL_BRIGHT, OverlayTexture.NO_OVERLAY, model);

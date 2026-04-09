@@ -66,7 +66,7 @@ public final class ArsManaCompat {
             if (entity instanceof ServerPlayer sp) {
                 int manaLvl = PlayerLevels.getStatLevel(sp.getUUID(), AttributeStat.MANA.id);
                 double ratio = Math.min(1.0, Math.max(0, manaLvl) / 30.0);
-                double multiplier = 1.0 - (0.75 * ratio); // 1.0 -> 0.25
+                double multiplier = 1.0 - (0.4 * ratio);
                 cost *= multiplier;
             }
             Object cap = getManaMethod.invoke(null, entity);

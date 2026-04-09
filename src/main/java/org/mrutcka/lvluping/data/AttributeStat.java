@@ -4,10 +4,10 @@ import net.minecraft.resources.ResourceLocation;
 import org.mrutcka.lvluping.LvlupingMod;
 
 public enum AttributeStat {
-    HEALTH("health", "Здоровье", "Увеличивает макс. ХП", 30, -300, -300),
-    DAMAGE("damage", "Сила", "Увеличивает урон ближнего боя", 30, 0, -300),
-    SPEED("speed", "Скорость", "Увеличивает скорость бега", 30, 300, -300),
-    MANA("manacost", "Стоимость заклинаний", "Снижает стоимость маны способностей", 30, 0, -600);
+    HEALTH("health", "Здоровье", "Увеличивает макс. ХП", 30, -300, 0),
+    DAMAGE("damage", "Сила", "Увеличивает урон ближнего боя", 30, 0, -0),
+    SPEED("speed", "Скорость", "Увеличивает скорость бега", 30, 300, 0),
+    MANA("manacost", "Стоимость заклинаний", "Снижает стоимость маны способностей", 30, 0, -300);
 
     public final String id, label, description;
     public final int maxLevel;

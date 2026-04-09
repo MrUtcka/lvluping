@@ -6,7 +6,6 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
-import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
 import org.mrutcka.lvluping.handler.AttributeHandler;
@@ -49,6 +48,10 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
             boolean isClassPick = msg.talentId.equals("warrior_base") || msg.talentId.equals("archer_base") || msg.talentId.equals("mage_base") || msg.talentId.equals("assassin_base");
 
             if (isClassPick && !hasClass) {
+                if (PlayerLevels.isRaceForbidden(uuid, t)) {
+                    PlayerLevels.syncTalentsToClient(serverPlayer);
+                    return;
+                }
                 owned.add("start");
                 owned.add(t.id);
                 if (org.mrutcka.lvluping.data.AbilityUpgradeConfig.has(t.id)) {
@@ -56,14 +59,7 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
                     if (existing <= 0) PlayerLevels.setAbilityLevel(uuid, t.id, 1);
                 }
 
-                PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
-                        PlayerLevels.getLevel(serverPlayer),
-                        stars,
-                        PlayerLevels.getPlayerTalents(uuid),
-                        PlayerLevels.getPlayerStatsMap(uuid),
-                        PlayerLevels.getPlayerAbilityLevels(uuid),
-                        PlayerLevels.getRace(uuid).id
-                ));
+                PlayerLevels.syncTalentsToClient(serverPlayer);
                 PlayerLevels.save(serverPlayer.getServer());
                 return;
             }
@@ -91,21 +87,16 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
                             .mapToInt(Integer::intValue)
                             .sum();
 
-                    if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats) >= t.cost) {
+                    int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
+                    int available = PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats + spentUpgrades);
+                    if (available >= t.cost) {
                         PlayerLevels.unlockTalent(uuid, t.id);
                         if (org.mrutcka.lvluping.data.AbilityUpgradeConfig.has(t.id)) {
                             int existing = PlayerLevels.getPlayerAbilityLevels(uuid).getOrDefault(t.id, 0);
                             if (existing <= 0) PlayerLevels.setAbilityLevel(uuid, t.id, 1);
                         }
 
-                        PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
-                                PlayerLevels.getLevel(serverPlayer),
-                                stars,
-                                PlayerLevels.getPlayerTalents(uuid),
-                                PlayerLevels.getPlayerStatsMap(uuid),
-                                PlayerLevels.getPlayerAbilityLevels(uuid),
-                                PlayerLevels.getRace(uuid).id
-                        ));
+                        PlayerLevels.syncTalentsToClient(serverPlayer);
 
                         AttributeHandler.applyStats(serverPlayer, false);
                         PlayerLevels.save(serverPlayer.getServer());

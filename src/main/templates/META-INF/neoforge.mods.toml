@@ -8,7 +8,7 @@ config="lvluping.mixins.json"
 
 [[mods]]
 modId="lvluping"
-version="0.8"
+version="1.0 alpha"
 displayName="LVLuping"
 
 logoFile="logo.png"

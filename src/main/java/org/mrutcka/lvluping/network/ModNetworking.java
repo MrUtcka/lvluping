@@ -20,6 +20,11 @@ public class ModNetworking {
                 S2CSyncTalents.STREAM_CODEC,
                 S2CSyncTalents::handle
         );
+        registrar.playToClient(
+                S2CSyncStatTraining.TYPE,
+                S2CSyncStatTraining.STREAM_CODEC,
+                S2CSyncStatTraining::handle
+        );
 
         registrar.playToServer(
                 C2SPurchaseTalent.TYPE,

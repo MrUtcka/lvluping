@@ -1,50 +1,50 @@
-/lvl add @a 70
+/race get @a
+/race set @a durum
+/race get @a
+/lvl add @a 100
+/gamemode creative
+/lvl add @a 100
+/kill
+/gamemode survival
+/time set night
+/summon minecraft:iron_golem
+/kill
+/summon minecraft:iron_golem
+/tp ~ ~40 ~
+/gamemode creative
 /star add @a 7
-/lvl add @a 70
+/lvl add @a 100
 /star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
+/lvl add @a 100
+/summon minecraft:zoglin
+/help
+/lvlstat add @a health 20
+/lvlstat add @a health23 20
+/lvl add @a 100
+/star add @a 5
+/lvl add @a 100
+/summon minecraft:iron_golem
+/lvl add @a 100
+/star add @a 5
 /summon minecraft:zombie
-/star add @a 7
-/lvl add @a 70
 /gamemode survival
+/lvl add @a 100
+/star add @a 5
+/lvl add @a 100
+/lvl add @a 1
+/lvl add @a 100
+/star add @a 5
+/lvl add @a 100
+/star add @a 5
+/lvl add @a 100
 /gamemode creative
-/gamemode survival
-/gamemode creative
-/star add @a 7
-/lvl add @a 70
-/effect give @a minecraft:slowness infinite
-/star add @a 7
-/lvl add @a 70
-/gamemode survival
-/gamemode creative
-/star add @a 7
-/lvl add @a 70
-/summon minecraft:iron_golem
-/star add @a 7
-/lvl add @a 70
-/summon minecraft:iron_golem
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/star add @a 7
-/lvl add @a 70
-/summon minecraft:iron_golem
-/star add @a 7
-/lvl add @a 70
-/gamemode survival
-/tp ~ ~10 ~
-/gamemode creative
-/summon minecraft:iron_golem
-/
-/summon minecraft:iron_golem
-/star add @a 7
-/lvl add @a 70
+/lvluptrain reload
+/lvluptrain zone speed pos1
+/lvluptrain zone speed pos2
+/lvluptrain zone healthpvp pos1
+/lvluptrain zone healthpvp pos2
+/lvluptrain zone speed pos1
+/lvluptrain zone healthpvp pos2
+/lvluptrain zone speed pos2
+/star add @a 5
+/lvl add @a 100

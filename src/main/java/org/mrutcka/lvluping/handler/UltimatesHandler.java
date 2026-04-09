@@ -27,6 +27,7 @@ import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import org.mrutcka.lvluping.handler.TalentAbilityHandler;
 import org.mrutcka.lvluping.data.PlayerLevels;
+import org.mrutcka.lvluping.util.AllyHelper;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -448,12 +449,8 @@ public final class UltimatesHandler {
                         double dz = e.getZ() - cz;
                         double dist2 = dx * dx + dz * dz;
 
-                        boolean allied = e.isAlliedTo(player);
-                        if (!allied && e instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(player.getUUID())) {
-                            allied = true;
-                        }
-                        if (allied) {
+                        boolean beneficial = e == player || AllyHelper.isSupportAlly(player, e);
+                        if (beneficial) {
                             if (dist2 <= beamRadius * beamRadius) {
                                 e.heal(healBase * healMul);
                             }
@@ -510,7 +507,7 @@ public final class UltimatesHandler {
                         double dz = e.getZ() - cz;
                         if (dx * dx + dy * dy + dz * dz > r2) continue;
 
-                        if (e.isAlliedTo(player)) {
+                        if (e == player || AllyHelper.isSupportAlly(player, e)) {
                             e.heal(healBase * healMul);
                         } else if (isUndead(e)) {
                             e.hurt(player.damageSources().magic(), dmg);
@@ -573,11 +570,7 @@ public final class UltimatesHandler {
                         double dz = e.getZ() - cz;
                         if (dx * dx + dz * dz > r2) continue;
 
-                        boolean allied = e.isAlliedTo(player);
-                        if (!allied && e instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(player.getUUID())) {
-                            allied = true;
-                        }
+                        boolean allied = AllyHelper.isSupportAlly(player, e);
 
                         if (allied) {
                             e.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, speedTicks, speedAmp, false, false));
@@ -696,11 +689,7 @@ public final class UltimatesHandler {
                         double dx = e.getX() - px;
                         double dz = e.getZ() - pz;
                         if (dx * dx + dz * dz > pr2) continue;
-                        boolean allied = e.isAlliedTo(player);
-                        if (!allied && e instanceof net.minecraft.world.entity.Mob mob && mob.getPersistentData().hasUUID("lvluping_summon_owner")
-                                && mob.getPersistentData().getUUID("lvluping_summon_owner").equals(player.getUUID())) {
-                            allied = true;
-                        }
+                        boolean allied = AllyHelper.isSupportAlly(player, e);
                         if (allied) {
                             e.heal(healPs * healMul);
                             float cap = e.getMaxHealth() * shieldRatio;

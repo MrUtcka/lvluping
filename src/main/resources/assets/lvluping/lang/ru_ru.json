@@ -4,10 +4,13 @@
   "key.lvluping.ability2": "Способность 2",
   "key.lvluping.ability3": "Способность 3",
   "key.lvluping.ability4": "Способность 4",
-  "key.lvluping.ability6": "Способность 5 ",
+  "key.lvluping.ability6": "Способность 5",
+  "key.lvluping.ability7": "Способность 6",
   "key.lvluping.ability5": "Ультимативная способность",
   "key.categories.lvluping": "LVLuping MOD",
   "message.lvluping.hit_provoker": "Бейте провоцирующего!",
+  "message.lvluping.insufficient_mana": "Недостаточно маны",
+  "death.lvluping.expedition": "%s вернулся к богине",
   "splash.lvluping.1": "Прокачайся или сдохни!",
   "splash.lvluping.2": "Таланты не ждут.",
   "splash.lvluping.3": "Ещё один уровень — и ты легенда.",
@@ -32,5 +35,6 @@
   "splash.lvluping.22": "Прогрейдся, пока другие спят.",
   "splash.lvluping.23": "Эта история про тех, кто растёт.",
   "splash.lvluping.24": "Не прокачал защиту? — умри красиво.",
-  "splash.lvluping.25": "Воин без скиллов — просто мясо."
+  "splash.lvluping.25": "Воин без скиллов — просто мясо.",
+  "splash.lvluping.26": "26.04"
 }

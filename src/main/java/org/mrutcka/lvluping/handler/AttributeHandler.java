@@ -31,6 +31,10 @@ public class AttributeHandler {
     private static final ResourceLocation DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "stat_damage");
     private static final ResourceLocation SPEED_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "stat_speed");
 
+    private static final double HEALTH_PER_STAT_LEVEL = 1.0;
+    private static final double DAMAGE_PER_STAT_LEVEL = 0.25;
+    private static final double SPEED_PER_STAT_LEVEL = 0.0025;
+
     public static void applyStats(ServerPlayer player, boolean isHeal) {
         UUID uuid = player.getUUID();
 
@@ -46,7 +50,7 @@ public class AttributeHandler {
             healthAttr.removeModifier(ROGUE_EDGE_HP_ID);
             healthAttr.removeModifier(AS_EVO_ENDURANCE_HP_ID);
             if (healthLvl > 0) {
-                healthAttr.addTransientModifier(new AttributeModifier(HEALTH_ID, (double) healthLvl * 2.0, AttributeModifier.Operation.ADD_VALUE));
+                healthAttr.addTransientModifier(new AttributeModifier(HEALTH_ID, (double) healthLvl * HEALTH_PER_STAT_LEVEL, AttributeModifier.Operation.ADD_VALUE));
             }
             var owned = PlayerLevels.getPlayerTalents(uuid);
             if (owned.contains("w_paladin_base")) {
@@ -93,7 +97,7 @@ public class AttributeHandler {
             attackAttr.removeModifier(ROGUE_EDGE_DMG_ID);
             attackAttr.removeModifier(AS_EVO_LETHALITY_DMG_ID);
             if (damageLvl > 0) {
-                attackAttr.addTransientModifier(new AttributeModifier(DAMAGE_ID, (double) damageLvl * 0.5, AttributeModifier.Operation.ADD_VALUE));
+                attackAttr.addTransientModifier(new AttributeModifier(DAMAGE_ID, (double) damageLvl * DAMAGE_PER_STAT_LEVEL, AttributeModifier.Operation.ADD_VALUE));
             }
             var owned = PlayerLevels.getPlayerTalents(uuid);
             if (owned.contains("as_rogue_edge")) {
@@ -119,7 +123,7 @@ public class AttributeHandler {
             speedAttr.removeModifier(WANDERER_ENDURANCE_MS_ID);
             speedAttr.removeModifier(AS_EVO_MOBILITY_MS_ID);
             if (speedLvl > 0) {
-                speedAttr.addTransientModifier(new AttributeModifier(SPEED_ID, (double) speedLvl * 0.005, AttributeModifier.Operation.ADD_VALUE));
+                speedAttr.addTransientModifier(new AttributeModifier(SPEED_ID, (double) speedLvl * SPEED_PER_STAT_LEVEL, AttributeModifier.Operation.ADD_VALUE));
             }
             var owned = PlayerLevels.getPlayerTalents(uuid);
             if (owned.contains("w_swordmaster_agility")) {

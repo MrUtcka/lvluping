@@ -11,6 +11,7 @@ import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.handler.AttributeHandler;
+import org.mrutcka.lvluping.handler.TalentAbilityHandler;
 
 import java.util.UUID;
 
@@ -46,7 +47,7 @@ public record C2SUpgradeAbility(String abilityId) implements CustomPacketPayload
             int next = current + 1;
 
             int cost = AbilityUpgradeConfig.getUpgradePointCost(msg.abilityId, next);
-            int spentTalents = owned.stream().map(org.mrutcka.lvluping.data.Talent::getById).filter(java.util.Objects::nonNull).mapToInt(t -> t.cost).sum();
+            int spentTalents = owned.stream().map(org.mrutcka.lvluping.data.Talent::getById).filter(java.util.Objects::nonNull).filter(t -> !isFreeClassTalent(t.id)).mapToInt(t -> t.cost).sum();
             int spentStats = PlayerLevels.getPlayerStatsMap(uuid).values().stream().mapToInt(Integer::intValue).sum();
             int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
             int available = PlayerLevels.getLevel(player) - (spentTalents + spentStats + spentUpgrades);
@@ -54,6 +55,18 @@ public record C2SUpgradeAbility(String abilityId) implements CustomPacketPayload
 
             PlayerLevels.setAbilityLevel(uuid, msg.abilityId, next);
             AttributeHandler.applyStats(player, false);
+
+            if ("m_summon_servant".equals(msg.abilityId)) {
+                TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_servant");
+            } else if ("m_summon_guard".equals(msg.abilityId)) {
+                TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_guard");
+            } else if ("m_summon_discipline".equals(msg.abilityId)) {
+                if (owned.contains("m_summon_servant")) TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_servant");
+                if (owned.contains("m_summon_guard")) TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_guard");
+            } else if ("m_summoner_base".equals(msg.abilityId)) {
+                if (owned.contains("m_summon_servant")) TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_servant");
+                if (owned.contains("m_summon_guard")) TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_guard");
+            }
 
             PacketDistributor.sendToPlayer(player, new S2CSyncTalents(
                     PlayerLevels.getLevel(player),
@@ -65,6 +78,14 @@ public record C2SUpgradeAbility(String abilityId) implements CustomPacketPayload
             ));
             PlayerLevels.save(player.getServer());
         });
+    }
+
+    private static boolean isFreeClassTalent(String id) {
+        return "start".equals(id)
+                || "warrior_base".equals(id)
+                || "archer_base".equals(id)
+                || "mage_base".equals(id)
+                || "assassin_base".equals(id);
     }
 }
 

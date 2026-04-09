@@ -7,9 +7,13 @@ import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
+import org.mrutcka.lvluping.LvlupingEntityTypes;
 import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.network.C2SPossessionInput;
 import org.mrutcka.lvluping.network.C2SUseAbility;
@@ -57,17 +61,31 @@ public class ClientEvents {
             InputConstants.KEY_G,
             "key.categories.lvluping"
     );
-
-    /** Шестой слот: третья способность подкласса ассасина (ослепление / растяжка / разрыв), без пересечения с ультом (G). */
     public static final KeyMapping ABILITY_KEY_6 = new KeyMapping(
             "key.lvluping.ability6",
             InputConstants.Type.KEYSYM,
             InputConstants.KEY_H,
             "key.categories.lvluping"
     );
+    public static final KeyMapping ABILITY_KEY_7 = new KeyMapping(
+            "key.lvluping.ability7",
+            InputConstants.Type.KEYSYM,
+            InputConstants.KEY_J,
+            "key.categories.lvluping"
+    );
 
     @EventBusSubscriber(modid = LvlupingMod.MODID, value = Dist.CLIENT, bus = EventBusSubscriber.Bus.MOD)
     public static class ModBusEvents {
+        @SubscribeEvent
+        public static void onClientSetup(FMLClientSetupEvent event) {
+            event.enqueueWork(AbilityUpgradeConfig::load);
+        }
+
+        @SubscribeEvent
+        public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
+            event.registerEntityRenderer(LvlupingEntityTypes.ASSASSIN_BARRICADE.get(), AssassinBarricadeEntityRenderer::new);
+        }
+
         @SubscribeEvent
         public static void onKeyRegister(RegisterKeyMappingsEvent event) {
             event.register(TALENT_KEY);
@@ -77,6 +95,7 @@ public class ClientEvents {
             event.register(ABILITY_KEY_4);
             event.register(ABILITY_KEY_5);
             event.register(ABILITY_KEY_6);
+            event.register(ABILITY_KEY_7);
         }
     }
 
@@ -86,6 +105,7 @@ public class ClientEvents {
         public static void onRenderGui(net.neoforged.neoforge.client.event.RenderGuiEvent.Post event) {
             float partialTick = event.getPartialTick().getGameTimeDeltaTicks();
             AbilityOverlay.render(event.getGuiGraphics(), partialTick);
+            ClientStatTrainingHud.render(event.getGuiGraphics(), Minecraft.getInstance());
         }
 
         @SubscribeEvent
@@ -111,6 +131,9 @@ public class ClientEvents {
             }
             while (ABILITY_KEY_6.consumeClick()) {
                 PacketDistributor.sendToServer(new C2SUseAbility(5));
+            }
+            while (ABILITY_KEY_7.consumeClick()) {
+                PacketDistributor.sendToServer(new C2SUseAbility(6));
             }
 
             var player = Minecraft.getInstance().player;
@@ -147,7 +170,8 @@ public class ClientEvents {
                 tickCooldownDisplay(player, "cd_m_lightning");
                 tickCooldownDisplay(player, "cd_m_ice");
                 tickCooldownDisplay(player, "cd_m_teleport");
-                tickCooldownDisplay(player, "cd_m_summon");
+                tickCooldownDisplay(player, "cd_m_summon_servant");
+                tickCooldownDisplay(player, "cd_m_summon_guard");
                 tickCooldownDisplay(player, "cd_m_sacrifice");
                 tickCooldownDisplay(player, "cd_m_command");
                 tickCooldownDisplay(player, "cd_m_cleric_heal");

@@ -1,13 +1,13 @@
-[03апр.2026 10:33:28.050] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.214, --assetIndex, 17, --assetsDir, C:\\Users\\MrUtcka\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.214, --fml.neoFormVersion, 20240808.144430]
-[03апр.2026 10:33:28.056] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.9+10-LTS
-[03апр.2026 10:33:28.059] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.9 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
-[03апр.2026 10:33:28.255] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
-[03апр.2026 10:33:28.467] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
-[03апр.2026 10:33:28.845] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
-[03апр.2026 10:33:29.028] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/MrUtcka/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
-[03апр.2026 10:33:29.340] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 3050 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.59, NVIDIA Corporation
-[03апр.2026 10:33:30.088] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 7 dependencies adding them to mods collection
-[03апр.2026 10:33:30.095] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
+[09апр.2026 16:42:38.654] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher running: args [--launchTarget, forgeclientdev, --version, 21.1.214, --assetIndex, 17, --assetsDir, C:\\Users\\MrUtcka\\.gradle\\caches\\neoformruntime\\assets, --gameDir, ., --fml.fmlVersion, 4.0.42, --fml.mcVersion, 1.21.1, --fml.neoForgeVersion, 21.1.214, --fml.neoFormVersion, 20240808.144430]
+[09апр.2026 16:42:38.661] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: JVM identified as Eclipse Adoptium OpenJDK 64-Bit Server VM 21.0.9+10-LTS
+[09апр.2026 16:42:38.663] [main/INFO] [cpw.mods.modlauncher.Launcher/MODLAUNCHER]: ModLauncher 11.0.5+main.901c6ea8 starting: java version 21.0.9 by Eclipse Adoptium; OS Windows 10 arch amd64 version 10.0
+[09апр.2026 16:42:38.790] [main/INFO] [net.neoforged.fml.loading.ImmediateWindowHandler/]: Loading ImmediateWindowProvider fmlearlywindow
+[09апр.2026 16:42:38.935] [main/INFO] [EARLYDISPLAY/]: Trying GL version 4.6
+[09апр.2026 16:42:39.146] [main/INFO] [EARLYDISPLAY/]: Requested GL version 4.6 got version 4.6
+[09апр.2026 16:42:39.274] [main/INFO] [mixin/]: SpongePowered MIXIN Subsystem Version=0.8.7 Source=union:/C:/Users/MrUtcka/.gradle/caches/modules-2/files-2.1/net.fabricmc/sponge-mixin/0.15.2+mixin.0.8.7/2af2f021d8e02a0220dc27a7a72b4666d66d44ca/sponge-mixin-0.15.2+mixin.0.8.7.jar%23138!/ Service=ModLauncher Env=CLIENT
+[09апр.2026 16:42:39.479] [pool-2-thread-1/INFO] [EARLYDISPLAY/]: GL info: NVIDIA GeForce RTX 3050 Laptop GPU/PCIe/SSE2 GL version 4.6.0 NVIDIA 591.59, NVIDIA Corporation
+[09апр.2026 16:42:39.798] [main/INFO] [net.neoforged.fml.loading.moddiscovery.locators.JarInJarDependencyLocator/]: Found 7 dependencies adding them to mods collection
+[09апр.2026 16:42:39.800] [main/INFO] [net.neoforged.fml.loading.moddiscovery.ModDiscoverer/]: 
      Mod List:
 		Name Version (Mod Id)
 
@@ -16,158 +16,189 @@
 		GeckoLib 4 4.8.2 (geckolib)
 		Health & Damage HUD 1 (mr_health_damagehud)
 		LambDynamicLights (API) 4.5.1+1.21.1 (lambdynlights_api)
-		LVLuping 0.8 (lvluping)
+		LVLuping 1.0 alpha (lvluping)
 		Minecraft 1.21.1 (minecraft)
 		NeoForge 21.1.214 (neoforge)
 		Nuggets 1.0.10.41 (nuggets)
-[03апр.2026 10:33:31.695] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
-[03апр.2026 10:33:31.745] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.214, --gameDir, ., --assetsDir, C:\Users\MrUtcka\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
-[03апр.2026 10:33:31.834] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
-[03апр.2026 10:33:31.836] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.mixins.json could not be read. If this is a development environment you can ignore this message
-[03апр.2026 10:33:31.838] [main/WARN] [mixin/]: Reference map 'geckolib.refmap.json' for geckolib.mixins.json could not be read. If this is a development environment you can ignore this message
-[03апр.2026 10:33:31.969] [main/WARN] [mixin/]: Reference map 'ars_nouveau.refmap.json' for ars_nouveau.mixins.json could not be read. If this is a development environment you can ignore this message
-[03апр.2026 10:33:31.972] [main/WARN] [mixin/]: Reference map 'nuggets.refmap.json' for nuggets.mixins.json could not be read. If this is a development environment you can ignore this message
-[03апр.2026 10:33:32.547] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
-[03апр.2026 10:33:34.977] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 561 milliseconds
-[03апр.2026 10:33:42.824] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[03апр.2026 10:33:42.826] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
-[03апр.2026 10:33:42.830] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[03апр.2026 10:33:42.831] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
-[03апр.2026 10:33:42.833] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
-[03апр.2026 10:33:43.021] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23193!/assets/.mcassetsroot' uses unexpected schema
-[03апр.2026 10:33:43.021] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23193!/data/.mcassetsroot' uses unexpected schema
-[03апр.2026 10:33:43.062] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[03апр.2026 10:33:43.074] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
-[03апр.2026 10:33:43.213] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
-[03апр.2026 10:33:43.511] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.214, for MC 1.21.1
-[03апр.2026 10:33:46.200] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [lvluping]
-[03апр.2026 10:33:46.613] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/mr_health_damagehud, mod/curios, mod/lambdynlights_api, mod/geckolib, mod/ars_nouveau, mod/lvluping, mod/neoforge, mod/nuggets
-[03апр.2026 10:33:46.649] [Worker-Main-4/INFO] [org.mrutcka.lvluping.LvlupingMod/]: Lvluping Mod Setup
-[03апр.2026 10:33:46.670] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/agronomic_sourcelink_animation.json'
-[03апр.2026 10:33:46.671] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alteration_apparatus_animations.json'
-[03апр.2026 10:33:46.670] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alchemical_sourcelink_animation.json'
-[03апр.2026 10:33:46.671] [Worker-Main-9/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/amethyst_golem_animations.json'
-[03апр.2026 10:33:46.671] [Worker-Main-10/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/animated_block_animations.json'
-[03апр.2026 10:33:46.671] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_pedestal_animations.json'
-[03апр.2026 10:33:46.671] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_core_animations.json'
-[03апр.2026 10:33:46.671] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/basic_spell_turret_animations.json'
-[03апр.2026 10:33:46.671] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_animation.json'
-[03апр.2026 10:33:46.671] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_lectern_animations.json'
-[03апр.2026 10:33:46.722] [NeoForge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [mr_health_damagehud] Starting version check at https://api.modrinth.com/updates/YS1sBNLx/forge_updates.json?neoforge=only
-[03апр.2026 10:33:46.781] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/decor_blossom_animations.json'
-[03апр.2026 10:33:46.781] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/enchanting_apparatus_animations.json'
-[03апр.2026 10:33:46.781] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/drygmy_animations.json'
-[03апр.2026 10:33:46.781] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/empty.json'
-[03апр.2026 10:33:46.781] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/lily_animations.json'
-[03апр.2026 10:33:46.781] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/imbuement_chamber_animations.json'
-[03апр.2026 10:33:46.782] [Worker-Main-10/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_relay_animation.json'
-[03апр.2026 10:33:46.783] [Worker-Main-10/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_splitter_animation.json'
-[03апр.2026 10:33:46.783] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/potion_melder_animation.json'
-[03апр.2026 10:33:46.783] [Worker-Main-10/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/nook_animation.json'
-[03апр.2026 10:33:46.784] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/press_animations.json'
-[03апр.2026 10:33:46.784] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/redstone_relay_animations.json'
-[03апр.2026 10:33:46.784] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/ritual.json'
-[03апр.2026 10:33:46.785] [Worker-Main-9/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/rune.json'
-[03апр.2026 10:33:46.785] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scribes_table_animations.json'
-[03апр.2026 10:33:46.788] [Worker-Main-8/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scryers_eye_animation.json'
-[03апр.2026 10:33:46.834] [Worker-Main-3/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_collector_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-3/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_splitter_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_timer_animations.json'
-[03апр.2026 10:33:46.838] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_deposit_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/starbuncle_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_warp_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-9/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spike_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-3/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/storage_catalog_animations.json'
-[03апр.2026 10:33:46.839] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/vitalic_sourcelink_animation.json'
-[03апр.2026 10:33:46.838] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_relay_animations.json'
-[03апр.2026 10:33:46.840] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/volcanic_sourcelink_animations.json'
-[03апр.2026 10:33:46.840] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_animations.json'
-[03апр.2026 10:33:46.840] [Worker-Main-9/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wand_animation.json'
-[03апр.2026 10:33:46.840] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_waddler_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_defender_animations.json'
-[03апр.2026 10:33:46.840] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_walker_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-3/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_hunter_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-9/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_chimera_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_stalker_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_blossom_animations.json'
-[03апр.2026 10:33:46.841] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wixie_animations.json'
-[03апр.2026 10:33:47.032] [Worker-Main-7/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
-[03апр.2026 10:33:47.032] [Worker-Main-4/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
-[03апр.2026 10:33:47.588] [NeoForge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [mr_health_damagehud] Found status: OUTDATED Current: 1 Target: 1+mod
-[03апр.2026 10:33:48.173] [Worker-Main-6/WARN] [net.minecraft.client.resources.model.BlockStateModelLoader/]: Exception loading blockstate definition: 'ars_nouveau:blockstates/particle_block.json' missing model for variant: 'ars_nouveau:particle_block#waterlogged=true'
-[03апр.2026 10:33:48.173] [Worker-Main-6/WARN] [net.minecraft.client.resources.model.BlockStateModelLoader/]: Exception loading blockstate definition: 'ars_nouveau:blockstates/particle_block.json' missing model for variant: 'ars_nouveau:particle_block#waterlogged=false'
-[03апр.2026 10:33:50.129] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
-[03апр.2026 10:33:50.130] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
-[03апр.2026 10:33:50.226] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Наушники (Realtek(R) Audio)
-[03апр.2026 10:33:50.228] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
-[03апр.2026 10:33:50.393] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/blocks.png-atlas
-[03апр.2026 10:33:50.410] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
-[03апр.2026 10:33:50.411] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
-[03апр.2026 10:33:50.412] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
-[03апр.2026 10:33:50.413] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
-[03апр.2026 10:33:50.417] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
-[03апр.2026 10:33:50.417] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
-[03апр.2026 10:33:50.418] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
-[03апр.2026 10:33:50.418] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
-[03апр.2026 10:33:50.556] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
-[03апр.2026 10:33:50.559] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
-[03апр.2026 10:33:50.560] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
-[03апр.2026 10:33:50.561] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
-[03апр.2026 10:33:50.561] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
-[03апр.2026 10:33:50.613] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
-[03апр.2026 10:33:50.701] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader ars_nouveau:rainbow_entity could not find uniform named IViewRotMat in the specified shader program.
-[03апр.2026 10:33:50.704] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader ars_nouveau:blamed_entity could not find uniform named IViewRotMat in the specified shader program.
-[03апр.2026 10:33:50.723] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
-[03апр.2026 10:34:04.496] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1989 recipes
-[03апр.2026 10:34:04.735] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1744 advancements
-[03апр.2026 10:34:04.743] [Render thread/INFO] [Curios API/]: Loaded 11 curio slots
-[03апр.2026 10:34:04.746] [Render thread/INFO] [Curios API/]: Loaded 1 curio entities
-[03апр.2026 10:34:05.364] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
-[03апр.2026 10:34:05.364] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
-[03апр.2026 10:34:06.502] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
-[03апр.2026 10:34:06.814] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Подготовка области возрождения: 0%
-[03апр.2026 10:34:06.922] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
-[03апр.2026 10:34:06.933] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 428 ms
-[03апр.2026 10:34:07.261] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
-[03апр.2026 10:34:07.261] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
-[03апр.2026 10:34:08.129] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:eb62c63a] logged in with entity id 5 at (132.426436713587, 66.49520087700593, -24.296790091376472)
-[03апр.2026 10:34:08.230] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★★★★★★ Dev [70] присоединился к игре
-[03апр.2026 10:34:08.301] [Server thread/INFO] [org.mrutcka.lvluping.LvlupingMod/]: Применены стартовые параметры для Dev: Раса=Человек, Звезды=2
-[03апр.2026 10:34:08.502] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amethyst_block
-[03апр.2026 10:34:08.503] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_lapis
-[03апр.2026 10:34:08.503] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_abjuration_essence
-[03апр.2026 10:34:08.503] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_earth_essence
-[03апр.2026 10:34:08.504] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_manipulation_essence
-[03апр.2026 10:34:08.504] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_air_essence
-[03апр.2026 10:34:08.504] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_split_arrow
-[03апр.2026 10:34:08.504] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_conjuration_essence
-[03апр.2026 10:34:08.505] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amethyst
-[03апр.2026 10:34:08.505] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_fire_essence
-[03апр.2026 10:34:08.505] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_pierce_arrow
-[03апр.2026 10:34:08.505] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_water_essence
-[03апр.2026 10:34:08.506] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amplify_arrow
-[03апр.2026 10:34:09.616] [Render thread/INFO] [ars_nouveau/]: Documentation loaded in 1058ms
-[03апр.2026 10:34:09.622] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 486 advancements
-[03апр.2026 10:34:16.036] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
-[03апр.2026 10:34:16.089] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[03апр.2026 10:34:16.130] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[03апр.2026 10:34:16.131] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[03апр.2026 10:34:18.418] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
-[03апр.2026 10:34:18.454] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[03апр.2026 10:34:18.469] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[03апр.2026 10:34:18.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[03апр.2026 10:34:19.704] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Отключение
-[03апр.2026 10:34:19.704] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [0] покинул игру
-[03апр.2026 10:34:19.721] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
-[03апр.2026 10:34:19.762] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
-[03апр.2026 10:34:19.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
-[03апр.2026 10:34:19.763] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
-[03апр.2026 10:34:20.557] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
-[03апр.2026 10:34:20.698] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
-[03апр.2026 10:34:20.705] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
-[03апр.2026 10:34:20.720] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
-[03апр.2026 10:34:20.720] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[03апр.2026 10:34:20.721] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[03апр.2026 10:34:20.721] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
-[03апр.2026 10:34:23.856] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[09апр.2026 16:42:40.751] [main/INFO] [mixin/]: Compatibility level set to JAVA_21
+[09апр.2026 16:42:40.783] [main/INFO] [cpw.mods.modlauncher.LaunchServiceHandler/MODLAUNCHER]: Launching target 'forgeclientdev' with arguments [--version, 21.1.214, --gameDir, ., --assetsDir, C:\Users\MrUtcka\.gradle\caches\neoformruntime\assets, --assetIndex, 17]
+[09апр.2026 16:42:40.855] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.neoforge.mixins.json could not be read. If this is a development environment you can ignore this message
+[09апр.2026 16:42:40.856] [main/WARN] [mixin/]: Reference map 'curios.refmap.json' for curios.mixins.json could not be read. If this is a development environment you can ignore this message
+[09апр.2026 16:42:40.857] [main/WARN] [mixin/]: Reference map 'geckolib.refmap.json' for geckolib.mixins.json could not be read. If this is a development environment you can ignore this message
+[09апр.2026 16:42:40.984] [main/WARN] [mixin/]: Reference map 'ars_nouveau.refmap.json' for ars_nouveau.mixins.json could not be read. If this is a development environment you can ignore this message
+[09апр.2026 16:42:40.986] [main/WARN] [mixin/]: Reference map 'nuggets.refmap.json' for nuggets.mixins.json could not be read. If this is a development environment you can ignore this message
+[09апр.2026 16:42:41.422] [main/INFO] [MixinExtras|Service/]: Initializing MixinExtras via com.llamalad7.mixinextras.service.MixinExtrasServiceImpl(version=0.5.0).
+[09апр.2026 16:42:43.305] [Datafixer Bootstrap/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 229 Datafixer optimizations took 365 milliseconds
+[09апр.2026 16:42:48.267] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09апр.2026 16:42:48.268] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, location] and [teleport, targets] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09апр.2026 16:42:48.270] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, destination] and [teleport, targets] with inputs: [Player, 0123, @e, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[09апр.2026 16:42:48.271] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets] and [teleport, destination] with inputs: [Player, 0123, dd12be42-52a9-4a91-a8a1-11c01849e498]
+[09апр.2026 16:42:48.272] [main/WARN] [net.minecraft.commands.Commands/]: Ambiguity between arguments [teleport, targets, location] and [teleport, targets, destination] with inputs: [0.1 -0.5 .9, 0 0 0]
+[09апр.2026 16:42:48.393] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23193!/assets/.mcassetsroot' uses unexpected schema
+[09апр.2026 16:42:48.394] [Render thread/WARN] [net.minecraft.server.packs.VanillaPackResourcesBuilder/]: Assets URL 'union:/X:/Lariem/lvluping/build/moddev/artifacts/neoforge-21.1.214.jar%23193!/data/.mcassetsroot' uses unexpected schema
+[09апр.2026 16:42:48.416] [Render thread/INFO] [com.mojang.authlib.yggdrasil.YggdrasilAuthenticationService/]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[09апр.2026 16:42:48.424] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Setting user: Dev
+[09апр.2026 16:42:48.517] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Backend library: LWJGL version 3.3.3+5
+[09апр.2026 16:42:48.692] [modloading-worker-0/INFO] [net.neoforged.neoforge.common.NeoForgeMod/NEOFORGE-MOD]: NeoForge mod loading, version 21.1.214, for MC 1.21.1
+[09апр.2026 16:42:50.364] [Render thread/INFO] [net.neoforged.neoforge.gametest.GameTestHooks/]: Enabled Gametest Namespaces: [lvluping]
+[09апр.2026 16:42:50.608] [Render thread/INFO] [net.minecraft.server.packs.resources.ReloadableResourceManager/]: Reloading ResourceManager: vanilla, mod_resources, mod/mr_health_damagehud, mod/curios, mod/lambdynlights_api, mod/geckolib, mod/ars_nouveau, mod/lvluping, mod/neoforge, mod/nuggets
+[09апр.2026 16:42:50.634] [Worker-Main-4/INFO] [org.mrutcka.lvluping.LvlupingMod/]: Lvluping Mod Setup
+[09апр.2026 16:42:50.651] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/agronomic_sourcelink_animation.json'
+[09апр.2026 16:42:50.651] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alteration_apparatus_animations.json'
+[09апр.2026 16:42:50.651] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/alchemical_sourcelink_animation.json'
+[09апр.2026 16:42:50.652] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/amethyst_golem_animations.json'
+[09апр.2026 16:42:50.653] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_pedestal_animations.json'
+[09апр.2026 16:42:50.653] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/animated_block_animations.json'
+[09апр.2026 16:42:50.653] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/arcane_core_animations.json'
+[09апр.2026 16:42:50.653] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/basic_spell_turret_animations.json'
+[09апр.2026 16:42:50.695] [NeoForge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [mr_health_damagehud] Starting version check at https://api.modrinth.com/updates/YS1sBNLx/forge_updates.json?neoforge=only
+[09апр.2026 16:42:50.746] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/decor_blossom_animations.json'
+[09апр.2026 16:42:50.746] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_animation.json'
+[09апр.2026 16:42:50.746] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/drygmy_animations.json'
+[09апр.2026 16:42:50.747] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/book_wyrm_lectern_animations.json'
+[09апр.2026 16:42:50.747] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/enchanting_apparatus_animations.json'
+[09апр.2026 16:42:50.747] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/empty.json'
+[09апр.2026 16:42:50.747] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/imbuement_chamber_animations.json'
+[09апр.2026 16:42:50.749] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_splitter_animation.json'
+[09апр.2026 16:42:50.749] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/mana_relay_animation.json'
+[09апр.2026 16:42:50.749] [Worker-Main-5/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/lily_animations.json'
+[09апр.2026 16:42:50.750] [Worker-Main-7/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/nook_animation.json'
+[09апр.2026 16:42:50.750] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/potion_melder_animation.json'
+[09апр.2026 16:42:50.750] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/press_animations.json'
+[09апр.2026 16:42:50.751] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/redstone_relay_animations.json'
+[09апр.2026 16:42:50.752] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/ritual.json'
+[09апр.2026 16:42:50.756] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/rune.json'
+[09апр.2026 16:42:50.775] [Worker-Main-10/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scribes_table_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_collector_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/scryers_eye_animation.json'
+[09апр.2026 16:42:50.785] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_relay_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_deposit_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_warp_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_animations.json'
+[09апр.2026 16:42:50.785] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/source_splitter_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spell_turret_timer_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/spike_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-14/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/starbuncle_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/storage_catalog_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/vitalic_sourcelink_animation.json'
+[09апр.2026 16:42:50.786] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/volcanic_sourcelink_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wand_animation.json'
+[09апр.2026 16:42:50.786] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_walker_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/weald_waddler_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-6/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/whirlisprig_blossom_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-15/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_chimera_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-13/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_hunter_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-2/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_stalker_animations.json'
+[09апр.2026 16:42:50.787] [Worker-Main-12/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wixie_animations.json'
+[09апр.2026 16:42:50.786] [Worker-Main-11/WARN] [GeckoLib/]: Found animation file with improper file name format; animation files should end in .animation.json: 'ars_nouveau:animations/wilden_defender_animations.json'
+[09апр.2026 16:42:50.879] [Worker-Main-13/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_all_no_pua-15.1.05.hex, loading
+[09апр.2026 16:42:50.919] [Worker-Main-9/INFO] [net.minecraft.client.gui.font.providers.UnihexProvider/]: Found unifont_jp_patch-15.1.05.hex, loading
+[09апр.2026 16:42:51.518] [NeoForge Version Check/INFO] [net.neoforged.fml.VersionChecker/]: [mr_health_damagehud] Found status: OUTDATED Current: 1 Target: 1+mod
+[09апр.2026 16:42:51.703] [Worker-Main-7/WARN] [net.minecraft.client.resources.model.BlockStateModelLoader/]: Exception loading blockstate definition: 'ars_nouveau:blockstates/particle_block.json' missing model for variant: 'ars_nouveau:particle_block#waterlogged=true'
+[09апр.2026 16:42:51.704] [Worker-Main-7/WARN] [net.minecraft.client.resources.model.BlockStateModelLoader/]: Exception loading blockstate definition: 'ars_nouveau:blockstates/particle_block.json' missing model for variant: 'ars_nouveau:particle_block#waterlogged=false'
+[09апр.2026 16:42:52.896] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:item.goat_horn.play
+[09апр.2026 16:42:52.897] [Render thread/WARN] [net.minecraft.client.sounds.SoundEngine/]: Missing sound for event: minecraft:entity.goat.screaming.horn_break
+[09апр.2026 16:42:53.515] [Render thread/INFO] [com.mojang.blaze3d.audio.Library/]: OpenAL initialized on device OpenAL Soft on Наушники (Realtek(R) Audio)
+[09апр.2026 16:42:53.516] [Render thread/INFO] [net.minecraft.client.sounds.SoundEngine/SOUNDS]: Sound engine started
+[09апр.2026 16:42:53.628] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 2048x1024x4 minecraft:textures/atlas/blocks.png-atlas
+[09апр.2026 16:42:53.641] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/signs.png-atlas
+[09апр.2026 16:42:53.641] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/shield_patterns.png-atlas
+[09апр.2026 16:42:53.642] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x512x4 minecraft:textures/atlas/banner_patterns.png-atlas
+[09апр.2026 16:42:53.643] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x1024x4 minecraft:textures/atlas/armor_trims.png-atlas
+[09апр.2026 16:42:53.647] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 128x64x4 minecraft:textures/atlas/decorated_pot.png-atlas
+[09апр.2026 16:42:53.647] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x256x4 minecraft:textures/atlas/chest.png-atlas
+[09апр.2026 16:42:53.647] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/shulker_boxes.png-atlas
+[09апр.2026 16:42:53.647] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x4 minecraft:textures/atlas/beds.png-atlas
+[09апр.2026 16:42:53.742] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/particles.png-atlas
+[09апр.2026 16:42:53.743] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x256x0 minecraft:textures/atlas/paintings.png-atlas
+[09апр.2026 16:42:53.744] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 256x128x0 minecraft:textures/atlas/mob_effects.png-atlas
+[09апр.2026 16:42:53.744] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 64x64x0 minecraft:textures/atlas/map_decorations.png-atlas
+[09апр.2026 16:42:53.744] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 1024x512x0 minecraft:textures/atlas/gui.png-atlas
+[09апр.2026 16:42:53.766] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader rendertype_entity_translucent_emissive could not find sampler named Sampler2 in the specified shader program.
+[09апр.2026 16:42:53.810] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader ars_nouveau:rainbow_entity could not find uniform named IViewRotMat in the specified shader program.
+[09апр.2026 16:42:53.811] [Render thread/WARN] [net.minecraft.client.renderer.ShaderInstance/]: Shader ars_nouveau:blamed_entity could not find uniform named IViewRotMat in the specified shader program.
+[09апр.2026 16:42:53.822] [Render thread/INFO] [net.neoforged.neoforge.client.entity.animation.json.AnimationLoader/]: Loaded 0 entity animations
+[09апр.2026 16:43:10.929] [Render thread/INFO] [net.minecraft.world.item.crafting.RecipeManager/]: Loaded 1989 recipes
+[09апр.2026 16:43:11.106] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 1744 advancements
+[09апр.2026 16:43:11.113] [Render thread/INFO] [Curios API/]: Loaded 11 curio slots
+[09апр.2026 16:43:11.115] [Render thread/INFO] [Curios API/]: Loaded 1 curio entities
+[09апр.2026 16:43:11.572] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Starting integrated minecraft server version 1.21.1
+[09апр.2026 16:43:11.573] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Generating keypair
+[09апр.2026 16:43:12.469] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Preparing start region for dimension minecraft:overworld
+[09апр.2026 16:43:12.679] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Подготовка области возрождения: 0%
+[09апр.2026 16:43:12.784] [Server thread/INFO] [net.neoforged.neoforge.server.permission.PermissionAPI/]: Successfully initialized permission handler neoforge:default_handler
+[09апр.2026 16:43:12.796] [Server thread/INFO] [org.mrutcka.lvluping.LvlupingMod/]: LVLuping: данные игроков и пресет — X:\Lariem\lvluping\run\lvluping
+[09апр.2026 16:43:12.797] [progressListener/INFO] [net.minecraft.server.level.progress.LoggerChunkProgressListener/]: Time elapsed: 323 ms
+[09апр.2026 16:43:13.030] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing view distance to 12, from 10
+[09апр.2026 16:43:13.030] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Changing simulation distance to 12, from 0
+[09апр.2026 16:43:13.686] [Server thread/INFO] [net.minecraft.server.players.PlayerList/]: Dev[local:E:ea08ab66] logged in with entity id 43 at (5.9637921896809205, 70.0, 103.07519372900025)
+[09апр.2026 16:43:13.768] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★ Dev [0] присоединился к игре
+[09апр.2026 16:43:13.991] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amethyst_block
+[09апр.2026 16:43:13.991] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_lapis
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_abjuration_essence
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_earth_essence
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_manipulation_essence
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_air_essence
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_split_arrow
+[09апр.2026 16:43:13.992] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_conjuration_essence
+[09апр.2026 16:43:13.993] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amethyst
+[09апр.2026 16:43:13.993] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_fire_essence
+[09апр.2026 16:43:13.993] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_pierce_arrow
+[09апр.2026 16:43:13.993] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_water_essence
+[09апр.2026 16:43:13.993] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: ars_nouveau:imbuement/ars_nouveau:imbuement_amplify_arrow
+[09апр.2026 16:43:14.859] [Render thread/INFO] [ars_nouveau/]: Documentation loaded in 790ms
+[09апр.2026 16:43:14.865] [Render thread/INFO] [net.minecraft.advancements.AdvancementTree/]: Loaded 493 advancements
+[09апр.2026 16:43:16.676] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (1/30)
+[09апр.2026 16:43:16.682] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (2/30)
+[09апр.2026 16:43:16.683] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (3/30)
+[09апр.2026 16:43:16.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (4/30)
+[09апр.2026 16:43:16.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (5/30)
+[09апр.2026 16:43:16.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (6/30)
+[09апр.2026 16:43:16.684] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (7/30)
+[09апр.2026 16:43:16.685] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (8/30)
+[09апр.2026 16:43:16.685] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (9/30)
+[09апр.2026 16:43:16.686] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (10/30)
+[09апр.2026 16:43:16.686] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (11/30)
+[09апр.2026 16:43:16.686] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (12/30)
+[09апр.2026 16:43:16.687] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (13/30)
+[09апр.2026 16:43:16.687] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (14/30)
+[09апр.2026 16:43:19.585] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (15/30)
+[09апр.2026 16:43:21.897] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (16/30)
+[09апр.2026 16:43:24.387] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (17/30)
+[09апр.2026 16:43:25.641] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (18/30)
+[09апр.2026 16:43:26.882] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (19/30)
+[09апр.2026 16:43:27.635] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (20/30)
+[09апр.2026 16:43:28.387] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (21/30)
+[09апр.2026 16:43:29.132] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (22/30)
+[09апр.2026 16:43:29.886] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Скорость +1 (23/30)
+[09апр.2026 16:43:32.432] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Сила +1 (1/30)
+[09апр.2026 16:43:32.432] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Сила +1 (2/30)
+[09апр.2026 16:43:34.386] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Сила +1 (3/30)
+[09апр.2026 16:43:35.639] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Тренировка: Сила +1 (4/30)
+[09апр.2026 16:43:48.125] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[09апр.2026 16:43:48.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[09апр.2026 16:43:48.173] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[09апр.2026 16:43:48.174] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[09апр.2026 16:43:54.468] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [★★ Dev [0]: Ранг игрока Dev изменен на ★★★★★★★ (7)]
+[09апр.2026 16:43:54.469] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Ранг игрока Dev изменен на ★★★★★★★ (7)
+[09апр.2026 16:43:58.767] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: [★★★★★★★ Dev [0]: Уровень игрока Dev изменен на 100 (Макс: 105)]
+[09апр.2026 16:43:58.769] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [System] [CHAT] Уровень игрока Dev изменен на 100 (Макс: 105)
+[09апр.2026 16:44:08.324] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[09апр.2026 16:44:08.334] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[09апр.2026 16:44:08.341] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[09апр.2026 16:44:08.342] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[09апр.2026 16:44:08.780] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Dev lost connection: Отключение
+[09апр.2026 16:44:08.780] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ★★★★★★★ Dev [100] покинул игру
+[09апр.2026 16:44:08.792] [Server thread/INFO] [net.minecraft.server.network.ServerCommonPacketListenerImpl/]: Stopping singleplayer server as player logged out
+[09апр.2026 16:44:08.840] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[09апр.2026 16:44:08.841] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[09апр.2026 16:44:08.841] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[09апр.2026 16:44:08.904] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[09апр.2026 16:44:08.961] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[09апр.2026 16:44:08.967] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[09апр.2026 16:44:08.976] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[09апр.2026 16:44:08.977] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[09апр.2026 16:44:08.977] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[09апр.2026 16:44:08.977] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[09апр.2026 16:44:09.522] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!

@@ -196,17 +196,17 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("w_barbarian_frenzy")) {
-            String key = ClientEvents.ABILITY_KEY_2.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_w_barbarian_frenzy", "Запредельная ярость [Shift+" + key + "]", x, y);
+            String key = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_barbarian_frenzy", "Запредельная ярость [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("w_parry")) {
-            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            String key = ClientEvents.ABILITY_KEY_7.getTranslatedKeyMessage().getString();
             renderAbility(guiGraphics, mc, player, "cd_parry", "Парирование [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("m_barrier")) {
-            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            String key = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
             renderAbility(guiGraphics, mc, player, "cd_buff", "Усиление [" + key + "]", x, y);
             y += 12;
         }
@@ -247,12 +247,15 @@ public class AbilityOverlay {
         }
         if (TalentScreen.clientTalents.contains("m_summon_servant")) {
             String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_m_summon", "Призыв слуги [" + key + "]", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_m_summon_servant", "Призыв слуги [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("m_summon_guard")) {
-            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_m_summon", "Призыв стража [" + key + "]", x, y);
+            boolean both = TalentScreen.clientTalents.contains("m_summon_servant");
+            String key = both
+                    ? ClientEvents.ABILITY_KEY_7.getTranslatedKeyMessage().getString()
+                    : ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_m_summon_guard", "Призыв стража [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("m_summon_sacrifice")) {
@@ -266,8 +269,11 @@ public class AbilityOverlay {
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("w_paladin_blessing")) {
-            String key = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_w_paladin_blessing", "Благословение [" + key + "]", x, y);
+            String key1 = ClientEvents.ABILITY_KEY_1.getTranslatedKeyMessage().getString();
+            String key6 = ClientEvents.ABILITY_KEY_6.getTranslatedKeyMessage().getString();
+            renderAbility(guiGraphics, mc, player, "cd_w_paladin_blessing", "Благословение [" + key1 + "]", x, y);
+            y += 12;
+            renderAbility(guiGraphics, mc, player, "cd_w_paladin_blessing", "Очищение [" + key6 + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("w_paladin_immolation")) {
@@ -438,7 +444,7 @@ public class AbilityOverlay {
         }
         if (TalentScreen.clientTalents.contains("a_ult_ranger_roots")) {
             String key = ClientEvents.ABILITY_KEY_5.getTranslatedKeyMessage().getString();
-            renderAbility(guiGraphics, mc, player, "cd_a_ult_ranger_roots", "Корни (след. выстрел) [" + key + "]", x, y);
+            renderAbility(guiGraphics, mc, player, "cd_a_ult_ranger_roots", "Корни [" + key + "]", x, y);
             y += 12;
         }
         if (TalentScreen.clientTalents.contains("a_ult_musketeer_barrage")) {

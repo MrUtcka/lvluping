@@ -5,9 +5,12 @@
   "key.lvluping.ability3": "Ability 3",
   "key.lvluping.ability4": "Ability 4",
   "key.lvluping.ability6": "Ability 5",
+  "key.lvluping.ability7": "Ability 6",
   "key.lvluping.ability5": "Ultimate ability",
   "key.categories.lvluping": "LVLuping MOD",
   "message.lvluping.hit_provoker": "Attack the provoker!",
+  "message.lvluping.insufficient_mana": "Not enough mana",
+  "death.lvluping.expedition": "%s returned to the goddess",
   "splash.lvluping.1": "Level up or die trying!",
   "splash.lvluping.2": "Talents won't wait.",
   "splash.lvluping.3": "One more level and you're a legend.",
@@ -32,5 +35,6 @@
   "splash.lvluping.22": "Upgrade while others sleep.",
   "splash.lvluping.23": "This story belongs to those who grow.",
   "splash.lvluping.24": "Didn't level your defense? Die with style.",
-  "splash.lvluping.25": "A warrior without skills is just meat."
+  "splash.lvluping.25": "A warrior without skills is just meat.",
+  "splash.lvluping.26": "26.04"
 }

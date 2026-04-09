@@ -1,7 +1,6 @@
 package org.mrutcka.lvluping.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
@@ -30,6 +29,11 @@ public class ClassSelectScreen extends Screen {
         super(Component.literal("Выбор класса"));
     }
 
+    private static boolean isRaceLocked(String classBaseId) {
+        Talent t = Talent.getById(classBaseId);
+        return t == null || t.isForbiddenForRace(TalentScreen.clientRace);
+    }
+
     @Override
     public void render(GuiGraphics gui, int mouseX, int mouseY, float partialTick) {
         renderSimpleBackground(gui);
@@ -49,10 +53,11 @@ public class ClassSelectScreen extends Screen {
         var cards = getCards(startX, startY, card, gap);
 
         for (Card c : cards) {
+            boolean locked = isRaceLocked(c.id);
             boolean picked = c.id.equals(pending);
-            boolean grey = pending != null && !picked;
-            int bg = picked ? 0xFF2A6CFF : 0xFF1E1E1E;
-            int outline = picked ? 0xFFFFFFFF : 0xFFAAAAAA;
+            boolean grey = locked || (pending != null && !picked);
+            int bg = picked ? 0xFF2A6CFF : (locked ? 0xFF151515 : 0xFF1E1E1E);
+            int outline = locked ? 0xFFAA2222 : (picked ? 0xFFFFFFFF : 0xFFAAAAAA);
 
             gui.fill(c.x, c.y, c.x + c.w, c.y + c.h, bg);
             gui.renderOutline(c.x, c.y, c.w, c.h, outline);
@@ -62,7 +67,7 @@ public class ClassSelectScreen extends Screen {
             RenderSystem.setShaderColor(1f, 1f, 1f, 1f);
         }
 
-        if (pending != null) {
+        if (pending != null && !isRaceLocked(pending)) {
             int bw = 180;
             int bh = 30;
             int bx = (width - bw) / 2;
@@ -85,6 +90,9 @@ public class ClassSelectScreen extends Screen {
             List<Component> tip = new ArrayList<>();
             tip.add(Component.literal("§6" + hovered.title));
             tip.add(Component.literal("§7" + hovered.shortDesc));
+            if (isRaceLocked(hovered.id)) {
+                tip.add(Component.literal("§cКласс недоступен для расы «" + TalentScreen.clientRace.label + "»"));
+            }
             gui.renderComponentTooltip(font, tip, mouseX, mouseY);
         }
     }
@@ -100,19 +108,23 @@ public class ClassSelectScreen extends Screen {
 
         for (Card c : cards) {
             if (mx >= c.x && mx <= c.x + c.w && my >= c.y && my <= c.y + c.h) {
+                if (isRaceLocked(c.id)) {
+                    pending = null;
+                    return true;
+                }
                 pending = c.id;
                 return true;
             }
         }
 
-        if (pending != null) {
+        if (pending != null && !isRaceLocked(pending)) {
             int bw = 180;
             int bh = 30;
             int bx = (width - bw) / 2;
             int by = height - 42;
             if (mx >= bx && mx <= bx + bw && my >= by && my <= by + bh) {
                 PacketDistributor.sendToServer(new C2SPurchaseTalent(pending));
-                Minecraft.getInstance().setScreen(new TalentScreen());
+                pending = null;
                 return true;
             }
         }
@@ -146,4 +158,3 @@ public class ClassSelectScreen extends Screen {
 
     private record Card(String id, String title, String shortDesc, ResourceLocation icon, int x, int y, int w, int h) {}
 }
-
