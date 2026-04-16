@@ -46,17 +46,13 @@ public final class PlayerStatTrainingData {
         return PROGRESS.computeIfAbsent(u, k -> new int[3]);
     }
 
-    /**
-     * Требование очков тренировки на следующий уровень стата.
-     * Линейно растет от baseNeed (на 0 уровне) до x2 baseNeed на последнем уровне.
-     */
     private static int unitsNeededForNextLevel(UUID uuid, AttributeStat stat, int baseNeed) {
         if (baseNeed <= 0) return 0;
         int max = Math.max(1, stat.maxLevel);
         int cur = Math.max(0, Math.min(PlayerLevels.getStatLevel(uuid, stat.id), max - 1));
         if (max <= 1) return baseNeed;
         double t = (double) cur / (double) (max - 1);
-        double mult = 1.0 + t; // 1.0 -> 2.0
+        double mult = 1.0 + t;
         return Math.max(1, (int) Math.round(baseNeed * mult));
     }
 

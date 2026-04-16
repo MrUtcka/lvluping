@@ -8,17 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import java.lang.reflect.Method;
 import java.util.UUID;
 
-/**
- * Плейсхолдеры для данных Lvluping через рефлексию к {@code org.mrutcka.lvluping.data.PlayerLevels}.
- * <p>
- * Параметры (без учёта регистра):
- * <ul>
- *   <li>{@code level} — текущий уровень персонажа</li>
- *   <li>{@code stars} — количество звёзд (ранг)</li>
- *   <li>{@code max_level} — максимальный уровень при текущем ранге ({@code stars * 15})</li>
- * </ul>
- * Примеры: {@code %lvluping_level%}, {@code %lvluping_stars%}, {@code %lvluping_max_level%}
- */
 public class LvlupingPlaceholderExpansion extends PlaceholderExpansion {
 
     private static final String PLAYER_LEVELS = "org.mrutcka.lvluping.data.PlayerLevels";

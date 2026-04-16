@@ -18,9 +18,6 @@ import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Админ: список талантов игрока, выдача и снятие без проверки родителей и без траты очков.
- */
 public class TalentAdminCommand {
 
     private static final SuggestionProvider<CommandSourceStack> TALENT_IDS = (ctx, builder) -> {

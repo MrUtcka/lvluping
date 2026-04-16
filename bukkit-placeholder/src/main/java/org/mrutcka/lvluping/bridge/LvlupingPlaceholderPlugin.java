@@ -3,10 +3,6 @@ package org.mrutcka.lvluping.bridge;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
-/**
- * Регистрирует расширение PlaceholderAPI, если плагин установлен.
- * На гибридных серверах (Arclight и т.п.) классы мода доступны в classpath.
- */
 public class LvlupingPlaceholderPlugin extends JavaPlugin {
 
     @Override

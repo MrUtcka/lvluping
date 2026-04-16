@@ -19,7 +19,6 @@ public class PlayerLevels {
     private static final Map<UUID, Integer> playerLevels = new HashMap<>();
     private static final Map<UUID, Integer> playerStars = new HashMap<>();
     private static final Map<UUID, Integer> playerBonusPoints = new HashMap<>();
-    /** Очки уровня, потраченные на ручные апгрейды стата «мана» (и при необходимости других без тренировки). */
     private static final Map<UUID, Integer> playerStatPointsSpent = new HashMap<>();
     private static final Map<UUID, Set<String>> playerTalents = new HashMap<>();
     private static final Map<UUID, Map<String, Integer>> playerStats = new HashMap<>();
@@ -27,12 +26,7 @@ public class PlayerLevels {
     private static final Map<UUID, Float> playerStoredHealth = new HashMap<>();
     private static final Map<UUID, Race> playerRaces = new HashMap<>();
     private static final Map<UUID, Map<String, Integer>> playerAbilityLevels = new HashMap<>();
-    /** Таланты, выданные /lvl_talent set — не тратят очки уровня (стоимость таланта и апгрейды способности). */
     private static final Map<UUID, Set<String>> playerAdminGrantedTalents = new HashMap<>();
-    /**
-     * Очки уровня, «замороженные» после админ-снятия купленного таланта или после /lvl_talent set по уже купленному —
-     * чтобы пул доступных очков не менялся (без возврата и без бонуса).
-     */
     private static final Map<UUID, Integer> playerTalentBudgetDebt = new HashMap<>();
 
     public static int getLevel(UUID uuid) {
@@ -168,7 +162,6 @@ public class PlayerLevels {
 
     public static void unlockTalent(UUID uuid, String id) { getPlayerTalents(uuid).add(id); }
 
-    /** Сколько очков уровня считалось бы потрачено на этот талант и апгрейды способности (как при покупке). */
     private static int talentBudgetAttributedToTalent(UUID uuid, String id, Set<String> ownedSnapshot) {
         int part = 0;
         Talent t = Talent.getById(id);
@@ -189,7 +182,6 @@ public class PlayerLevels {
         playerTalentBudgetDebt.merge(uuid, delta, Integer::sum);
     }
 
-    /** Выдача таланта без проверки родителей и без траты очков (админ-команда). */
     public static void adminGrantTalent(UUID uuid, String id) {
         if (Talent.getById(id) == null) return;
         Set<String> owned = getPlayerTalents(uuid);
@@ -213,7 +205,6 @@ public class PlayerLevels {
         return "warrior_base".equals(id) || "archer_base".equals(id) || "mage_base".equals(id) || "assassin_base".equals(id);
     }
 
-    /** Снятие таланта; уровни способности по этому id удаляются. */
     public static boolean adminRemoveTalent(UUID uuid, String id) {
         if (Talent.getById(id) == null) return false;
         Set<String> owned = getPlayerTalents(uuid);

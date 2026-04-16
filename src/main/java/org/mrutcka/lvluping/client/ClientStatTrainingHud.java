@@ -152,7 +152,6 @@ public final class ClientStatTrainingHud {
         RenderSystem.disableBlend();
     }
 
-    /** Цвет заливки по порогу усталости (0 — до 1-го порога, … 4 — 4-й порог). */
     private static int fatigueTierColor(int tier) {
         return switch (Mth.clamp(tier, 0, 4)) {
             case 0 -> 0xFF7aab8e;

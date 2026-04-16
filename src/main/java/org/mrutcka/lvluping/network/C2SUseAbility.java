@@ -34,7 +34,6 @@ public record C2SUseAbility(int slot) implements CustomPacketPayload {
                 try {
                     TalentAbilityHandler.handleAbilityUse(player, msg.slot());
                 } catch (Throwable t) {
-                    // Никогда не даём исключению из ability-handler уронить сетевой обработчик.
                     LvlupingMod.LOGGER.error("LVLuping: ability use failed (player={}, slot={})",
                             player.getScoreboardName(), msg.slot(), t);
                 }

@@ -22,7 +22,6 @@ import org.mrutcka.lvluping.data.StatTrainingConfig;
 @EventBusSubscriber(modid = LvlupingMod.MODID)
 public final class StatTrainingHandler {
 
-    /** Движение меньше этого (блоков за интервал) не копится в прогресс — отсекаем шум позиции. */
     private static final double SPEED_TRAIN_DIST_EPS = 1.0e-4;
 
     private StatTrainingHandler() {}

@@ -36,9 +36,7 @@ public class TalentScreen extends Screen {
     public static int clientStatPointsSpent = 0;
     public static int clientStars = 2;
     public static Set<String> clientTalents = new HashSet<>();
-    /** Совпадает с сервером: таланты с /lvl_talent set — не учитываются в «потраченных» очках уровня. */
     public static Set<String> clientAdminGrantedTalents = new HashSet<>();
-    /** «Замороженные» очки уровня после админ-операций с талантами (сервер: talent_budget_debt). */
     public static int clientTalentBudgetDebt = 0;
     public static Map<String, Integer> clientStats = new HashMap<>();
     public static Map<String, Integer> clientAbilityLevels = new HashMap<>();
@@ -460,7 +458,6 @@ public class TalentScreen extends Screen {
         return ry >= s.y - STAT_POLY_R && ry <= bottom;
     }
 
-    /** Совпадает с логикой клика: можно купить следующий уровень (очки или полная шкала тренировки). */
     private boolean statCanPurchaseNext(AttributeStat s) {
         return switch (s) {
             case MANA -> getAvailablePoints() >= 1;
