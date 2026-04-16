@@ -20,7 +20,6 @@ public final class ModSplashTexts {
             "splash.lvluping.11",
             "splash.lvluping.12",
             "splash.lvluping.13",
-            "splash.lvluping.14",
             "splash.lvluping.15",
             "splash.lvluping.16",
             "splash.lvluping.17",

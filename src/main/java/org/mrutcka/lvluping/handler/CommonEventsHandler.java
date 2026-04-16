@@ -58,6 +58,7 @@ import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.compat.ArsManaCompat;
 import org.mrutcka.lvluping.data.AbilityUpgradeConfig;
 import org.mrutcka.lvluping.data.PlayerLevels;
+import org.mrutcka.lvluping.data.PlayerStatTrainingData;
 import org.mrutcka.lvluping.network.S2CSyncCooldown;
 import org.mrutcka.lvluping.util.AllyHelper;
 import org.mrutcka.lvluping.network.S2CUnbreakableShieldOrbit;
@@ -1305,6 +1306,10 @@ public class CommonEventsHandler {
     @SubscribeEvent
     public static void onAttack(AttackEntityEvent event) {
         Player attacker = event.getEntity();
+        if (attacker instanceof ServerPlayer spTrain && PlayerStatTrainingData.isMeleeBowBlockedByTraining(spTrain)) {
+            event.setCanceled(true);
+            return;
+        }
         if (attacker.getPersistentData().getLong(TalentAbilityHandler.W_LIGHT_FORM_UNTIL_KEY) > attacker.level().getGameTime()) {
             event.setCanceled(true);
             return;
@@ -1348,8 +1353,8 @@ public class CommonEventsHandler {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
         if (sp.level().isClientSide()) return;
         if (sp.getPersistentData().getLong(TalentAbilityHandler.W_LIGHT_FORM_UNTIL_KEY) > sp.level().getGameTime()) {
-            event.setCanceled(true);
-        }
+                event.setCanceled(true);
+            }
     }
 
     @SubscribeEvent
@@ -1364,6 +1369,10 @@ public class CommonEventsHandler {
     @SubscribeEvent
     public static void onArrowLoose(ArrowLooseEvent event) {
         if (event.getEntity() instanceof ServerPlayer sp) {
+            if (PlayerStatTrainingData.isMeleeBowBlockedByTraining(sp)) {
+                event.setCanceled(true);
+                return;
+            }
             if (sp.getPersistentData().getLong(TalentAbilityHandler.W_LIGHT_FORM_UNTIL_KEY) > sp.level().getGameTime()) {
                 event.setCanceled(true);
                 return;
@@ -2481,7 +2490,7 @@ public class CommonEventsHandler {
                     if (combo > 1 && attacker.level() instanceof ServerLevel serverLevel) {
                         serverLevel.sendParticles(ParticleTypes.CRIT, target.getX(), target.getY() + 1.0, target.getZ(), W_COMBO_CRIT_PARTICLE_COUNT, 0.3, 0.3, 0.3, 0.2);
                         serverLevel.sendParticles(ParticleTypes.SWEEP_ATTACK, target.getX(), target.getY() + 0.5, target.getZ(), W_COMBO_SWEEP_PARTICLE_COUNT, 0.0, 0.0, 0.0, 0.0);
-                    }
+                }
                 }
                 comboMultiplier = 1.0f + (combo * comboDmgPer);
                 event.setNewDamage(event.getNewDamage() * comboMultiplier);
@@ -2497,14 +2506,14 @@ public class CommonEventsHandler {
                     target.addEffect(new MobEffectInstance(MobEffects.BLINDNESS, stunDur, W_STUN_EFFECT_AMPLIFIER, false, false));
                     target.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, stunDur, W_STUN_EFFECT_AMPLIFIER, false, false));
 
-                    attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(),
+                attacker.level().playSound(null, target.getX(), target.getY(), target.getZ(),
                             SoundEvents.ANVIL_LAND, SoundSource.PLAYERS, 0.5f, W_STUN_ANVIL_PITCH);
 
-                    if (attacker.level() instanceof ServerLevel serverLevel) {
-                        serverLevel.sendParticles(ParticleTypes.FLASH, target.getX(), target.getY() + 1.5, target.getZ(), 1, 0, 0, 0, 0);
-                    }
+                if (attacker.level() instanceof ServerLevel serverLevel) {
+                    serverLevel.sendParticles(ParticleTypes.FLASH, target.getX(), target.getY() + 1.5, target.getZ(), 1, 0, 0, 0, 0);
                 }
             }
+        }
 
             // --- W_BLOODLUST ---
             if (talents.contains("w_bloodlust")) {

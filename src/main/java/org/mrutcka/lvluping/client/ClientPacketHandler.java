@@ -9,9 +9,13 @@ public class ClientPacketHandler {
         TalentScreen.clientLevel = msg.level();
         TalentScreen.clientStars = msg.stars();
         TalentScreen.clientTalents = msg.talents();
+        TalentScreen.clientAdminGrantedTalents = msg.adminGrantedTalentIds();
+        TalentScreen.clientTalentBudgetDebt = msg.talentBudgetDebt();
         TalentScreen.clientStats = msg.stats();
         TalentScreen.clientAbilityLevels = msg.abilityLevels();
         TalentScreen.clientRace = Race.getById(msg.raceId());
+        TalentScreen.clientBonusPoints = msg.bonusPoints();
+        TalentScreen.clientStatPointsSpent = msg.statPointsSpent();
 
         Minecraft mc = Minecraft.getInstance();
         if (mc.screen instanceof ClassSelectScreen && TalentScreen.getChosenTopClassBaseIdClient() != null) {

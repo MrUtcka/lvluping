@@ -1,50 +1,50 @@
-/race get @a
-/race set @a durum
-/race get @a
-/lvl add @a 100
-/gamemode creative
-/lvl add @a 100
-/kill
+/lvluptrain zone speed pos2
 /gamemode survival
-/time set night
-/summon minecraft:iron_golem
-/kill
-/summon minecraft:iron_golem
-/tp ~ ~40 ~
 /gamemode creative
-/star add @a 7
-/lvl add @a 100
-/star add @a 7
-/lvl add @a 100
-/summon minecraft:zoglin
-/help
-/lvlstat add @a health 20
-/lvlstat add @a health23 20
-/lvl add @a 100
-/star add @a 5
-/lvl add @a 100
-/summon minecraft:iron_golem
-/lvl add @a 100
-/star add @a 5
 /summon minecraft:zombie
+/gamemode
 /gamemode survival
-/lvl add @a 100
-/star add @a 5
-/lvl add @a 100
-/lvl add @a 1
-/lvl add @a 100
-/star add @a 5
-/lvl add @a 100
-/star add @a 5
-/lvl add @a 100
 /gamemode creative
-/lvluptrain reload
+/effect clear
 /lvluptrain zone speed pos1
 /lvluptrain zone speed pos2
-/lvluptrain zone healthpvp pos1
-/lvluptrain zone healthpvp pos2
-/lvluptrain zone speed pos1
-/lvluptrain zone healthpvp pos2
+/effect clear
 /lvluptrain zone speed pos2
+/lvluptrain zone speed pos1
+/lvluptrain zone speed pos2
+/effect clear
+/gamemode survival
+/effect clear
+/effect give @a minecraft:weakness
+/effect give @a minecraft:weaving
+/effect give @a minecraft:mining_fatigue
+/effect give @a minecraft:mining_fatigue infinite 20
+/effect clear
+/effect give @a minecraft:mining_fatigue infinite 5
+/lvlpoint add @a
+/lvlpoint add @a 1
+/effect clear
+/gamemode creative
+/gamemode survival
+/lvlpoint add @a 1
+/lvl add @a 10
 /star add @a 5
-/lvl add @a 100
+/lvlstat add @a health 5
+/lvlstat add @a health 5s
+/lvlstat add @a health 5
+/star add @a 5
+/lvlpoint add @a 1
+/gamemode creative
+/time set day
+/kill @e
+/gamemode survival
+/lvl_talent get @a
+/lvl_talent set @a w_barbarian_battle_cry
+/lvl_talent set @a w_ult_barbarian_feast
+/lvlpoint add @a 7
+/lvl_talent get @a
+/lvl_talent set @a m_buff_atk
+/lvl_talent remove @a a_dash
+/lvl_talent set @a m_summon_guard
+/lvl_talent remove @a a_dagger
+/lvl_talent remove @a m_summon_guard

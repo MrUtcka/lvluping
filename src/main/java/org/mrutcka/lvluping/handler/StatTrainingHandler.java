@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.entity.projectile.Projectile;
-import net.minecraft.util.Mth;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.phys.BlockHitResult;
 import net.neoforged.bus.api.EventPriority;
@@ -22,6 +21,9 @@ import org.mrutcka.lvluping.data.StatTrainingConfig;
 
 @EventBusSubscriber(modid = LvlupingMod.MODID)
 public final class StatTrainingHandler {
+
+    /** Движение меньше этого (блоков за интервал) не копится в прогресс — отсекаем шум позиции. */
+    private static final double SPEED_TRAIN_DIST_EPS = 1.0e-4;
 
     private StatTrainingHandler() {}
 
@@ -40,7 +42,6 @@ public final class StatTrainingHandler {
                 PlayerStatTrainingData.addDamageProgress(
                         attacker,
                         StatTrainingConfig.damageFromMannequinHit,
-                        PlayerStatTrainingData.FatigueTrack.MELEE,
                         StatTrainingConfig.damageFromMannequinHit * 3
                 );
             }
@@ -66,7 +67,6 @@ public final class StatTrainingHandler {
                 PlayerStatTrainingData.addDamageProgress(
                         sp,
                         StatTrainingConfig.damageFromHayHit,
-                        PlayerStatTrainingData.FatigueTrack.BOW,
                         StatTrainingConfig.damageFromHayHit * 4
                 );
             }
@@ -82,35 +82,40 @@ public final class StatTrainingHandler {
     public static void onPlayerTick(PlayerTickEvent.Post event) {
         if (!(event.getEntity() instanceof ServerPlayer sp)) return;
         if (sp.level().isClientSide()) return;
-        if (sp.tickCount % 20 == 0) {
-            PlayerStatTrainingData.decayFatigue(sp.getUUID());
-        }
-        if (sp.tickCount % 5 != 0) return;
-        if (!(sp.level() instanceof ServerLevel sl)) return;
-        var zone = StatTrainingConfig.speedZone;
-        if (!zone.enabled() || !zone.contains(sl, sp.getX(), sp.getY(), sp.getZ())) {
-            return;
-        }
-        var tag = sp.getPersistentData();
-        if (!tag.contains("lvluping_spdx")) {
-            tag.putDouble("lvluping_spdx", sp.getX());
-            tag.putDouble("lvluping_spdz", sp.getZ());
-            return;
-        }
-        double lx = tag.getDouble("lvluping_spdx");
-        double lz = tag.getDouble("lvluping_spdz");
-        double px = sp.getX();
-        double pz = sp.getZ();
-        double dx = px - lx;
-        double dz = pz - lz;
-        double dist = Math.sqrt(dx * dx + dz * dz);
-        if (dist >= 0.35) {
-            int blocks = Mth.floor(dist);
-            if (blocks > 0) {
-                PlayerStatTrainingData.addSpeedProgress(sp, blocks * StatTrainingConfig.speedUnitsPerBlock);
+        if (sp.tickCount % 5 == 0 && sp.level() instanceof ServerLevel sl) {
+            var zone = StatTrainingConfig.speedZone;
+            if (zone.enabled() && zone.contains(sl, sp.getX(), sp.getY(), sp.getZ())) {
+                var tag = sp.getPersistentData();
+                if (!tag.contains("lvluping_spdx")) {
+                    tag.putDouble("lvluping_spdx", sp.getX());
+                    tag.putDouble("lvluping_spdz", sp.getZ());
+                    tag.putDouble("lvluping_spd_acc", 0.0);
+                } else {
+                    double lx = tag.getDouble("lvluping_spdx");
+                    double lz = tag.getDouble("lvluping_spdz");
+                    double px = sp.getX();
+                    double pz = sp.getZ();
+                    double dx = px - lx;
+                    double dz = pz - lz;
+                    double dist = Math.sqrt(dx * dx + dz * dz);
+                    double accum = tag.getDouble("lvluping_spd_acc");
+                    if (dist >= SPEED_TRAIN_DIST_EPS) {
+                        accum += dist;
+                    }
+                    int wholeBlocks = (int) Math.floor(accum);
+                    if (wholeBlocks > 0) {
+                        PlayerStatTrainingData.addSpeedProgress(sp, wholeBlocks * StatTrainingConfig.speedUnitsPerBlock);
+                        accum -= wholeBlocks;
+                    }
+                    tag.putDouble("lvluping_spd_acc", accum);
+                    tag.putDouble("lvluping_spdx", px);
+                    tag.putDouble("lvluping_spdz", pz);
+                }
             }
-            tag.putDouble("lvluping_spdx", px);
-            tag.putDouble("lvluping_spdz", pz);
+        }
+        if (sp.tickCount % 20 == 0) {
+            PlayerStatTrainingData.tickRestSecond(sp);
+            PlayerStatTrainingData.tickTrainDeathPenaltyExpire(sp);
         }
     }
 }

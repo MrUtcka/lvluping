@@ -30,10 +30,11 @@ public class AttributeHandler {
     private static final ResourceLocation HEALTH_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "stat_health");
     private static final ResourceLocation DAMAGE_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "stat_damage");
     private static final ResourceLocation SPEED_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "stat_speed");
+    private static final ResourceLocation TRAIN_DEATH_HP_HALF_ID = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "train_death_hp_half");
 
-    private static final double HEALTH_PER_STAT_LEVEL = 1.0;
-    private static final double DAMAGE_PER_STAT_LEVEL = 0.25;
-    private static final double SPEED_PER_STAT_LEVEL = 0.0025;
+    private static final double HEALTH_PER_STAT_LEVEL = 0.5;
+    private static final double DAMAGE_PER_STAT_LEVEL = 0.075;
+    private static final double SPEED_PER_STAT_LEVEL = 0.00055;
 
     public static void applyStats(ServerPlayer player, boolean isHeal) {
         UUID uuid = player.getUUID();
@@ -45,10 +46,20 @@ public class AttributeHandler {
         var healthAttr = player.getAttribute(Attributes.MAX_HEALTH);
         if (healthAttr != null) {
             healthAttr.removeModifier(HEALTH_ID);
+            healthAttr.removeModifier(TRAIN_DEATH_HP_HALF_ID);
             healthAttr.removeModifier(PALADIN_HP_ID);
             healthAttr.removeModifier(BARBARIAN_HP_ID);
             healthAttr.removeModifier(ROGUE_EDGE_HP_ID);
             healthAttr.removeModifier(AS_EVO_ENDURANCE_HP_ID);
+            long penUntil = player.getPersistentData().getLong("lvluping_train_death_penalty_until");
+            if (penUntil > 0 && player.getServer() != null) {
+                long nowGt = player.getServer().overworld().getGameTime();
+                if (nowGt >= penUntil) {
+                    player.getPersistentData().remove("lvluping_train_death_penalty_until");
+                } else {
+                    healthAttr.addTransientModifier(new AttributeModifier(TRAIN_DEATH_HP_HALF_ID, -0.5, AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL));
+                }
+            }
             if (healthLvl > 0) {
                 healthAttr.addTransientModifier(new AttributeModifier(HEALTH_ID, (double) healthLvl * HEALTH_PER_STAT_LEVEL, AttributeModifier.Operation.ADD_VALUE));
             }

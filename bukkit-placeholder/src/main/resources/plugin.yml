@@ -1,0 +1,7 @@
+name: LvlupingPlaceholderAPI
+version: '1.0.0'
+main: org.mrutcka.lvluping.bridge.LvlupingPlaceholderPlugin
+api-version: '1.21'
+authors: [ mrutcka ]
+description: PlaceholderAPI expansion for Lvluping (level, stars) via reflection on hybrid servers
+softdepend: [ PlaceholderAPI ]

@@ -11,6 +11,8 @@ import org.mrutcka.lvluping.handler.TalentAbilityHandler;
 
 public record C2SUseAbility(int slot) implements CustomPacketPayload {
     public static final Type<C2SUseAbility> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "use_ability"));
+    private static final String ABILITY_USE_RATE_KEY = "lvluping_last_use_ability_gt";
+    private static final int ABILITY_USE_MIN_INTERVAL_TICKS = 2;
 
     public static final StreamCodec<FriendlyByteBuf, C2SUseAbility> STREAM_CODEC = StreamCodec.of(
             (buf, msg) -> buf.writeVarInt(msg.slot()),
@@ -23,7 +25,19 @@ public record C2SUseAbility(int slot) implements CustomPacketPayload {
     public static void handle(C2SUseAbility msg, IPayloadContext ctx) {
         ctx.enqueueWork(() -> {
             if (ctx.player() instanceof ServerPlayer player) {
-                TalentAbilityHandler.handleAbilityUse(player, msg.slot());
+                long nowGt = player.level().getGameTime();
+                long lastGt = player.getPersistentData().getLong(ABILITY_USE_RATE_KEY);
+                if (lastGt > 0 && nowGt - lastGt < ABILITY_USE_MIN_INTERVAL_TICKS) {
+                    return;
+                }
+                player.getPersistentData().putLong(ABILITY_USE_RATE_KEY, nowGt);
+                try {
+                    TalentAbilityHandler.handleAbilityUse(player, msg.slot());
+                } catch (Throwable t) {
+                    // Никогда не даём исключению из ability-handler уронить сетевой обработчик.
+                    LvlupingMod.LOGGER.error("LVLuping: ability use failed (player={}, slot={})",
+                            player.getScoreboardName(), msg.slot(), t);
+                }
             }
         });
     }

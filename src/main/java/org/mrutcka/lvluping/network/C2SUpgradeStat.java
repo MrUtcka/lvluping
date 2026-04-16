@@ -11,7 +11,6 @@ import org.mrutcka.lvluping.LvlupingMod;
 import org.mrutcka.lvluping.data.*;
 import org.mrutcka.lvluping.handler.AttributeHandler;
 
-import java.util.Objects;
 import java.util.UUID;
 
 public record C2SUpgradeStat(String statId) implements CustomPacketPayload {
@@ -41,43 +40,24 @@ public record C2SUpgradeStat(String statId) implements CustomPacketPayload {
             if (stat == null) return;
 
             UUID uuid = serverPlayer.getUUID();
-            int currentTotalLvl = PlayerLevels.getStatLevel(uuid, stat.id);
+            if (PlayerLevels.getStatLevel(uuid, stat.id) >= stat.maxLevel) return;
 
-            if (currentTotalLvl >= stat.maxLevel) return;
-
-            int spentOnTalents = PlayerLevels.getPlayerTalents(uuid).stream()
-                    .map(Talent::getById)
-                    .filter(Objects::nonNull)
-                    .filter(t -> !isFreeClassTalent(t.id))
-                    .mapToInt(t -> t.cost)
-                    .sum();
-
-            int spentOnStats = PlayerLevels.getPlayerStatsMap(uuid).values().stream()
-                    .mapToInt(Integer::intValue)
-                    .sum();
-
-            int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
-            if (PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats + spentUpgrades) >= 1) {
-                PlayerLevels.upgradeStat(uuid, stat.id);
-                AttributeHandler.applyStats(serverPlayer, false);
-
-                PacketDistributor.sendToPlayer(serverPlayer, new S2CSyncTalents(
-                        PlayerLevels.getLevel(serverPlayer),
-                        PlayerLevels.getStars(uuid),
-                        PlayerLevels.getPlayerTalents(uuid),
-                        PlayerLevels.getPlayerStatsMap(uuid),
-                        PlayerLevels.getPlayerAbilityLevels(uuid),
-                        PlayerLevels.getRace(uuid).id
-                ));
+            if (stat == AttributeStat.MANA) {
+                if (PlayerLevels.getAvailableUpgradePoints(uuid) < 1) return;
+                PlayerLevels.addSpentStatPoints(uuid, 1);
+            } else {
+                if (!PlayerStatTrainingData.tryConsumeOneLevelTrainingProgress(serverPlayer, stat)) {
+                    if (PlayerLevels.getAvailableUpgradePoints(uuid) < 1) return;
+                    PlayerLevels.addSpentStatPoints(uuid, 1);
+                }
             }
-        });
-    }
 
-    private static boolean isFreeClassTalent(String id) {
-        return "start".equals(id)
-                || "warrior_base".equals(id)
-                || "archer_base".equals(id)
-                || "mage_base".equals(id)
-                || "assassin_base".equals(id);
+            PlayerLevels.upgradeStat(uuid, stat.id);
+            AttributeHandler.applyStats(serverPlayer, false);
+
+            PacketDistributor.sendToPlayer(serverPlayer, PlayerLevels.createSyncPayload(serverPlayer));
+            PlayerStatTrainingData.syncToClient(serverPlayer);
+            PlayerLevels.save(serverPlayer.getServer());
+        });
     }
 }

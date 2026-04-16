@@ -27,6 +27,10 @@ public final class ClientStatTrainingHud {
     public static boolean hpMaxed;
     public static boolean hasData;
 
+    public static int globalFatigue;
+    public static int fatigueTier;
+    public static int fatigueCap = 1;
+
     private static boolean havePriorSync;
     private static ActiveLane activeLane = ActiveLane.NONE;
     private static long hideAfterMs;
@@ -45,6 +49,9 @@ public final class ClientStatTrainingHud {
         dmgMaxed = msg.dmgMaxed();
         spdMaxed = msg.spdMaxed();
         hpMaxed = msg.hpMaxed();
+        globalFatigue = Math.max(0, msg.globalFatigue());
+        fatigueTier = Mth.clamp(msg.fatigueTier(), 0, 4);
+        fatigueCap = Math.max(1, msg.fatigueCap());
         hasData = true;
 
         if (!havePriorSync) {
@@ -76,74 +83,93 @@ public final class ClientStatTrainingHud {
     public static void render(GuiGraphics gui, Minecraft mc) {
         if (!hasData || mc.options.hideGui || mc.player == null) return;
         if (mc.player.isSpectator()) return;
-        long now = Util.getMillis();
-        if (now > hideAfterMs) {
-            activeLane = ActiveLane.NONE;
-            return;
-        }
-        if (activeLane == ActiveLane.NONE) return;
-
-        int prog;
-        int need;
-        boolean maxed;
-        int fillCol;
-        String mark;
-        switch (activeLane) {
-            case DMG -> {
-                prog = dmgProg;
-                need = dmgNeed;
-                maxed = dmgMaxed;
-                fillCol = dmgMaxed ? 0xFFC9A04A : 0xFFCC6644;
-                mark = "С";
-            }
-            case SPD -> {
-                prog = spdProg;
-                need = spdNeed;
-                maxed = spdMaxed;
-                fillCol = spdMaxed ? 0xFFC9A04A : 0xFF44AACC;
-                mark = "↔";
-            }
-            case HP -> {
-                prog = hpProg;
-                need = hpNeed;
-                maxed = hpMaxed;
-                fillCol = hpMaxed ? 0xFFC9A04A : 0xFF55BB66;
-                mark = "+";
-            }
-            default -> {
-                return;
-            }
-        }
-
-        if (maxed) return;
 
         int h = mc.getWindow().getGuiScaledHeight();
         int w = mc.getWindow().getGuiScaledWidth();
-
-        int xpBarTop = h - 32 + 3;
-        int y = xpBarTop - 11;
+        int xpBarTop = h - HudLayout.VANILLA_XP_BAR_TOP_OFFSET;
+        int gap = HudLayout.STAT_TRAINING_GAP_ABOVE_XP;
+        int trainH = HudLayout.STAT_TRAINING_BAR_HEIGHT;
+        int fatH = HudLayout.STAT_FATIGUE_BAR_HEIGHT;
         int barW = 182;
         int left = (w - barW) / 2;
-        int barH = 4;
 
-        float fill = Mth.clamp((float) prog / (float) need, 0f, 1f);
+        long now = Util.getMillis();
+        boolean showTraining = now <= hideAfterMs && activeLane != ActiveLane.NONE;
+
+        int prog = 0;
+        int need = 1;
+        boolean maxed = false;
+        int fillCol = 0xFFFFFFFF;
+        if (showTraining) {
+            switch (activeLane) {
+                case DMG -> {
+                    prog = dmgProg;
+                    need = dmgNeed;
+                    maxed = dmgMaxed;
+                    fillCol = dmgMaxed ? 0xFFC9A04A : 0xFFCC6644;
+                }
+                case SPD -> {
+                    prog = spdProg;
+                    need = spdNeed;
+                    maxed = spdMaxed;
+                    fillCol = spdMaxed ? 0xFFC9A04A : 0xFF44AACC;
+                }
+                case HP -> {
+                    prog = hpProg;
+                    need = hpNeed;
+                    maxed = hpMaxed;
+                    fillCol = hpMaxed ? 0xFFC9A04A : 0xFF55BB66;
+                }
+                default -> showTraining = false;
+            }
+        }
+
+        if (showTraining && maxed) {
+            showTraining = false;
+        }
+
+        int yTrainTop = xpBarTop - gap - trainH;
+        int yFatTop;
+        if (showTraining) {
+            yFatTop = yTrainTop - fatH;
+        } else {
+            yFatTop = xpBarTop - gap - fatH;
+        }
 
         RenderSystem.enableBlend();
-        drawSegment(gui, left, y, barW, barH, fill, 0xE0282828, fillCol, mark, prog, maxed);
+
+        if (globalFatigue > 0) {
+            float fFill = Mth.clamp((float) globalFatigue / (float) fatigueCap, 0f, 1f);
+            int fCol = fatigueTierColor(fatigueTier);
+            drawBarStrip(gui, left, yFatTop, barW, fatH, fFill, 0xE0282828, fCol);
+        }
+
+        if (showTraining) {
+            float fill = Mth.clamp((float) prog / (float) need, 0f, 1f);
+            drawBarStrip(gui, left, yTrainTop, barW, trainH, fill, 0xE0282828, fillCol);
+        }
+
         RenderSystem.disableBlend();
     }
 
+    /** Цвет заливки по порогу усталости (0 — до 1-го порога, … 4 — 4-й порог). */
+    private static int fatigueTierColor(int tier) {
+        return switch (Mth.clamp(tier, 0, 4)) {
+            case 0 -> 0xFF7aab8e;
+            case 1 -> 0xFFd4b84a;
+            case 2 -> 0xFFe88838;
+            case 3 -> 0xFFe84830;
+            default -> 0xFFc02828;
+        };
+    }
 
-    private static void drawSegment(GuiGraphics g, int x, int y, int w, int h, float fill, int bg, int fillCol, String mark, int prog, boolean maxed) {
+    private static void drawBarStrip(GuiGraphics g, int x, int y, int w, int h, float fill, int bg, int fillCol) {
         g.fill(x, y, x + w, y + h, bg);
-        int fw = maxed ? w : Mth.ceil(w * fill);
-        if (!maxed && prog > 0 && fw < 1) fw = 1;
+        int fw = Mth.ceil(w * fill);
+        if (fill > 0f && fw < 1) fw = 1;
         fw = Math.min(fw, w);
         if (fw > 0) g.fill(x, y, x + fw, y + h, fillCol);
         g.renderOutline(x, y, w, h, 0xFF101010);
-        Minecraft mc = Minecraft.getInstance();
-        int mw = mc.font.width(mark);
-        g.drawString(mc.font, mark, x + (w - mw) / 2, y - 9, 0xFFE0E0E0, false);
     }
 
     private ClientStatTrainingHud() {}

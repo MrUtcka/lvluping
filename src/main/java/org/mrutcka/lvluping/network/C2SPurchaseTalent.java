@@ -76,19 +76,7 @@ public record C2SPurchaseTalent(String talentId) implements CustomPacketPayload 
                     && !PlayerLevels.isRaceForbidden(uuid, t)) {
 
                 if (t.parentsSatisfiedForPurchase(owned)) {
-                    int spentOnTalents = owned.stream()
-                            .map(Talent::getById)
-                            .filter(Objects::nonNull)
-                            .filter(ta -> !isFreeClassTalent(ta.id))
-                            .mapToInt(ta -> ta.cost)
-                            .sum();
-
-                    int spentOnStats = PlayerLevels.getPlayerStatsMap(uuid).values().stream()
-                            .mapToInt(Integer::intValue)
-                            .sum();
-
-                    int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
-                    int available = PlayerLevels.getLevel(serverPlayer) - (spentOnTalents + spentOnStats + spentUpgrades);
+                    int available = PlayerLevels.getAvailableUpgradePoints(uuid);
                     if (available >= t.cost) {
                         PlayerLevels.unlockTalent(uuid, t.id);
                         if (org.mrutcka.lvluping.data.AbilityUpgradeConfig.has(t.id)) {

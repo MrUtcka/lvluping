@@ -8,7 +8,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 import org.mrutcka.lvluping.LvlupingMod;
 import java.util.*;
 
-public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<String, Integer> stats, Map<String, Integer> abilityLevels, String raceId) implements CustomPacketPayload {
+public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<String, Integer> stats, Map<String, Integer> abilityLevels, String raceId, int bonusPoints, int statPointsSpent, Set<String> adminGrantedTalentIds, int talentBudgetDebt) implements CustomPacketPayload {
 
     public static final Type<S2CSyncTalents> TYPE = new Type<>(ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "sync_talents"));
 
@@ -29,6 +29,11 @@ public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<Stri
                     buf.writeInt(lvl);
                 });
                 buf.writeUtf(msg.raceId);
+                buf.writeInt(msg.bonusPoints);
+                buf.writeInt(msg.statPointsSpent);
+                buf.writeInt(msg.adminGrantedTalentIds.size());
+                msg.adminGrantedTalentIds.forEach(buf::writeUtf);
+                buf.writeInt(msg.talentBudgetDebt);
             },
             buf -> {
                 int lvl = buf.readInt();
@@ -43,7 +48,13 @@ public record S2CSyncTalents(int level, int stars, Set<String> talents, Map<Stri
                 int aSize = buf.readInt();
                 for (int i = 0; i < aSize; i++) abilityLevels.put(buf.readUtf(), buf.readInt());
                 String race = buf.readUtf();
-                return new S2CSyncTalents(lvl, stars, talents, stats, abilityLevels, race);
+                int bonusPoints = buf.readInt();
+                int statPointsSpent = buf.readInt();
+                Set<String> adminGranted = new HashSet<>();
+                int agSize = buf.readInt();
+                for (int i = 0; i < agSize; i++) adminGranted.add(buf.readUtf());
+                int talentBudgetDebt = buf.readInt();
+                return new S2CSyncTalents(lvl, stars, talents, stats, abilityLevels, race, bonusPoints, statPointsSpent, adminGranted, talentBudgetDebt);
             }
     );
 

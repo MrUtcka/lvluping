@@ -801,9 +801,14 @@ public class TalentAbilityHandler {
         double hpMult = getSummonerBaseHpMult(player, talents);
         int armorBonus = getSummonerDisciplineArmorBonus(player, talents);
         applySummonLoadout(abilityId, lvl, summon, hpMult, armorBonus);
-        serverLevel.addFreshEntity(summon);
+        boolean spawned = serverLevel.addFreshEntity(summon);
+        if (!spawned || !summon.isAlive()) {
+            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
+            setCooldown(player, cdKey, abilityFailCooldownTicks());
+            return;
+        }
         applySummonLoadout(abilityId, lvl, summon, hpMult, armorBonus);
-        int duration = AbilityUpgradeConfig.getInt(abilityId, "duration_ticks", lvl, (int) (20L * 30L));
+        int duration = Math.max(20, AbilityUpgradeConfig.getInt(abilityId, "duration_ticks", lvl, (int) (20L * 30L)));
         long until = serverLevel.getGameTime() + duration;
         int endLvl = talents.contains("m_summon_endurance")
                 ? PlayerLevels.getAbilityLevel(player.getUUID(), "m_summon_endurance", talents) : 0;
@@ -954,6 +959,7 @@ public class TalentAbilityHandler {
     }
 
     public static void handleAbilityUse(ServerPlayer player, int slot) {
+        if (slot < 0 || slot > 8) return;
         Set<String> talents = PlayerLevels.getPlayerTalents(player.getUUID());
         var data = player.getPersistentData();
 
@@ -2787,7 +2793,9 @@ public class TalentAbilityHandler {
                             summon.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, dur, M_ULT_GATE_MOVEMENT_SPEED_AMPLIFIER, false, false));
                             summon.addEffect(new MobEffectInstance(MobEffects.GLOWING, dur, M_ULT_GATE_GLOWING_AMPLIFIER, false, false));
 
-                            serverLevel.addFreshEntity(summon);
+                            if (!serverLevel.addFreshEntity(summon) || !summon.isAlive()) {
+                                continue;
+                            }
                             summon.getPersistentData().putDouble("lvluping_summon_damage_mult", summonDamageMult);
                             SummonerHandler.addSummon(serverLevel, player, summon, until);
                             serverLevel.sendParticles(ParticleTypes.PORTAL, sx, sy + 1.0, sz, 30, 0.6, 0.8, 0.6, 0.08);
@@ -3007,7 +3015,11 @@ public class TalentAbilityHandler {
                         summon.addEffect(new MobEffectInstance(MobEffects.MOVEMENT_SPEED, dur, M_ULT_ELEMENTAL_MOVEMENT_SPEED_AMPLIFIER, false, false));
                         summon.addEffect(new MobEffectInstance(MobEffects.GLOWING, dur, M_ULT_ELEMENTAL_GLOWING_AMPLIFIER, false, false));
 
-                        serverLevel.addFreshEntity(summon);
+                        if (!serverLevel.addFreshEntity(summon) || !summon.isAlive()) {
+                            serverLevel.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.DISPENSER_FAIL, SoundSource.PLAYERS, 0.6f, 0.6f);
+                            setCooldown(player, "cd_m_ult_elemental", abilityFailCooldownTicks());
+                            return;
+                        }
                         summon.getPersistentData().putDouble("lvluping_summon_damage_mult", damageMult);
                         SummonerHandler.addSummon(serverLevel, player, summon, until);
                         serverLevel.playSound(null, sx, sy, sz, SoundEvents.EVOKER_CAST_SPELL, SoundSource.PLAYERS, 1.0f, 0.8f);

@@ -12,7 +12,10 @@ public record S2CSyncStatTraining(
         int dmgProg, int dmgNeed,
         int spdProg, int spdNeed,
         int hpProg, int hpNeed,
-        boolean dmgMaxed, boolean spdMaxed, boolean hpMaxed
+        boolean dmgMaxed, boolean spdMaxed, boolean hpMaxed,
+        int globalFatigue,
+        int fatigueTier,
+        int fatigueCap
 ) implements CustomPacketPayload {
 
     public static final Type<S2CSyncStatTraining> TYPE =
@@ -29,12 +32,16 @@ public record S2CSyncStatTraining(
                 buf.writeBoolean(msg.dmgMaxed());
                 buf.writeBoolean(msg.spdMaxed());
                 buf.writeBoolean(msg.hpMaxed());
+                buf.writeVarInt(msg.globalFatigue());
+                buf.writeVarInt(msg.fatigueTier());
+                buf.writeVarInt(msg.fatigueCap());
             },
             buf -> new S2CSyncStatTraining(
                     buf.readVarInt(), buf.readVarInt(),
                     buf.readVarInt(), buf.readVarInt(),
                     buf.readVarInt(), buf.readVarInt(),
-                    buf.readBoolean(), buf.readBoolean(), buf.readBoolean()
+                    buf.readBoolean(), buf.readBoolean(), buf.readBoolean(),
+                    buf.readVarInt(), buf.readVarInt(), buf.readVarInt()
             )
     );
 

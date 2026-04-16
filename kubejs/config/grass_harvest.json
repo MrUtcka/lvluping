@@ -1,0 +1,37 @@
+{
+  "eiGiveCommand": "ei give {player} {id} {count}",
+  "_comment_double": "Только настоящие высокие растения в 2 блока (как tall_grass). Обычные цветы сюда не писать — оставьте [].",
+  "_comment_regrow": "regrowSeconds — СЕКУНДЫ: 20 мин = 1200, 5 мин = 300. Или regrowMinutes: 20. Прямые тики: regrowTicks: 24000. river_mint 2400 с = 40 мин.",
+  "_comment_timer": "Таймер только на сервере: text_display или armor_stand (regrowTimerMode). Клиентские скрипты не нужны.",
+  "doublePlantBlockIds": [],
+  "entries": [
+    {
+      "blocks": ["born_in_chaos_v1:marigolds"],
+      "items": [{ "eiGive": "sokritlandish", "count": 1 }],
+      "itemPick": "first",
+      "regrowSeconds": 3600
+    },
+    {
+      "blocks": ["minecraft:dead_bush"],
+      "items": [{ "eiGive": "hillcoren", "count": 1 }],
+      "itemPick": "first",
+      "regrowSeconds": 1800
+    },
+    {
+      "blocks": ["born_in_chaos_v1:river_mint"],
+      "items": [{ "eiGive": "lovkielisti", "count": 1 }],
+      "itemPick": "first",
+      "regrowSeconds": 2400
+    },
+    {
+      "blocks": ["youkaishomecoming:wild_udumbara"],
+      "items": [{ "eiGive": "hillcoren", "count": 1 }],
+      "itemPick": "first",
+      "regrowSeconds": 2
+    }
+  ],
+  "requireEmptyMainHand": true,
+  "showRegrowTimer": true,
+  "regrowTimerMode": "text_display",
+  "debug": true
+}

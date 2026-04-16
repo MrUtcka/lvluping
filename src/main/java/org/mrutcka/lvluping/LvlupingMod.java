@@ -10,7 +10,9 @@ import org.mrutcka.lvluping.command.LevelCommand;
 import org.mrutcka.lvluping.command.RaceCommand;
 import org.mrutcka.lvluping.command.StarCommand;
 import org.mrutcka.lvluping.command.StatCommand;
+import org.mrutcka.lvluping.command.PointsCommand;
 import org.mrutcka.lvluping.command.StatTrainingCommand;
+import org.mrutcka.lvluping.command.TalentAdminCommand;
 import org.mrutcka.lvluping.LvlupingEntityTypes;
 import org.mrutcka.lvluping.LvlupingItems;
 import org.slf4j.Logger;
@@ -34,8 +36,10 @@ public class LvlupingMod {
     private void onRegisterCommands(RegisterCommandsEvent event) {
         LevelCommand.register(event.getDispatcher());
         StarCommand.register(event.getDispatcher());
+        PointsCommand.register(event.getDispatcher());
         StatCommand.register(event.getDispatcher());
         StatTrainingCommand.register(event.getDispatcher());
         RaceCommand.register(event.getDispatcher());
+        TalentAdminCommand.register(event.getDispatcher());
     }
 }

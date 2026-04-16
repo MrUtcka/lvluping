@@ -24,7 +24,6 @@
   "splash.lvluping.11": "LorexFriposter",
   "splash.lvluping.12": "NEKNELL",
   "splash.lvluping.13": "Vovanshikkkk",
-  "splash.lvluping.14": "Ruthenium",
   "splash.lvluping.15": "Lordik",
   "splash.lvluping.16": "Lariem Community",
   "splash.lvluping.17": "Проект: Летаргия",
@@ -36,5 +35,13 @@
   "splash.lvluping.23": "Эта история про тех, кто растёт.",
   "splash.lvluping.24": "Не прокачал защиту? — умри красиво.",
   "splash.lvluping.25": "Воин без скиллов — просто мясо.",
-  "splash.lvluping.26": "26.04"
+  "splash.lvluping.26": "26.04",
+  "message.lvluping.training_fatigue.approach_tier1": "Чувствуешь усталость — скоро снизь нагрузку.",
+  "message.lvluping.training_fatigue.approach_tier2": "Сильная усталость. Нужен отдых.",
+  "message.lvluping.training_fatigue.approach_tier3": "Ты на грани срыва. Прекрати тренировку.",
+  "message.lvluping.training_fatigue.approach_tier4": "Ещё чуть-чуть — и тело не выдержит.",
+  "message.lvluping.training_fatigue.cross_tier1": "Перетренированность: лёгкое истощение.",
+  "message.lvluping.training_fatigue.cross_tier2": "Перетренированность: сильное истощение.",
+  "message.lvluping.training_fatigue.cross_tier3": "Перетренированность: критическое истощение.",
+  "message.lvluping.training_fatigue.cross_tier4": "Ты выжал из себя всё и потерял сознание."
 }

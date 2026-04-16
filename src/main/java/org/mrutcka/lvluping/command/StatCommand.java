@@ -13,8 +13,6 @@ import net.neoforged.neoforge.network.PacketDistributor;
 import org.mrutcka.lvluping.data.AttributeStat;
 import org.mrutcka.lvluping.data.PlayerLevels;
 import org.mrutcka.lvluping.handler.AttributeHandler;
-import org.mrutcka.lvluping.network.S2CSyncTalents;
-
 import java.util.Collection;
 
 public class StatCommand {
@@ -83,12 +81,6 @@ public class StatCommand {
     }
 
     private static void sync(ServerPlayer player) {
-        PacketDistributor.sendToPlayer(player, new S2CSyncTalents(
-                PlayerLevels.getLevel(player),
-                PlayerLevels.getStars(player.getUUID()),
-                PlayerLevels.getPlayerTalents(player.getUUID()),
-                PlayerLevels.getPlayerStatsMap(player.getUUID()),
-                PlayerLevels.getPlayerAbilityLevels(player.getUUID()),
-                PlayerLevels.getRace(player.getUUID()).id));
+        PacketDistributor.sendToPlayer(player, PlayerLevels.createSyncPayload(player));
     }
 }

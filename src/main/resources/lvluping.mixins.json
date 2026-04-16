@@ -2,12 +2,15 @@
   "required": true,
   "minVersion": "0.8",
   "package": "org.mrutcka.lvluping.mixin",
+  "plugin": "org.mrutcka.lvluping.mixin.LvlupingMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "ServerPlayerDeathMessageMixin"
   ],
   "client": [
     "TitleScreenMixin",
+    "client.GuiHudLiftMixin",
+    "client.AppleSkinOverlayOffsetMixin",
     "client.InvisibilityHideArmorLayerMixin",
     "client.InvisibilityHideElytraLayerMixin",
     "client.InvisibilityHideHandLayerMixin"

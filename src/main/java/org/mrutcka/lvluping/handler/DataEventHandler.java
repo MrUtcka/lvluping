@@ -35,7 +35,10 @@ public class DataEventHandler {
     public static void onPlayerClone(PlayerEvent.Clone event) {
         if (event.isWasDeath()) {
             ServerPlayer newPlayer = (ServerPlayer) event.getEntity();
-            AttributeHandler.applyStats(newPlayer, true);
+            ServerPlayer oldPlayer = (ServerPlayer) event.getOriginal();
+            if (!PlayerStatTrainingData.consumePendingTrainDeathPenaltyAndApply(oldPlayer, newPlayer)) {
+                AttributeHandler.applyStats(newPlayer, true);
+            }
             syncPlayer(newPlayer);
         }
     }

@@ -2,13 +2,13 @@ package org.mrutcka.lvluping.data;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import org.mrutcka.lvluping.LvlupingMod;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -22,9 +22,9 @@ public final class StatTrainingConfig {
 
     public static volatile String minecellsTrainingEntityId = "minecells:protector";
 
-    public static volatile int damageUnitsPerLevel = 12_000;
-    public static volatile int damageFromMannequinHit = 2;
-    public static volatile int damageFromHayHit = 2;
+    public static volatile int damageUnitsPerLevel = 12;
+    public static volatile int damageFromMannequinHit = 5;
+    public static volatile int damageFromHayHit = 42;
     public static volatile int meleeTrainingCooldownTicks = 12;
 
     public static volatile int speedUnitsPerLevel = 18_000;
@@ -33,22 +33,18 @@ public final class StatTrainingConfig {
     public static volatile int healthUnitsPerLevel = 9_000;
     public static volatile int healthFromPvPHit = 25;
 
-    public static volatile int fatigueWarnMelee = 4_000;
-    public static volatile int fatigueDebuffMelee = 6_500;
-    public static volatile int fatigueWarnBow = 4_000;
-    public static volatile int fatigueDebuffBow = 6_500;
-    public static volatile int fatigueWarnSpeed = 5_500;
-    public static volatile int fatigueDebuffSpeed = 8_000;
-    public static volatile int fatigueWarnPvp = 4_000;
-    public static volatile int fatigueDebuffPvp = 6_500;
-
-    public static volatile int fatigueDecayPerSecond = 8;
-
-    public static volatile int slownessTicks = 30 * 60 * 20;
-    public static volatile int slownessAmpMin = 1;
-    public static volatile int slownessAmpMax = 2;
-    public static volatile int weaknessTicksShort = 30 * 60 * 20;
-    public static volatile int weaknessTicksLong = 60 * 60 * 20;
+    public static volatile int tfThreshold1 = 4_000;
+    public static volatile int tfThreshold2 = 8_000;
+    public static volatile int tfThreshold3 = 12_000;
+    public static volatile int tfThreshold4 = 16_000;
+    public static volatile int tfDecayPerSecondWhenIdle = 8;
+    public static volatile double tfApproachFraction1 = 0.82;
+    public static volatile double tfApproachFraction2 = 0.82;
+    public static volatile double tfApproachFraction3 = 0.82;
+    public static volatile double tfApproachFraction4 = 0.88;
+    public static volatile double tfTier3ApplyChance = 1.0;
+    public static volatile int tfPostTrainDeathPenaltyHours = 24;
+    public static volatile int[] tfEffectMinutes = {30, 50, 90, 120};
 
     public record ZoneBox(
             boolean enabled,
@@ -88,6 +84,15 @@ public final class StatTrainingConfig {
         if (!o.has(k)) return def;
         try {
             return o.get(k).getAsInt();
+        } catch (Exception e) {
+            return def;
+        }
+    }
+
+    private static double doubleOr(JsonObject o, String k, double def) {
+        if (!o.has(k)) return def;
+        try {
+            return o.get(k).getAsDouble();
         } catch (Exception e) {
             return def;
         }
@@ -148,22 +153,37 @@ public final class StatTrainingConfig {
                 healthUnitsPerLevel = intOr(h, "unitsPerLevel", healthUnitsPerLevel);
                 healthFromPvPHit = intOr(h, "fromPvPHit", healthFromPvPHit);
             }
-            if (root.has("fatigue")) {
-                JsonObject f = root.getAsJsonObject("fatigue");
-                fatigueWarnMelee = intOr(f, "warnMelee", fatigueWarnMelee);
-                fatigueDebuffMelee = intOr(f, "debuffMelee", fatigueDebuffMelee);
-                fatigueWarnBow = intOr(f, "warnBow", fatigueWarnBow);
-                fatigueDebuffBow = intOr(f, "debuffBow", fatigueDebuffBow);
-                fatigueWarnSpeed = intOr(f, "warnSpeed", fatigueWarnSpeed);
-                fatigueDebuffSpeed = intOr(f, "debuffSpeed", fatigueDebuffSpeed);
-                fatigueWarnPvp = intOr(f, "warnPvp", fatigueWarnPvp);
-                fatigueDebuffPvp = intOr(f, "debuffPvp", fatigueDebuffPvp);
-                fatigueDecayPerSecond = intOr(f, "decayPerSecond", fatigueDecayPerSecond);
-                slownessTicks = intOr(f, "slownessTicks", slownessTicks);
-                slownessAmpMin = intOr(f, "slownessAmpMin", slownessAmpMin);
-                slownessAmpMax = intOr(f, "slownessAmpMax", slownessAmpMax);
-                weaknessTicksShort = intOr(f, "weaknessTicksShort", weaknessTicksShort);
-                weaknessTicksLong = intOr(f, "weaknessTicksLong", weaknessTicksLong);
+            if (root.has("trainingFatigue")) {
+                JsonObject tf = root.getAsJsonObject("trainingFatigue");
+                tfThreshold1 = intOr(tf, "threshold1", tfThreshold1);
+                tfThreshold2 = intOr(tf, "threshold2", tfThreshold2);
+                tfThreshold3 = intOr(tf, "threshold3", tfThreshold3);
+                tfThreshold4 = intOr(tf, "threshold4", tfThreshold4);
+                tfDecayPerSecondWhenIdle = intOr(tf, "decayPerSecondWhenNotTraining", tfDecayPerSecondWhenIdle);
+                tfApproachFraction1 = doubleOr(tf, "approachFraction1", tfApproachFraction1);
+                tfApproachFraction2 = doubleOr(tf, "approachFraction2", tfApproachFraction2);
+                tfApproachFraction3 = doubleOr(tf, "approachFraction3", tfApproachFraction3);
+                tfApproachFraction4 = doubleOr(tf, "approachFraction4", tfApproachFraction4);
+                if (tf.has("effectMinutes") && tf.get("effectMinutes").isJsonArray()) {
+                    JsonArray arr = tf.getAsJsonArray("effectMinutes");
+                    for (int i = 0; i < Math.min(4, arr.size()); i++) {
+                        try {
+                            tfEffectMinutes[i] = arr.get(i).getAsInt();
+                        } catch (Exception ignored) {
+                        }
+                    }
+                } else {
+                    if (tf.has("effectMinutesTier1")) tfEffectMinutes[0] = intOr(tf, "effectMinutesTier1", tfEffectMinutes[0]);
+                    if (tf.has("effectMinutesTier2")) tfEffectMinutes[1] = intOr(tf, "effectMinutesTier2", tfEffectMinutes[1]);
+                    if (tf.has("effectMinutesTier3")) tfEffectMinutes[2] = intOr(tf, "effectMinutesTier3", tfEffectMinutes[2]);
+                    if (tf.has("effectMinutesTier4")) tfEffectMinutes[3] = intOr(tf, "effectMinutesTier4", tfEffectMinutes[3]);
+                }
+                tfTier3ApplyChance = doubleOr(tf, "tier3ApplyChance", tfTier3ApplyChance);
+                if (tf.has("postTrainDeathPenaltyHours")) {
+                    tfPostTrainDeathPenaltyHours = Math.max(1, intOr(tf, "postTrainDeathPenaltyHours", tfPostTrainDeathPenaltyHours));
+                }
+            } else if (root.has("fatigue")) {
+                migrateLegacyFatigue(root.getAsJsonObject("fatigue"));
             }
             if (root.has("speedZone")) {
                 speedZone = ZoneBox.fromJson(root.getAsJsonObject("speedZone"), speedZone);
@@ -171,10 +191,37 @@ public final class StatTrainingConfig {
             if (root.has("healthPvpZone")) {
                 healthPvpZone = ZoneBox.fromJson(root.getAsJsonObject("healthPvpZone"), healthPvpZone);
             }
+            normalizeThresholds();
         } catch (Exception e) {
             LvlupingMod.LOGGER.error("LVLuping: ошибка stat_training.json — {}", e.toString());
             applyDefaults();
         }
+    }
+
+    private static void migrateLegacyFatigue(JsonObject f) {
+        int maxWarn = Math.max(
+                Math.max(intOr(f, "warnMelee", 4000), intOr(f, "warnBow", 4000)),
+                Math.max(intOr(f, "warnSpeed", 5500), intOr(f, "warnPvp", 4000)));
+        int maxDeb = Math.max(
+                Math.max(intOr(f, "debuffMelee", 6500), intOr(f, "debuffBow", 6500)),
+                Math.max(intOr(f, "debuffSpeed", 8000), intOr(f, "debuffPvp", 6500)));
+        tfThreshold1 = maxWarn;
+        tfThreshold2 = maxWarn + (maxDeb - maxWarn) / 3;
+        tfThreshold3 = maxWarn + 2 * (maxDeb - maxWarn) / 3;
+        tfThreshold4 = maxDeb + (maxDeb - maxWarn) / 2;
+        tfDecayPerSecondWhenIdle = intOr(f, "decayPerSecond", tfDecayPerSecondWhenIdle);
+        normalizeThresholds();
+    }
+
+    private static void normalizeThresholds() {
+        if (tfThreshold2 <= tfThreshold1) tfThreshold2 = tfThreshold1 + 1;
+        if (tfThreshold3 <= tfThreshold2) tfThreshold3 = tfThreshold2 + 1;
+        if (tfThreshold4 <= tfThreshold3) tfThreshold4 = tfThreshold3 + 1;
+        for (int i = 0; i < tfEffectMinutes.length; i++) {
+            tfEffectMinutes[i] = Math.max(1, tfEffectMinutes[i]);
+        }
+        tfTier3ApplyChance = Math.max(0.0, Math.min(1.0, tfTier3ApplyChance));
+        tfPostTrainDeathPenaltyHours = Math.max(1, tfPostTrainDeathPenaltyHours);
     }
 
     private static void applyDefaults() {
@@ -182,7 +229,15 @@ public final class StatTrainingConfig {
         healthPvpZone = ZoneBox.disabled();
     }
 
-    /** Сохранить зоны и числовые поля (для команд). */
+    public static int tfEffectTicksForTier(int tier1to3) {
+        int idx = Math.min(2, Math.max(0, tier1to3 - 1));
+        return tfEffectMinutes[idx] * 60 * 20;
+    }
+
+    public static int tfPostTrainDeathPenaltyTicks() {
+        return tfPostTrainDeathPenaltyHours * 60 * 60 * 20;
+    }
+
     public static void saveToFile(MinecraftServer server) throws Exception {
         Path path = configPath(server);
         LvlupingServerData.ensureRootExists(server);
@@ -202,22 +257,22 @@ public final class StatTrainingConfig {
         hp.addProperty("unitsPerLevel", healthUnitsPerLevel);
         hp.addProperty("fromPvPHit", healthFromPvPHit);
         root.add("health", hp);
-        JsonObject fat = new JsonObject();
-        fat.addProperty("warnMelee", fatigueWarnMelee);
-        fat.addProperty("debuffMelee", fatigueDebuffMelee);
-        fat.addProperty("warnBow", fatigueWarnBow);
-        fat.addProperty("debuffBow", fatigueDebuffBow);
-        fat.addProperty("warnSpeed", fatigueWarnSpeed);
-        fat.addProperty("debuffSpeed", fatigueDebuffSpeed);
-        fat.addProperty("warnPvp", fatigueWarnPvp);
-        fat.addProperty("debuffPvp", fatigueDebuffPvp);
-        fat.addProperty("decayPerSecond", fatigueDecayPerSecond);
-        fat.addProperty("slownessTicks", slownessTicks);
-        fat.addProperty("slownessAmpMin", slownessAmpMin);
-        fat.addProperty("slownessAmpMax", slownessAmpMax);
-        fat.addProperty("weaknessTicksShort", weaknessTicksShort);
-        fat.addProperty("weaknessTicksLong", weaknessTicksLong);
-        root.add("fatigue", fat);
+        JsonObject tf = new JsonObject();
+        tf.addProperty("threshold1", tfThreshold1);
+        tf.addProperty("threshold2", tfThreshold2);
+        tf.addProperty("threshold3", tfThreshold3);
+        tf.addProperty("threshold4", tfThreshold4);
+        tf.addProperty("decayPerSecondWhenNotTraining", tfDecayPerSecondWhenIdle);
+        tf.addProperty("approachFraction1", tfApproachFraction1);
+        tf.addProperty("approachFraction2", tfApproachFraction2);
+        tf.addProperty("approachFraction3", tfApproachFraction3);
+        tf.addProperty("approachFraction4", tfApproachFraction4);
+        JsonArray mins = new JsonArray();
+        for (int m : tfEffectMinutes) mins.add(m);
+        tf.add("effectMinutes", mins);
+        tf.addProperty("tier3ApplyChance", tfTier3ApplyChance);
+        tf.addProperty("postTrainDeathPenaltyHours", tfPostTrainDeathPenaltyHours);
+        root.add("trainingFatigue", tf);
         root.add("speedZone", zoneToJson(speedZone));
         root.add("healthPvpZone", zoneToJson(healthPvpZone));
         Files.writeString(path, GSON.toJson(root), StandardCharsets.UTF_8);

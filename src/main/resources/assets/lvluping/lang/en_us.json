@@ -24,7 +24,6 @@
   "splash.lvluping.11": "LorexFriposter",
   "splash.lvluping.12": "NEKNELL",
   "splash.lvluping.13": "Vovanshikkkk",
-  "splash.lvluping.14": "Ruthenium",
   "splash.lvluping.15": "Lordik",
   "splash.lvluping.16": "Lariem Community",
   "splash.lvluping.17": "PROJECT: LETHARGIA",
@@ -36,5 +35,13 @@
   "splash.lvluping.23": "This story belongs to those who grow.",
   "splash.lvluping.24": "Didn't level your defense? Die with style.",
   "splash.lvluping.25": "A warrior without skills is just meat.",
-  "splash.lvluping.26": "26.04"
+  "splash.lvluping.26": "26.04",
+  "message.lvluping.training_fatigue.approach_tier1": "You feel tired — ease off training soon.",
+  "message.lvluping.training_fatigue.approach_tier2": "Heavy fatigue is building. Rest soon.",
+  "message.lvluping.training_fatigue.approach_tier3": "You are on the edge of collapse. Stop training.",
+  "message.lvluping.training_fatigue.approach_tier4": "One more push and your body will give out.",
+  "message.lvluping.training_fatigue.cross_tier1": "Overtraining: minor exhaustion.",
+  "message.lvluping.training_fatigue.cross_tier2": "Overtraining: severe exhaustion.",
+  "message.lvluping.training_fatigue.cross_tier3": "Overtraining: critical exhaustion.",
+  "message.lvluping.training_fatigue.cross_tier4": "You pushed past your limit and collapsed."
 }

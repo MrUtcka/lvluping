@@ -1,0 +1,51 @@
+{
+  "minecellsTrainingEntityId": "minecells:protector",
+  "damage": {
+    "unitsPerLevel": 12000,
+    "fromMannequinHit": 3,
+    "fromHayHit": 12,
+    "meleeCooldownTicks": 12
+  },
+  "speed": {
+    "unitsPerLevel": 10000,
+    "unitsPerBlock": 2
+  },
+  "health": {
+    "unitsPerLevel": 12000,
+    "fromPvPHit": 12
+  },
+  "trainingFatigue": {
+    "threshold1": 4000,
+    "threshold2": 6000,
+    "threshold3": 8000,
+    "threshold4": 9000,
+    "decayPerSecondWhenNotTraining": 6,
+    "approachFraction1": 0.82,
+    "approachFraction2": 0.82,
+    "approachFraction3": 0.82,
+    "approachFraction4": 0.88,
+    "tier3ApplyChance": 0.5,
+    "postTrainDeathPenaltyHours": 24,
+    "effectMinutes": [30, 50, 90, 120]
+  },
+  "speedZone": {
+    "enabled": false,
+    "dimension": "minecraft:overworld",
+    "minX": 0,
+    "maxX": 0,
+    "minZ": 0,
+    "maxZ": 0,
+    "minY": -64,
+    "maxY": 320
+  },
+  "healthPvpZone": {
+    "enabled": false,
+    "dimension": "minecraft:overworld",
+    "minX": 0,
+    "maxX": 0,
+    "minZ": 0,
+    "maxZ": 0,
+    "minY": -64,
+    "maxY": 320
+  }
+}

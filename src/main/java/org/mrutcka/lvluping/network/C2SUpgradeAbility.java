@@ -47,10 +47,7 @@ public record C2SUpgradeAbility(String abilityId) implements CustomPacketPayload
             int next = current + 1;
 
             int cost = AbilityUpgradeConfig.getUpgradePointCost(msg.abilityId, next);
-            int spentTalents = owned.stream().map(org.mrutcka.lvluping.data.Talent::getById).filter(java.util.Objects::nonNull).filter(t -> !isFreeClassTalent(t.id)).mapToInt(t -> t.cost).sum();
-            int spentStats = PlayerLevels.getPlayerStatsMap(uuid).values().stream().mapToInt(Integer::intValue).sum();
-            int spentUpgrades = PlayerLevels.getSpentUpgradePoints(uuid);
-            int available = PlayerLevels.getLevel(player) - (spentTalents + spentStats + spentUpgrades);
+            int available = PlayerLevels.getAvailableUpgradePoints(uuid);
             if (available < cost) return;
 
             PlayerLevels.setAbilityLevel(uuid, msg.abilityId, next);
@@ -68,14 +65,7 @@ public record C2SUpgradeAbility(String abilityId) implements CustomPacketPayload
                 if (owned.contains("m_summon_guard")) TalentAbilityHandler.refreshOwnedSummonLoadouts(player, "m_summon_guard");
             }
 
-            PacketDistributor.sendToPlayer(player, new S2CSyncTalents(
-                    PlayerLevels.getLevel(player),
-                    PlayerLevels.getStars(uuid),
-                    PlayerLevels.getPlayerTalents(uuid),
-                    PlayerLevels.getPlayerStatsMap(uuid),
-                    PlayerLevels.getPlayerAbilityLevels(uuid),
-                    PlayerLevels.getRace(uuid).id
-            ));
+            PacketDistributor.sendToPlayer(player, PlayerLevels.createSyncPayload(player));
             PlayerLevels.save(player.getServer());
         });
     }

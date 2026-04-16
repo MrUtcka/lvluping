@@ -32,8 +32,14 @@ public class TalentScreen extends Screen {
     private static final ResourceLocation FRAME_ASSASSIN_SILVER = ResourceLocation.fromNamespaceAndPath(LvlupingMod.MODID, "textures/gui/frames/romb_notfull.png");
 
     public static int clientLevel = 0;
+    public static int clientBonusPoints = 0;
+    public static int clientStatPointsSpent = 0;
     public static int clientStars = 2;
     public static Set<String> clientTalents = new HashSet<>();
+    /** Совпадает с сервером: таланты с /lvl_talent set — не учитываются в «потраченных» очках уровня. */
+    public static Set<String> clientAdminGrantedTalents = new HashSet<>();
+    /** «Замороженные» очки уровня после админ-операций с талантами (сервер: talent_budget_debt). */
+    public static int clientTalentBudgetDebt = 0;
     public static Map<String, Integer> clientStats = new HashMap<>();
     public static Map<String, Integer> clientAbilityLevels = new HashMap<>();
     public static Race clientRace = Race.HUMAN;
@@ -43,7 +49,6 @@ public class TalentScreen extends Screen {
     private static final int CLASS_ICON_HALF = CLASS_ICON_DRAW_SIZE / 2;
     private static final int CLASS_BASE_ICON_TEX_SIZE = 64;
 
-    /** Вкладка «Характеристики»: полигон, иконка, плашка с подписью. */
     private static final int STAT_POLY_R = 120;
     private static final int STAT_ICON_DRAW = 108;
     private static final int STAT_ICON_HALF = STAT_ICON_DRAW / 2;
@@ -51,7 +56,7 @@ public class TalentScreen extends Screen {
     private static final int STAT_LABEL_PANEL_TOP = 86;
     private static final int STAT_LABEL_PANEL_H = 38;
 
-    private float scrollX = 0, scrollY = 0, zoom = 0.3f;
+    private float scrollX = 0, scrollY = 0, zoom = 0.4f;
     private boolean isStatsTab = false;
 
     public TalentScreen() {
@@ -417,7 +422,6 @@ public class TalentScreen extends Screen {
                     tip.add(Component.literal("§6" + s.label));
                     tip.add(Component.literal("§7" + s.description));
                     tip.add(Component.literal("§eУровень: " + level + "/" + s.maxLevel));
-                    if (getAvailablePoints() < 1) tip.add(Component.literal("§cНет очков"));
                     if (level >= s.maxLevel) tip.add(Component.literal("§aМаксимум"));
                     gui.renderComponentTooltip(font, tip, mx, my);
                     break;
@@ -456,20 +460,53 @@ public class TalentScreen extends Screen {
         return ry >= s.y - STAT_POLY_R && ry <= bottom;
     }
 
+    /** Совпадает с логикой клика: можно купить следующий уровень (очки или полная шкала тренировки). */
+    private boolean statCanPurchaseNext(AttributeStat s) {
+        return switch (s) {
+            case MANA -> getAvailablePoints() >= 1;
+            case DAMAGE -> (ClientStatTrainingHud.hasData && !ClientStatTrainingHud.dmgMaxed
+                    && ClientStatTrainingHud.dmgProg >= ClientStatTrainingHud.dmgNeed)
+                    || getAvailablePoints() >= 1;
+            case SPEED -> (ClientStatTrainingHud.hasData && !ClientStatTrainingHud.spdMaxed
+                    && ClientStatTrainingHud.spdProg >= ClientStatTrainingHud.spdNeed)
+                    || getAvailablePoints() >= 1;
+            case HEALTH -> (ClientStatTrainingHud.hasData && !ClientStatTrainingHud.hpMaxed
+                    && ClientStatTrainingHud.hpProg >= ClientStatTrainingHud.hpNeed)
+                    || getAvailablePoints() >= 1;
+        };
+    }
+
     private void renderStatsArea(GuiGraphics gui, int points) {
         for (AttributeStat s : AttributeStat.values()) {
             int level = (clientStats.getOrDefault(s.id, 0)) + (clientRace.bonuses.getOrDefault(s.id, 0));
-            boolean canUpgrade = points > 0 && level < s.maxLevel;
             boolean atCap = level >= s.maxLevel;
-            int bgColor = canUpgrade ? 0xFF1c1c26 : 0xFF18181f;
-            int outlineColor = canUpgrade ? 0xFFd4a84b : (atCap ? 0xFF5a7a5a : 0xFF4a4a58);
+            boolean canPurchase = !atCap && statCanPurchaseNext(s);
+
+            int bgColor;
+            int outlineColor;
+            int panelOutline;
+            int panelBarFill;
+            if (atCap) {
+                bgColor = 0xFF151f18;
+                outlineColor = 0xFF5a8a62;
+                panelOutline = 0xFF6a9a72;
+                panelBarFill = 0x446a9a72;
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            } else if (canPurchase) {
+                bgColor = 0xFF1c1c26;
+                outlineColor = 0xFFd4a84b;
+                panelOutline = 0xFFb8923a;
+                panelBarFill = 0x44d4a84b;
+                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+            } else {
+                bgColor = 0xFF18181f;
+                outlineColor = 0xFF4a4a58;
+                panelOutline = 0xFF3a3a48;
+                panelBarFill = 0x22333340;
+                RenderSystem.setShaderColor(0.52f, 0.52f, 0.55f, 1.0f);
+            }
 
             drawPolygon(gui, s.x, s.y, STAT_POLY_R, 32, 0f, bgColor, outlineColor);
-            if (!canUpgrade) {
-                RenderSystem.setShaderColor(0.52f, 0.52f, 0.55f, 1.0f);
-            } else {
-                RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-            }
             gui.blit(s.icon, s.x - STAT_ICON_HALF, s.y - STAT_ICON_HALF, 0, 0,
                     STAT_ICON_DRAW, STAT_ICON_DRAW, STAT_ICON_DRAW, STAT_ICON_DRAW);
             RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
@@ -479,20 +516,21 @@ public class TalentScreen extends Screen {
             int pw = STAT_LABEL_PANEL_HALF_W * 2;
             int ph = STAT_LABEL_PANEL_H;
             gui.fill(px1 + 1, py1 + 1, px1 + pw - 1, py1 + ph - 1, 0xE012121a);
-            gui.renderOutline(px1, py1, pw, ph, canUpgrade ? 0xFFb8923a : 0xFF3a3a48);
-            gui.fill(px1 + 2, py1 + 2, px1 + pw - 2, py1 + 4, canUpgrade ? 0x44d4a84b : 0x22333340);
+            gui.renderOutline(px1, py1, pw, ph, panelOutline);
+            gui.fill(px1 + 2, py1 + 2, px1 + pw - 2, py1 + 4, panelBarFill);
 
             String label = s.label;
             int labelW = font.width(label);
             int labelY = py1 + 6;
-            gui.drawString(font, label, s.x - labelW / 2, labelY, 0xFFF2ECDC, false);
+            int labelColor = atCap ? 0xFFc8e8cc : (canPurchase ? 0xFFF2ECDC : 0xFF9a9aaa);
+            gui.drawString(font, label, s.x - labelW / 2, labelY, labelColor, false);
 
             String num = String.valueOf(level);
             String slashMax = " / " + s.maxLevel;
             int lvlTotalW = font.width(num + slashMax);
             int levelY = py1 + 20;
             int lx = s.x - lvlTotalW / 2;
-            int numColor = atCap ? 0xFF8ecf8e : (canUpgrade ? 0xFFf0c040 : 0xFF9a9aaa);
+            int numColor = atCap ? 0xFF8ecf8e : (canPurchase ? 0xFFf0c040 : 0xFF8a8a96);
             gui.drawString(font, num, lx, levelY, numColor, false);
             gui.drawString(font, slashMax, lx + font.width(num), levelY, 0xFF6b6b78, false);
         }
@@ -508,22 +546,23 @@ public class TalentScreen extends Screen {
 
     private int getAvailablePoints() {
         int spentOnTalents = clientTalents.stream()
+                .filter(id -> !clientAdminGrantedTalents.contains(id))
                 .map(Talent::getById)
                 .filter(Objects::nonNull)
                 .filter(t -> !isFreeClassTalent(t.id))
                 .mapToInt(t -> t.cost)
                 .sum();
-        int spentOnStats = clientStats.values().stream().mapToInt(Integer::intValue).sum();
         int spentOnUpgrades = 0;
         for (var e : clientAbilityLevels.entrySet()) {
             String id = e.getKey();
+            if (clientAdminGrantedTalents.contains(id)) continue;
             int lvl = e.getValue() == null ? 0 : e.getValue();
             if (lvl <= 1) continue;
             for (int next = 2; next <= lvl; next++) {
                 spentOnUpgrades += AbilityUpgradeConfig.getUpgradePointCost(id, next);
             }
         }
-        return clientLevel - (spentOnTalents + spentOnStats + spentOnUpgrades);
+        return clientLevel - spentOnTalents - spentOnUpgrades - clientStatPointsSpent + clientBonusPoints - clientTalentBudgetDebt;
     }
 
     private static boolean isFreeClassTalent(String id) {
@@ -576,11 +615,14 @@ public class TalentScreen extends Screen {
         float rx = (float) (mx - width / 2f - scrollX) / zoom;
         float ry = (float) (my - height / 2f - scrollY) / zoom;
 
-        if (isStatsTab) {
+               if (isStatsTab) {
             for (AttributeStat s : AttributeStat.values()) {
                 if (isPointerOnStat(rx, ry, s)) {
                     int level = (clientStats.getOrDefault(s.id, 0)) + (clientRace.bonuses.getOrDefault(s.id, 0));
-                    if (getAvailablePoints() >= 1 && level < s.maxLevel) PacketDistributor.sendToServer(new C2SUpgradeStat(s.id));
+                    if (level >= s.maxLevel) return true;
+                    if (statCanPurchaseNext(s)) {
+                        PacketDistributor.sendToServer(new C2SUpgradeStat(s.id));
+                    }
                     return true;
                 }
             }
@@ -666,7 +708,6 @@ public class TalentScreen extends Screen {
             }
         }
 
-        // Узлы строго под эволюцией: evo — предок t (подклассы и ниже)
         if (Talent.isAncestorOf(evo, t)) {
             if (!clientTalents.contains(evo.id)) return false;
             if (Arrays.asList(t.parents).contains(evo)) return true;
